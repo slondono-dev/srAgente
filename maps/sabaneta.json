@@ -1,0 +1,12 @@
+{
+  "version": 1,
+  "id": "sabaneta",
+  "nombre": "Secretaría de Movilidad de Sabaneta",
+  "ciudad": "Sabaneta",
+  "plataforma": "quipux",
+  "modo": "auto",
+  "front": "https://transitosabaneta.utsetsa.com/",
+  "backend": "https://transitosabaneta.utsetsa.com/backavit",
+  "captcha": false,
+  "fotodeteccion": true
+}

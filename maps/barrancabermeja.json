@@ -1,0 +1,12 @@
+{
+  "version": 1,
+  "id": "barrancabermeja",
+  "nombre": "Barrancabermeja",
+  "ciudad": "Barrancabermeja",
+  "plataforma": "suiteneptuno",
+  "modo": "manual",
+  "front": "https://tramitesittb.siotweb.com/Comparendos/Consultas",
+  "backend": "",
+  "captcha": true,
+  "fotodeteccion": true
+}

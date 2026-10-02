@@ -1,0 +1,12 @@
+{
+  "version": 1,
+  "id": "dosquebradas",
+  "nombre": "Dosquebradas",
+  "ciudad": "Dosquebradas",
+  "plataforma": "propia",
+  "modo": "manual",
+  "front": "https://transitodosquebradas.gov.co",
+  "backend": "",
+  "captcha": true,
+  "fotodeteccion": null
+}

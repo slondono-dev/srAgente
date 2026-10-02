@@ -1,0 +1,12 @@
+{
+  "version": 1,
+  "id": "cundinamarca",
+  "nombre": "Cundinamarca (depto.)",
+  "ciudad": "Cundinamarca",
+  "plataforma": "circulemos",
+  "modo": "manual",
+  "front": "https://cundinamarca.circulemos.com.co/comparendos_at/buscar_comparendos.php?r_funcion=120",
+  "backend": "",
+  "captcha": null,
+  "fotodeteccion": null
+}

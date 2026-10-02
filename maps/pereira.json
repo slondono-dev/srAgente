@@ -1,0 +1,12 @@
+{
+  "version": 1,
+  "id": "pereira",
+  "nombre": "Instituto de Movilidad de Pereira",
+  "ciudad": "Pereira",
+  "plataforma": "quipux",
+  "modo": "auto",
+  "front": "https://digital.movilidadpereira.gov.co/portal-servicios/",
+  "backend": "https://digital.movilidadpereira.gov.co/backavit",
+  "captcha": false,
+  "fotodeteccion": null
+}

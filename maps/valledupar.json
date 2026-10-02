@@ -1,0 +1,12 @@
+{
+  "version": 1,
+  "id": "valledupar",
+  "nombre": "Valledupar",
+  "ciudad": "Valledupar",
+  "plataforma": "propia",
+  "modo": "manual",
+  "front": "https://transitovalledupar.gov.co/fotodeteccion/",
+  "backend": "",
+  "captcha": true,
+  "fotodeteccion": true
+}

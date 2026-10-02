@@ -1,0 +1,12 @@
+{
+  "version": 1,
+  "id": "simit",
+  "nombre": "Colombia (SIMIT)",
+  "ciudad": "SIMIT",
+  "plataforma": "simit",
+  "modo": "manual",
+  "front": "https://www.fcm.org.co/simit/#/home-public",
+  "backend": "",
+  "captcha": true,
+  "fotodeteccion": null
+}

@@ -1,0 +1,12 @@
+{
+  "version": 1,
+  "id": "girardot",
+  "nombre": "Girardot",
+  "ciudad": "Girardot",
+  "plataforma": "sinfacloud",
+  "modo": "manual",
+  "front": "https://girardot.sinfacloud.co/",
+  "backend": "",
+  "captcha": null,
+  "fotodeteccion": null
+}

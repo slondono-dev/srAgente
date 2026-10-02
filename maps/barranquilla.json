@@ -1,0 +1,12 @@
+{
+  "version": 1,
+  "id": "barranquilla",
+  "nombre": "Barranquilla",
+  "ciudad": "Barranquilla",
+  "plataforma": "propia",
+  "modo": "manual",
+  "front": "https://portal.barranquilla.gov.co:8181/ConsultaEstadoCuenta/",
+  "backend": "",
+  "captcha": null,
+  "fotodeteccion": true
+}

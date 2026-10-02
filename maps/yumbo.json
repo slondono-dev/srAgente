@@ -1,0 +1,12 @@
+{
+  "version": 1,
+  "id": "yumbo",
+  "nombre": "Yumbo",
+  "ciudad": "Yumbo",
+  "plataforma": "moviliza",
+  "modo": "manual",
+  "front": "https://www.moviliza.com.co/LiquidadorPagos/#/liquidador/76892000",
+  "backend": "",
+  "captcha": null,
+  "fotodeteccion": true
+}

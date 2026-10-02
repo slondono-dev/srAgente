@@ -2,8 +2,11 @@
   "version": 1,
   "id": "itagui",
   "nombre": "Secretaría de Movilidad de Itagüí",
+  "ciudad": "Itagüí",
   "plataforma": "quipux",
   "modo": "auto",
   "front": "https://movilidad.transitoitagui.gov.co/portal-servicios/",
-  "backend": "https://movilidad.transitoitagui.gov.co/backavit"
+  "backend": "https://movilidad.transitoitagui.gov.co/backavit",
+  "captcha": false,
+  "fotodeteccion": true
 }

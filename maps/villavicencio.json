@@ -1,0 +1,12 @@
+{
+  "version": 1,
+  "id": "villavicencio",
+  "nombre": "Secretaría de Movilidad de Villavicencio",
+  "ciudad": "Villavicencio",
+  "plataforma": "quipux",
+  "modo": "auto",
+  "front": "https://movilidad.villavicencio.gov.co/portal-servicios/",
+  "backend": "https://movilidad.villavicencio.gov.co/backavit",
+  "captcha": false,
+  "fotodeteccion": null
+}

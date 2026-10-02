@@ -1,0 +1,12 @@
+{
+  "version": 1,
+  "id": "atlantico",
+  "nombre": "Instituto de Tránsito del Atlántico",
+  "ciudad": "Atlántico (depto.)",
+  "plataforma": "quipux",
+  "modo": "auto",
+  "front": "https://digital.transitodelatlantico.gov.co/portal-servicios/",
+  "backend": "https://digital.transitodelatlantico.gov.co/backavit",
+  "captcha": false,
+  "fotodeteccion": true
+}

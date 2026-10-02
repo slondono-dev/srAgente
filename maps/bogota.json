@@ -1,0 +1,12 @@
+{
+  "version": 1,
+  "id": "bogota",
+  "nombre": "Bogotá",
+  "ciudad": "Bogotá",
+  "plataforma": "propia",
+  "modo": "manual",
+  "front": "https://www.movilidadbogota.gov.co/consulta-de-comparendos",
+  "backend": "",
+  "captcha": true,
+  "fotodeteccion": true
+}

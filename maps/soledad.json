@@ -1,0 +1,12 @@
+{
+  "version": 1,
+  "id": "soledad",
+  "nombre": "Soledad",
+  "ciudad": "Soledad",
+  "plataforma": "moviliza",
+  "modo": "manual",
+  "front": "https://www.moviliza.com.co/LiquidadorPagos/#/liquidador/8758000",
+  "backend": "",
+  "captcha": null,
+  "fotodeteccion": true
+}

@@ -1,0 +1,12 @@
+{
+  "version": 1,
+  "id": "cucuta",
+  "nombre": "Cúcuta",
+  "ciudad": "Cúcuta",
+  "plataforma": "propia",
+  "modo": "manual",
+  "front": "https://consorciotransitocucuta.com.co",
+  "backend": "",
+  "captcha": null,
+  "fotodeteccion": true
+}

@@ -1,0 +1,12 @@
+{
+  "version": 1,
+  "id": "valle",
+  "nombre": "Valle del Cauca (depto.)",
+  "ciudad": "Valle del Cauca",
+  "plataforma": "propia",
+  "modo": "manual",
+  "front": "https://www.valledelcauca.gov.co/notificaciones-movilidad/1/consulta/",
+  "backend": "",
+  "captcha": true,
+  "fotodeteccion": true
+}

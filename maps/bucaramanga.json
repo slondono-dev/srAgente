@@ -1,0 +1,12 @@
+{
+  "version": 1,
+  "id": "bucaramanga",
+  "nombre": "Bucaramanga",
+  "ciudad": "Bucaramanga",
+  "plataforma": "moviliza",
+  "modo": "manual",
+  "front": "https://www.moviliza.com.co/ConsultaEstadoCuenta/consultaCiudadano/ConsultaCiudadano.html#/68001000",
+  "backend": "",
+  "captcha": false,
+  "fotodeteccion": null
+}

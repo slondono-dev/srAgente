@@ -2,8 +2,11 @@
   "version": 1,
   "id": "bello",
   "nombre": "Secretaría de Movilidad de Bello",
+  "ciudad": "Bello",
   "plataforma": "quipux",
   "modo": "auto",
   "front": "https://serviciosdigitales.movilidadavanzadabello.com.co/portal-servicios/",
-  "backend": "https://serviciosdigitales.movilidadavanzadabello.com.co/backavit"
+  "backend": "https://serviciosdigitales.movilidadavanzadabello.com.co/backavit",
+  "captcha": false,
+  "fotodeteccion": true
 }

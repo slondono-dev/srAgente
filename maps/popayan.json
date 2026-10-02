@@ -1,0 +1,12 @@
+{
+  "version": 1,
+  "id": "popayan",
+  "nombre": "Secretaría de Tránsito de Popayán",
+  "ciudad": "Popayán",
+  "plataforma": "quipux",
+  "modo": "auto",
+  "front": "https://www.transitopopayan.com.co/portal-servicios/",
+  "backend": "https://www.transitopopayan.com.co/backavit",
+  "captcha": false,
+  "fotodeteccion": true
+}

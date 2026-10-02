@@ -1,0 +1,12 @@
+{
+  "version": 1,
+  "id": "pasto",
+  "nombre": "Pasto",
+  "ciudad": "Pasto",
+  "plataforma": "moviliza",
+  "modo": "manual",
+  "front": "https://www.moviliza.com.co/PortalCiudadano/#/home/SiwoUYQFbskCUsAZsrSBPZ55ppmspMGdjCuGpD3Cv22G0yDk",
+  "backend": "",
+  "captcha": null,
+  "fotodeteccion": true
+}

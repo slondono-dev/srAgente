@@ -1,0 +1,12 @@
+{
+  "version": 1,
+  "id": "floridablanca",
+  "nombre": "Floridablanca",
+  "ciudad": "Floridablanca",
+  "plataforma": "suiteneptuno",
+  "modo": "manual",
+  "front": "https://tramitesdttf.siotweb.suiteneptuno.com/Impuestos/Consultas",
+  "backend": "",
+  "captcha": true,
+  "fotodeteccion": null
+}

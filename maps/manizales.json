@@ -1,0 +1,12 @@
+{
+  "version": 1,
+  "id": "manizales",
+  "nombre": "Secretaría de Movilidad de Manizales",
+  "ciudad": "Manizales",
+  "plataforma": "quipux",
+  "modo": "auto",
+  "front": "https://www.movilidadmanizales.com.co/portal-servicios/",
+  "backend": "https://www.movilidadmanizales.com.co/backavit",
+  "captcha": false,
+  "fotodeteccion": true
+}

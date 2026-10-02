@@ -1,0 +1,12 @@
+{
+  "version": 1,
+  "id": "santamarta",
+  "nombre": "Santa Marta",
+  "ciudad": "Santa Marta",
+  "plataforma": "propia",
+  "modo": "manual",
+  "front": "http://siettsantamarta.com/NotiComparendosTransito.php",
+  "backend": "",
+  "captcha": null,
+  "fotodeteccion": true
+}

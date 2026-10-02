@@ -2,8 +2,11 @@
   "version": 1,
   "id": "medellin",
   "nombre": "Secretaría de Movilidad de Medellín",
+  "ciudad": "Medellín",
   "plataforma": "quipux",
   "modo": "auto",
   "front": "https://www.medellin.gov.co/portal-movilidad/",
-  "backend": "https://www.medellin.gov.co/backavit"
+  "backend": "https://www.medellin.gov.co/backavit",
+  "captcha": false,
+  "fotodeteccion": true
 }

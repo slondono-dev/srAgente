@@ -1,0 +1,12 @@
+{
+  "version": 1,
+  "id": "arauca",
+  "nombre": "Arauca",
+  "ciudad": "Arauca",
+  "plataforma": "suiteneptuno",
+  "modo": "manual",
+  "front": "https://portal.arauca.suiteneptuno.com/",
+  "backend": "",
+  "captcha": true,
+  "fotodeteccion": null
+}

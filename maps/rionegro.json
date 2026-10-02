@@ -2,8 +2,11 @@
   "version": 1,
   "id": "rionegro",
   "nombre": "Secretaría de Movilidad de Rionegro",
+  "ciudad": "Rionegro",
   "plataforma": "quipux",
   "modo": "auto",
   "front": "https://movilidad.rionegro.gov.co/portal-servicios/",
-  "backend": "https://movilidad.rionegro.gov.co/back-ssdd"
+  "backend": "https://movilidad.rionegro.gov.co/back-ssdd",
+  "captcha": false,
+  "fotodeteccion": true
 }

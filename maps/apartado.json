@@ -1,0 +1,12 @@
+{
+  "version": 1,
+  "id": "apartado",
+  "nombre": "Apartadó",
+  "ciudad": "Apartadó",
+  "plataforma": "suiteneptuno",
+  "modo": "manual",
+  "front": "https://apartado.portal-siotweb.suiteneptuno.com/Modulos",
+  "backend": "",
+  "captcha": null,
+  "fotodeteccion": null
+}

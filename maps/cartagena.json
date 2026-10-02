@@ -1,0 +1,12 @@
+{
+  "version": 1,
+  "id": "cartagena",
+  "nombre": "Cartagena",
+  "ciudad": "Cartagena",
+  "plataforma": "circulemos",
+  "modo": "manual",
+  "front": "https://col.circulemosdigital.com",
+  "backend": "",
+  "captcha": null,
+  "fotodeteccion": null
+}

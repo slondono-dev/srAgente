@@ -2,8 +2,11 @@
   "version": 1,
   "id": "cali",
   "nombre": "Secretaría de Movilidad de Cali",
+  "ciudad": "Cali",
   "plataforma": "quipux",
   "modo": "auto",
   "front": "https://movilidadcali.com.co/portal-servicios/",
-  "backend": "https://movilidadcali.com.co/backavit"
+  "backend": "https://movilidadcali.com.co/backavit",
+  "captcha": false,
+  "fotodeteccion": true
 }
