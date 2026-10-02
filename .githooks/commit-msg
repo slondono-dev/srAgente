@@ -1,0 +1,4 @@
+#!/bin/sh
+# Strip attribution trailers and keep only the subject line.
+f="$1"
+grep -viE '^(co-authored-by|claude-session|generated (with|by))|claude\.(ai|com)|anthropic' "$f" | grep -v '^#' | sed '/^[[:space:]]*$/d' | head -n1 > "$f.tmp" && mv "$f.tmp" "$f"
