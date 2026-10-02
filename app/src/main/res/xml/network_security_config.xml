@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- El servidor de Bello no envía su certificado intermedio; se confía en él solo para ese dominio. -->
+<network-security-config>
+    <domain-config>
+        <domain includeSubdomains="true">movilidadavanzadabello.com.co</domain>
+        <trust-anchors>
+            <certificates src="system" />
+            <certificates src="@raw/rapidssl_tls_rsa_ca_g1" />
+        </trust-anchors>
+    </domain-config>
+</network-security-config>

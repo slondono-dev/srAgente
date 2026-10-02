@@ -32,3 +32,13 @@ Nota Cali: el login responde, pero `findInfoHomePublic` y `findUsuarios` se cuel
 | Cundinamarca (depto.) | https://cundinamarca.circulemos.com.co/ | Circulemos | Sin verificar |
 | Girardot | https://girardot.sinfacloud.co/ | Sinfacloud | Sin verificar |
 | Cúcuta, Valledupar, Santa Marta | Remiten a SIMIT | — | Sí (SIMIT) |
+
+## Datos abiertos (descartado)
+
+[Historial de Multas SIMIT](https://www.datos.gov.co/d/72nf-y4v3): consulta pública por placa, sin captcha, todo el país.
+Descartado: llega con meses de retraso y no refleja pagos (en la prueba mostró como no pagada una multa ya pagada).
+
+## Datos abiertos (descartado)
+
+[Historial de Multas SIMIT](https://www.datos.gov.co/d/72nf-y4v3): consulta pública por placa, sin captcha, todo el país.
+Descartado: llega con meses de retraso y no refleja pagos (en la prueba mostró como no pagada una multa ya pagada).

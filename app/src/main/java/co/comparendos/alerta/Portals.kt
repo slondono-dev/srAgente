@@ -3,7 +3,6 @@ package co.comparendos.alerta
 import android.content.Context
 import org.json.JSONArray
 import org.json.JSONObject
-import java.net.CookieManager
 import java.net.HttpURLConnection
 import java.net.URL
 
@@ -23,7 +22,8 @@ object Portals {
     /** Devuelve los registros (comparendos/multas) del portal para una cédula o placa. */
     fun consultar(m: Mapa, criterio: String, esPlaca: Boolean): List<JSONObject> {
         require(m.plataforma == "quipux") { "Plataforma no soportada: ${m.plataforma}" }
-        val cookies = CookieManager()
+        // Cookies a mano, solo nombre=valor: CookieManager reenvía las cookies Version=1 como `$Version=...` y el portal responde 500.
+        val cookies = mutableMapOf<String, String>()
         fun post(path: String, body: JSONObject, timeoutMs: Int): JSONObject {
             val c = URL(m.backend + path).openConnection() as HttpURLConnection
             c.requestMethod = "POST"
@@ -32,10 +32,14 @@ object Portals {
             c.doOutput = true
             c.setRequestProperty("Content-Type", "application/json")
             c.setRequestProperty("href", m.front)
-            cookies.cookieStore.cookies.joinToString("; ").takeIf { it.isNotEmpty() }?.let { c.setRequestProperty("Cookie", it) }
+            c.setRequestProperty("User-Agent", "Mozilla/5.0") // el WAF rechaza el agente por defecto de Android (403)
+            if (cookies.isNotEmpty()) c.setRequestProperty("Cookie", cookies.entries.joinToString("; ") { "${it.key}=${it.value}" })
             c.outputStream.use { it.write(body.toString().toByteArray()) }
             if (c.responseCode != 200) throw Exception("HTTP ${c.responseCode}")
-            c.headerFields["Set-Cookie"]?.forEach { h -> java.net.HttpCookie.parse(h).forEach { cookies.cookieStore.add(null, it) } }
+            c.headerFields.filterKeys { it.equals("Set-Cookie", true) }.values.flatten().forEach {
+                val (k, v) = it.substringBefore(';').split('=', limit = 2) + ""
+                cookies[k.trim()] = v
+            }
             return JSONObject(c.inputStream.bufferedReader().readText())
         }
 

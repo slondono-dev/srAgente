@@ -7,6 +7,7 @@
         android:label="Alerta Comparendos"
         android:icon="@android:drawable/ic_dialog_alert"
         android:allowBackup="false"
+        android:networkSecurityConfig="@xml/network_security_config"
         android:theme="@android:style/Theme.Material.Light.NoActionBar">
         <activity android:name=".MainActivity" android:exported="true">
             <intent-filter>
