@@ -1,0 +1,9 @@
+{
+  "version": 1,
+  "id": "armenia",
+  "nombre": "SETTA Armenia",
+  "plataforma": "quipux",
+  "modo": "auto",
+  "front": "https://setta.armenia.gov.co/portal-servicios/",
+  "backend": "https://setta.armenia.gov.co/backavit"
+}

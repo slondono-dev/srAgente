@@ -1,0 +1,9 @@
+{
+  "version": 1,
+  "id": "envigado",
+  "nombre": "Secretaría de Movilidad de Envigado",
+  "plataforma": "quipux",
+  "modo": "asistido",
+  "front": "https://movilidad.envigado.gov.co/portal-servicios/",
+  "backend": "https://movilidad.envigado.gov.co/backavit"
+}

@@ -1,0 +1,9 @@
+{
+  "version": 1,
+  "id": "bello",
+  "nombre": "Secretaría de Movilidad de Bello",
+  "plataforma": "quipux",
+  "modo": "auto",
+  "front": "https://serviciosdigitales.movilidadavanzadabello.com.co/portal-servicios/",
+  "backend": "https://serviciosdigitales.movilidadavanzadabello.com.co/backavit"
+}
