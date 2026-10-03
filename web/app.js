@@ -8,8 +8,8 @@ const esc = s => String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;",
 const corto = m => m.nombre.replace(/^(Secretaría|Instituto) de (Movilidad|Tránsito) de(l)? /, "").replace(/^SETTA /, "");
 let mapas = [];
 
-try { $("proxy").value = localStorage.getItem("proxy") || ""; } catch {}
-$("proxy").onchange = () => { try { localStorage.setItem("proxy", $("proxy").value.trim()); } catch {} };
+try { $("proxy").value = localStorage.getItem("servidor") || ""; } catch {}
+$("proxy").onchange = () => { try { localStorage.setItem("servidor", $("proxy").value.trim()); } catch {} };
 
 const listos = Promise.all(IDS.map(id => fetch(`maps/${id}.json`).then(r => r.json()).then(m => ({ id, ...m })).catch(() => null)))
   .then(ms => { mapas = ms.filter(Boolean); });
@@ -32,20 +32,19 @@ hint();
 
 function show(id) { ["s1", "s2", "s3"].forEach(s => $(s).hidden = s !== id); scrollTo(0, 0); }
 
-// Sin proxy, el navegador solo pasa el CORS de los portales (Allow-Origin "*") sin cookies y sin la cabecera `href`;
-// la sesión viaja entonces en la cabecera `token`, que sí permiten.
-async function post(m, path, body, token) {
-  const proxy = $("proxy").value.trim();
-  const url = proxy ? proxy + encodeURIComponent(m.backend + path) : m.backend + path;
-  const headers = { "Content-Type": "application/json" };
-  if (proxy) headers.href = m.front;
-  if (token) headers.token = token;
-  const ctl = new AbortController(), t = setTimeout(() => ctl.abort(), 15000);
+// El navegador no puede consultar los portales directamente (CORS sin cookies), así que la web
+// usa el servidor intermedio de worker/worker.js. Se puede cambiar en Ajustes.
+const SERVIDOR = "";
+const servidor = () => $("proxy").value.trim() || SERVIDOR;
+
+async function consultarServidor(m, criterio, esPlaca) {
+  const ctl = new AbortController(), t = setTimeout(() => ctl.abort(), 30000);
   try {
-    const r = await fetch(url, { method: "POST", credentials: proxy ? "include" : "omit", signal: ctl.signal,
-      headers, body: JSON.stringify(body) });
-    if (!r.ok) throw new Error("HTTP " + r.status);
-    return r.json();
+    const r = await fetch(servidor(), { method: "POST", signal: ctl.signal, headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ portal: m.id, criterio, esPlaca }) });
+    const res = await r.json();
+    if (res.error) throw new Error(res.error);
+    return res.regs;
   } finally { clearTimeout(t); }
 }
 
@@ -62,15 +61,8 @@ function consultarAndroid(m, criterio, esPlaca) {
 
 async function consultar(m, criterio, esPlaca) {
   if (window.Android) return consultarAndroid(m, criterio, esPlaca);
-  const login = await post(m, "/avit/login/", { usuario: "ANONIMO", password: "admin", consumidor: "web" });
-  if (login.rcSiteKey !== "disable") throw new Error("captcha");
-  const token = campo(login, /token|ticket/i);
-  console.info(m.id, "login:", Object.keys(login), token ? "con token" : "sin token");
-  const r = await post(m, "/avit/home/findInfoHomePublic",
-    { criterio, response: "", tipoConsulta: "0", idTipoIdentificacion: esPlaca ? "" : "2" }, token);
-  const dto = r.consultaMultaOComparendoOutDTO;
-  if (!dto) throw new Error("Respuesta inesperada");
-  return ["informacionComparendo", "informacionMulta", "informacionComparendoAdicional"].flatMap(k => dto[k] || []);
+  if (servidor()) return consultarServidor(m, criterio, esPlaca);
+  throw new Error("sin servidor");
 }
 
 // Los portales no publican un formato fijo: se busca el primer campo que parezca valor o descripción.
