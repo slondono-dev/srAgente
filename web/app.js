@@ -3,7 +3,7 @@ const IDS = ["simit", "medellin", "bello", "itagui", "envigado", "sabaneta", "ri
   "girardot", "cali", "valle", "yumbo", "popayan", "pasto", "armenia", "pereira", "dosquebradas", "manizales", "villavicencio",
   "arauca", "bucaramanga", "floridablanca", "barrancabermeja", "cucuta", "barranquilla", "atlantico", "soledad", "cartagena",
   "santamarta", "valledupar"];
-const fmt = n => "$ " + Math.round(n).toLocaleString("es-CO");
+const fmt = n => "$\u00a0" + Math.round(n).toLocaleString("es-CO");
 const esc = s => String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]);
 const corto = m => m.nombre.replace(/^(Secretaría|Instituto) de (Movilidad|Tránsito) de(l)? /, "").replace(/^SETTA /, "");
 let mapas = [];
@@ -95,7 +95,7 @@ function resultado(c, res) {
     $("amount").textContent = total ? fmt(total) : fines.length;
     $("title").textContent = fines.length === 1 ? "1 multa encontrada" : `${fines.length} multas encontradas`;
   } else if (ok.length) {
-    $("amount").textContent = "$ 0";
+    $("amount").textContent = fmt(0);
     $("title").textContent = `Sin multas en ${ok.length} ${ok.length === 1 ? "ciudad revisada" : "ciudades revisadas"}`;
   } else {
     $("amount").textContent = "Revísalo tú";
@@ -121,7 +121,7 @@ $("again").onclick = () => { $("q").value = ""; hint(); show("s1"); $("q").focus
 
 document.querySelectorAll("[data-talk]").forEach(b => b.onclick = () => {
   if (!$("s3").hidden) {
-    const parts = [[null, `${$("amount").textContent.replace("$ ", "")} ${$("amount").textContent.startsWith("$") ? "pesos" : ""}. ${$("title").textContent}.`]];
+    const parts = [[null, `${$("amount").textContent.replace(/^\$\s/, "")} ${$("amount").textContent.startsWith("$") ? "pesos" : ""}. ${$("title").textContent}.`]];
     document.querySelectorAll(".fine").forEach(f => parts.push([f, f.querySelector(".mini").innerText.replace(/\s+/g, " ")]));
     if (!$("miss").hidden) parts.push([$("miss"), "Revisa tú en la página oficial del SIMIT. Toca Abrir."]);
     speak(parts);

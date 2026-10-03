@@ -25,12 +25,14 @@
 /* reloj */
 input[type=range]{width:100%;height:44px;accent-color:var(--sun)}
 .daybig{font:800 2.4rem/1 var(--display);font-variant-numeric:tabular-nums}
-.ruler{display:grid;grid-template-columns:5fr 6fr 9fr 20fr;height:16px;border-radius:99px;overflow:hidden}
-.ruler span:nth-child(1){background:var(--green)}.ruler span:nth-child(2){background:var(--sky)}.ruler span:nth-child(3){background:var(--sun)}.ruler span:nth-child(4){background:var(--red)}
-.ticks{display:grid;grid-template-columns:5fr 6fr 9fr 20fr;font-size:.8rem;color:var(--muted)}
+.ruler{display:grid;grid-template-columns:5fr 6fr 9fr 10fr 22fr;height:16px;border-radius:99px;overflow:hidden}
+.ruler span:nth-child(1){background:var(--green)}.ruler span:nth-child(2){background:var(--sky)}.ruler span:nth-child(3){background:var(--sun)}.ruler span:nth-child(4){background:var(--muted);opacity:.5}.ruler span:nth-child(5){background:var(--red)}
+.ticks{display:grid;grid-template-columns:5fr 6fr 9fr 10fr 22fr;font-size:.8rem;color:var(--muted)}
 .now{display:grid;gap:10px}
 .opt{display:flex;gap:12px;align-items:center;padding:12px 14px;border-radius:14px;border:2px solid var(--line)}
 .opt.on{border-color:var(--green);background:var(--green-soft)}
+.opt.bad{border-color:var(--red);background:var(--red-soft)}
+.opt.bad .mk{color:var(--red)}
 .opt.off{opacity:.45;text-decoration:line-through}
 .opt .mk{font:800 1.1rem var(--display);width:28px;text-align:center}
 .price{font:800 1.5rem var(--display);font-variant-numeric:tabular-nums}
@@ -95,17 +97,18 @@ input[type=range]{width:100%;height:44px;accent-color:var(--sun)}
   <span class="step">3 · EL RELOJ</span>
   <img class="art" src="img/5-plazos-640.webp" srcset="img/5-plazos-640.webp 640w, img/5-plazos.webp 1200w" sizes="(max-width:520px) 92vw, 480px" width="1200" height="675" loading="lazy" alt="Un calendario y un reloj de arena.">
   <h2>Desde el aviso empieza a correr el tiempo</h2>
-  <p class="muted">Mueve la barra y mira qué puedes hacer cada día. Son días hábiles: no cuentan sábados, domingos ni festivos.</p>
-  <div><span class="daybig" id="d">Día 3</span> <span class="muted">después del aviso</span></div>
-  <input type="range" id="r" min="0" max="40" value="3" aria-label="Días hábiles después del aviso">
-  <div class="ruler" aria-hidden="true"><span></span><span></span><span></span><span></span></div>
-  <div class="ticks" aria-hidden="true"><span>0–5</span><span>6–11</span><span>12–20</span><span style="text-align:right">después</span></div>
+  <p class="muted">Mueve la barra y mira qué puedes hacer cada día. Son días hábiles: no cuentan sábados, domingos ni festivos. Al final de la barra empiezan los intereses.</p>
+  <div><span class="daybig" id="d">Día 3</span> <span class="muted" id="du">después del aviso</span></div>
+  <input type="range" id="r" min="0" max="52" value="3" aria-label="Tiempo después del aviso">
+  <div class="ruler" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span></div>
+  <div class="ticks" aria-hidden="true"><span>0–5</span><span>6–11</span><span>12–20</span><span>21–30</span><span style="text-align:right">intereses</span></div>
   <div class="now">
     <div class="opt" id="o1"><span class="mk" id="m1"></span><div><b>Pagar con descuento</b><br><span class="muted" id="t1"></span></div></div>
     <div class="opt" id="o2"><span class="mk" id="m2"></span><div><b>Pedir audiencia</b><br><span class="muted" id="t2"></span></div></div>
+    <div class="opt" id="o3"><span class="mk" id="m3"></span><div><b>Intereses de mora</b><br><span class="muted" id="t3"></span></div></div>
   </div>
-  <div id="costo">Una multa de <b>$ 604.100</b> te costaría hoy <span class="price" id="p"></span></div>
-  <p class="note">Ejemplo con una multa común. El descuento exige hacer el curso de seguridad vial.</p>
+  <div id="costo">Una multa de <b>$ 604.100</b> te costaría hoy <span class="price" id="p"></span><br><span class="muted" id="pi"></span></div>
+  <p class="note">Ejemplo con una multa común. El descuento exige hacer el curso de seguridad vial. Los intereses usan una tasa aproximada de 25 % al año; la tasa real cambia cada mes.</p>
 </section>
 
 <section class="scene">
@@ -168,9 +171,13 @@ input[type=range]{width:100%;height:44px;accent-color:var(--sun)}
 
 <script src="ui.js"></script>
 <script>
-const r = document.getElementById("r"), $ = id => document.getElementById(id), base = 604100, fmt = n => "$ " + Math.round(n).toLocaleString("es-CO");
+const r = document.getElementById("r"), $ = id => document.getElementById(id), base = 604100, fmt = n => "$\u00a0" + Math.round(n).toLocaleString("es-CO");
+// Barra: posiciones 0–30 son días hábiles; de 31 en adelante, cada paso es un mes de mora.
+const TASA = .25, MORA = 30, porDia = base * (Math.pow(1 + TASA, 1 / 365) - 1);
 function upd() {
-  const d = +r.value; $("d").textContent = "Día " + d;
+  const d = +r.value, meses = Math.max(0, d - MORA), mora = meses > 0;
+  $("d").textContent = mora ? (meses === 1 ? "1 mes" : meses + " meses") : "Día " + d;
+  $("du").textContent = mora ? "de mora" : "después del aviso";
   let disc, dt;
   if (d <= 5) { disc = .5; dt = "Pagas la mitad (50 % menos) hasta el día 5"; }
   else if (d <= 20) { disc = .25; dt = "Pagas 25 % menos hasta el día 20"; }
@@ -179,7 +186,11 @@ function upd() {
   $("o1").className = "opt " + (disc ? "on" : "off"); $("m1").textContent = disc ? "✓" : "✕"; $("t1").textContent = dt;
   $("o2").className = "opt " + (aud ? "on" : "off"); $("m2").textContent = aud ? "✓" : "✕";
   $("t2").textContent = aud ? `Te quedan ${11 - d} días hábiles para pedirla` : "Se venció el plazo de 11 días";
-  $("p").textContent = fmt(base * (1 - disc));
+  $("o3").className = "opt " + (mora ? "bad" : "off"); $("m3").textContent = mora ? "!" : "";
+  $("t3").textContent = mora ? `Cada día suma cerca de ${fmt(porDia)}` : "Empiezan si no pagas en unos 30 días";
+  const interes = mora ? base * (Math.pow(1 + TASA, meses / 12) - 1) : 0;
+  $("p").textContent = fmt(base * (1 - disc) + interes);
+  $("pi").textContent = mora ? `${fmt(interes)} son intereses` : "";
 }
 r.oninput = upd; upd();
 
@@ -187,7 +198,7 @@ r.oninput = upd; upd();
 document.querySelector("[data-talk]").onclick = () => speak([...document.querySelectorAll(".scene")].map(s => {
   const t = [s.querySelector("h2"), ...s.querySelectorAll(":scope > p.muted, :scope > .fact, :scope > .paths, :scope > .ladder")]
     .filter(Boolean).map(e => e.innerText.replace(/\s+/g, " ").trim()).join(". ");
-  return [s, s.id === "reloj" ? t + ". " + $("o1").innerText + ". " + $("o2").innerText : t];
+  return [s, s.id === "reloj" ? [t, $("o1").innerText, $("o2").innerText, $("o3").innerText, $("costo").innerText].join(". ") : t];
 }));
 </script>
 </body>
