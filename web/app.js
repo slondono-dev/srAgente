@@ -32,13 +32,18 @@ hint();
 
 function show(id) { ["s1", "s2", "s3"].forEach(s => $(s).hidden = s !== id); scrollTo(0, 0); }
 
-async function post(m, path, body) {
+// Sin proxy, el navegador solo pasa el CORS de los portales (Allow-Origin "*") sin cookies y sin la cabecera `href`;
+// la sesión viaja entonces en la cabecera `token`, que sí permiten.
+async function post(m, path, body, token) {
   const proxy = $("proxy").value.trim();
   const url = proxy ? proxy + encodeURIComponent(m.backend + path) : m.backend + path;
+  const headers = { "Content-Type": "application/json" };
+  if (proxy) headers.href = m.front;
+  if (token) headers.token = token;
   const ctl = new AbortController(), t = setTimeout(() => ctl.abort(), 15000);
   try {
-    const r = await fetch(url, { method: "POST", credentials: "include", signal: ctl.signal,
-      headers: { "Content-Type": "application/json", href: m.front }, body: JSON.stringify(body) });
+    const r = await fetch(url, { method: "POST", credentials: proxy ? "include" : "omit", signal: ctl.signal,
+      headers, body: JSON.stringify(body) });
     if (!r.ok) throw new Error("HTTP " + r.status);
     return r.json();
   } finally { clearTimeout(t); }
@@ -47,8 +52,10 @@ async function post(m, path, body) {
 async function consultar(m, criterio, esPlaca) {
   const login = await post(m, "/avit/login/", { usuario: "ANONIMO", password: "admin", consumidor: "web" });
   if (login.rcSiteKey !== "disable") throw new Error("captcha");
+  const token = campo(login, /token|ticket/i);
+  console.info(m.id, "login:", Object.keys(login), token ? "con token" : "sin token");
   const r = await post(m, "/avit/home/findInfoHomePublic",
-    { criterio, response: "", tipoConsulta: "0", idTipoIdentificacion: esPlaca ? "" : "2" });
+    { criterio, response: "", tipoConsulta: "0", idTipoIdentificacion: esPlaca ? "" : "2" }, token);
   const dto = r.consultaMultaOComparendoOutDTO;
   if (!dto) throw new Error("Respuesta inesperada");
   return ["informacionComparendo", "informacionMulta", "informacionComparendoAdicional"].flatMap(k => dto[k] || []);
