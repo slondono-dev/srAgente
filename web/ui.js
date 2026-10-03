@@ -16,6 +16,7 @@ document.querySelectorAll("[data-talk]").forEach(b => { b.innerHTML = SPEAKER + 
 
 // Lee en orden una lista de [elemento, texto]; resalta cada elemento mientras lo lee.
 function speak(parts) {
+  if (window.Android) { window.Android.hablar(parts.map(p => p[1]).join(". ")); return; }  // voz del teléfono
   const sy = window.speechSynthesis;
   if (!sy) return;
   if (sy.speaking) { sy.cancel(); document.querySelectorAll(".speaking").forEach(x => x.classList.remove("speaking")); return; }
@@ -31,4 +32,5 @@ function speak(parts) {
   });
 }
 
-if ("serviceWorker" in navigator) navigator.serviceWorker.register("sw.js");
+if (window.Android) document.documentElement.classList.add("android");
+else if ("serviceWorker" in navigator) navigator.serviceWorker.register("sw.js");

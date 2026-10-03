@@ -1,0 +1,22 @@
+name: Android
+on:
+  push:
+    paths: ["app/**", "web/**", "maps/**", "*.gradle.kts", "gradle/**", ".github/workflows/android.yml"]
+  workflow_dispatch:
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+      - uses: gradle/actions/setup-gradle@v4
+      # gradle.properties apunta al JDK de Windows del equipo local.
+      - run: sed -i '/org.gradle.java.home/d' gradle.properties
+      - run: chmod +x gradlew && ./gradlew --no-daemon :app:assembleDebug
+      - uses: actions/upload-artifact@v4
+        with:
+          name: alerta-comparendos-debug
+          path: app/build/outputs/apk/debug/*.apk

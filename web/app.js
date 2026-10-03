@@ -49,7 +49,19 @@ async function post(m, path, body, token) {
   } finally { clearTimeout(t); }
 }
 
+// En la app Android la consulta la hace el teléfono (sin CORS) y responde por window.__respuesta.
+const pendientes = {};
+window.__respuesta = (id, res) => { const p = pendientes[id]; delete pendientes[id]; p && p(res); };
+function consultarAndroid(m, criterio, esPlaca) {
+  return new Promise((ok, mal) => {
+    const id = m.id + ":" + Date.now();
+    pendientes[id] = res => res.error ? mal(new Error(res.error)) : ok(res.regs);
+    window.Android.consultar(id, m.id, criterio, esPlaca);
+  });
+}
+
 async function consultar(m, criterio, esPlaca) {
+  if (window.Android) return consultarAndroid(m, criterio, esPlaca);
   const login = await post(m, "/avit/login/", { usuario: "ANONIMO", password: "admin", consumidor: "web" });
   if (login.rcSiteKey !== "disable") throw new Error("captcha");
   const token = campo(login, /token|ticket/i);
@@ -121,6 +133,11 @@ function resultado(c, res) {
   $("miss").innerHTML = pend.length ? `<b>Revísalo tú en la página oficial</b>${simit ? fila(simit) : ""}
     ${otras.length ? `<details><summary>Otras ${otras.length} ciudades</summary>${otras.map(fila).join("")}</details>` : ""}` : "";
   $("miss").hidden = !pend.length;
+  if (window.Android) {
+    $("alerta").hidden = false;
+    $("watch").checked = window.Android.vigilando(c);
+    $("watch").onchange = () => window.Android.vigilar(c, kind(c) === "placa", $("watch").checked);
+  }
   show("s3");
 }
 
