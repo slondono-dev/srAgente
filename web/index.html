@@ -7,6 +7,11 @@
 <title>Alerta Comparendos</title>
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="icon" href="icon.svg">
+<link rel="icon" href="icon-192.png" type="image/png" sizes="192x192">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Comparendos">
 <style>
 :root{--bg:#f5f7fa;--fg:#1a1a1a;--card:#fff;--acc:#1565c0;--err:#c62828}
 @media (prefers-color-scheme:dark){:root{--bg:#121212;--fg:#eee;--card:#1e1e1e;--acc:#64b5f6}}
@@ -25,6 +30,7 @@ pre{white-space:pre-wrap;word-break:break-word;font-size:.8rem}
 <main>
 <h1>Alerta Comparendos</h1>
 <p><a class="guia" href="guia.html">¿Le llegó una fotomulta? Vea la guía</a></p>
+<button id="instalar" hidden>Instalar en este celular</button>
 <div class="card">
   <select id="portal"></select>
   <select id="tipo"><option value="placa">Placa</option><option value="cedula">Cédula</option></select>

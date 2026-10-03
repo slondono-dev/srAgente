@@ -39,7 +39,7 @@ $("go").onclick = async () => {
     const regs = await consultar(m, c, $("tipo").value === "placa");
     out.innerHTML = regs.length
       ? regs.map(r => `<div class="card"><pre>${JSON.stringify(r, null, 2).replace(/</g, "&lt;")}</pre></div>`).join("")
-      : `<div class="card">Sin comparendos ni multas 🎉</div>`;
+      : `<div class="card">Sin comparendos ni multas</div>`;
   } catch (e) {
     const cors = e instanceof TypeError ? " (probablemente bloqueado por CORS; usa un proxy o la app Android)" : "";
     out.innerHTML = `<div class="card err">${e.message}${cors}<br><a href="${m.front}" target="_blank">Abrir portal</a></div>`;
@@ -47,3 +47,8 @@ $("go").onclick = async () => {
 };
 
 if ("serviceWorker" in navigator) navigator.serviceWorker.register("sw.js");
+
+let instalar = null;
+addEventListener("beforeinstallprompt", e => { e.preventDefault(); instalar = e; $("instalar").hidden = false; });
+$("instalar").onclick = async () => { if (!instalar) return; instalar.prompt(); await instalar.userChoice; instalar = null; $("instalar").hidden = true; };
+addEventListener("appinstalled", () => { $("instalar").hidden = true; });

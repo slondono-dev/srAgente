@@ -8,6 +8,11 @@
 <meta name="description" content="Qué hacer si le llega una fotomulta: notificación, plazos, pago y audiencia si clonaron su placa.">
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="icon" href="icon.svg">
+<link rel="icon" href="icon-192.png" type="image/png" sizes="192x192">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Comparendos">
 <style>
 :root{--bg:#f5f7fa;--fg:#1a1a1a;--muted:#444;--card:#fff;--acc:#1565c0;--warn:#b71c1c;--warn-bg:#fdecea;--line:#d7dde5}
 @media (prefers-color-scheme:dark){:root{--bg:#121212;--fg:#f2f2f2;--muted:#ccc;--card:#1e1e1e;--acc:#90caf9;--warn:#ff8a80;--warn-bg:#3a1f1f;--line:#333}}
@@ -233,6 +238,7 @@ footer{margin:36px 0 24px;color:var(--muted);font-size:1rem}
     t.appendChild(b);
   });
 })();
+if ("serviceWorker" in navigator) navigator.serviceWorker.register("sw.js");
 </script>
 </body>
 </html>
