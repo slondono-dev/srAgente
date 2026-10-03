@@ -145,9 +145,9 @@ $("again").onclick = () => { $("q").value = ""; hint(); show("s1"); $("q").focus
 
 document.querySelectorAll("[data-talk]").forEach(b => b.onclick = () => {
   if (!$("s3").hidden) {
-    const parts = [[null, `${$("amount").textContent.replace(/^\$\s/, "")} ${$("amount").textContent.startsWith("$") ? "pesos" : ""}. ${$("title").textContent}.`]];
+    const parts = [[null, `${$("amount").textContent.replace(/^\$\s/, "")} ${$("amount").textContent.startsWith("$") ? "pesos" : ""}. ${$("title").textContent}`]];
     document.querySelectorAll(".fine").forEach(f => parts.push([f, f.querySelector(".mini").innerText.replace(/\s+/g, " ")]));
-    if (!$("miss").hidden) parts.push([$("miss"), "Revisa tú en la página oficial del SIMIT. Toca Abrir."]);
+    if (!$("miss").hidden) parts.push([$("miss"), "Revisa tú en la página oficial del SIMIT. Toca Abrir"]);
     speak(parts);
   } else speak([[null, "Escribe tu placa o tu cédula y toca el botón amarillo, Buscar."]]);
 });
