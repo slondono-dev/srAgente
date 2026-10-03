@@ -7,3 +7,5 @@
 
 ## Web / PWA
 - `web/` es la PWA; se despliega a GitHub Pages con `.github/workflows/pages.yml` en cada push a `main` (copia `maps/` a `web/maps/`).
+- Pages usa la fuente "GitHub Actions" (Settings > Pages).
+- Guía de fotomultas: `web/guia.html`. Imágenes originales en `art/scenes/` (no se publican); versiones web en `web/img/` (`.webp` y `-640.webp`). Si cambian archivos de `web/`, subir la versión de caché en `web/sw.js`.
