@@ -1,0 +1,13 @@
+name: Sonda
+on:
+  push:
+    paths: [".github/workflows/sonda.yml"]
+jobs:
+  probar:
+    runs-on: ubuntu-latest
+    steps:
+      - run: |
+          curl -sS -D - -o /dev/null -H "Origin: https://slondono-dev.github.io" "https://www.datos.gov.co/resource/72nf-y4v3.json?placa=MPJ91G" | grep -i "HTTP/\|access-control"
+          curl -sS "https://www.datos.gov.co/resource/72nf-y4v3.json?\$select=count(*)" ; echo
+          curl -sS "https://www.datos.gov.co/resource/72nf-y4v3.json?placa=MPJ91G" | head -c 800; echo
+          curl -sS "https://www.datos.gov.co/resource/72nf-y4v3.json?\$select=ciudad,count(*)%20as%20n,sum(valor_multa)%20as%20v&\$group=ciudad&\$order=n%20DESC&\$limit=5" ; echo
