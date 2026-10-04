@@ -8,6 +8,7 @@ val webAssets = layout.buildDirectory.dir("generated/webassets")
 val copiarWeb by tasks.registering(Sync::class) {
     from("../web") { exclude("sw.js", "manifest.webmanifest") }
     from("../maps") { into("maps") }
+    from("../data") { include("cifras.json"); into("data") }
     into(webAssets.map { it.dir("web") })
 }
 

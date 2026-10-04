@@ -18,7 +18,7 @@ jobs:
       url: ${{ steps.deploy.outputs.page_url }}
     steps:
       - uses: actions/checkout@v4
-      - run: cp -r maps web/maps
+      - run: cp -r maps web/maps && mkdir -p web/data && cp data/cifras.json web/data/
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:

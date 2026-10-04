@@ -76,60 +76,112 @@ function campo(o, re, num) {
   return null;
 }
 
+// Registro nacional: datos abiertos del SIMIT (2019 a 2025) en datos.gov.co. Gratis, sin captcha y con CORS abierto.
+const NACIONAL = { id: "nacional", nombre: "Registro nacional", ciudad: "Registro nacional" };
+const HASTA = "diciembre de 2025";
+async function consultarNacional(placa) {
+  const ctl = new AbortController(), t = setTimeout(() => ctl.abort(), 25000);
+  try {
+    const r = await fetch(`https://www.datos.gov.co/resource/72nf-y4v3.json?placa=${encodeURIComponent(placa)}&$limit=1000`, { signal: ctl.signal });
+    if (!r.ok) throw new Error("HTTP " + r.status);
+    return await r.json();
+  } finally { clearTimeout(t); }
+}
+
+const norma = s => String(s || "").normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase().replace(/\s+d\.?c\.?$/, "").trim();
+const fecha = s => { const [d, m, a] = String(s).split("/").map(Number); return a ? new Date(a, m - 1, d) : null; };
+const dia = d => d.toLocaleDateString("es-CO", { day: "numeric", month: "long", year: "numeric" });
+const iso = d => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
+// Art. 159 del Código Nacional de Tránsito: la sanción prescribe a los 3 años del hecho, salvo que haya cobro coactivo notificado.
+const prescrita = f => !f.pagada && f.fecha && new Date(f.fecha.getFullYear() + 3, f.fecha.getMonth(), f.fecha.getDate()) < new Date();
+const VECINOS = [["bogota", "cundinamarca"]];
+
 $("go").onclick = async () => {
   const c = $("q").value.replace(/\s|-/g, "").toUpperCase(), tipo = kind(c);
   if (!tipo) return;
   show("s2");
   await listos;
   const auto = mapas.filter(m => m.modo === "auto" && m.plataforma === "quipux");
+  const fuentes = tipo === "placa" ? [NACIONAL, ...auto] : auto;
   let hechos = 0;
-  const faltan = new Set(auto);
+  const faltan = new Set(fuentes);
   const avance = () => {
-    $("arc").style.strokeDashoffset = 314 * (1 - hechos / auto.length);
-    const lentas = faltan.size && faltan.size <= 3 ? ` · Esperando a ${[...faltan].map(corto).join(", ")}` : "";
-    $("now").textContent = `${hechos} de ${auto.length} ciudades${lentas}`;
+    $("arc").style.strokeDashoffset = 314 * (1 - hechos / fuentes.length);
+    const lentas = faltan.size && faltan.size <= 3 ? ` · Esperando a ${[...faltan].map(m => m === NACIONAL ? m.nombre : corto(m)).join(", ")}` : "";
+    $("now").textContent = `${hechos} de ${fuentes.length} revisadas${lentas}`;
   };
   avance();
-  const res = await Promise.all(auto.map(m => consultar(m, c, tipo === "placa")
+  const res = await Promise.all(fuentes.map(m => (m === NACIONAL ? consultarNacional(c) : consultar(m, c, tipo === "placa"))
     .then(regs => ({ m, regs }), e => ({ m, error: e }))
     .finally(() => { hechos++; faltan.delete(m); avance(); })));
   resultado(c, res);
 };
 
-function resultado(c, res) {
-  const ok = res.filter(r => r.regs), fallos = res.filter(r => r.error);
-  const fines = ok.flatMap(r => r.regs.map(reg => ({ m: r.m,
-    w: campo(reg, /infracci|descrip|concepto|codigo/i) || "Comparendo",
-    a: campo(reg, /valor|total|saldo|deuda/i, true),
-    st: campo(reg, /estado/i) })));
-  const total = fines.reduce((s, f) => s + (f.a || 0), 0);
-  $("who").textContent = c;
-  if (fines.length) {
-    $("amount").textContent = total ? fmt(total) : fines.length;
-    $("title").textContent = fines.length === 1 ? "1 multa encontrada" : `${fines.length} multas encontradas`;
-  } else if (ok.length) {
-    $("amount").textContent = fmt(0);
-    $("title").textContent = `Sin multas en ${ok.length} ${ok.length === 1 ? "ciudad" : "ciudades"}. Falta revisar el resto del país en el SIMIT.`;
-  } else {
-    $("amount").textContent = "Revísalo tú";
-    $("title").textContent = "Los portales no nos dejaron consultar desde aquí";
-  }
-  $("fines").innerHTML = fines.map(f => `<article class="fine">
-    ${f.st ? `<span class="state">${esc(f.st)}</span>` : ""}
-    <div class="mini"><span class="what">${esc(f.w)}</span><span class="amt">${f.a ? fmt(f.a) : ""}</span><span class="where">${esc(corto(f.m))}</span><span></span></div>
-    <a class="primary" href="${esc(f.m.front)}" target="_blank" rel="noopener">Pagar</a></article>`).join("");
+const mapaDe = ciudad => mapas.find(m => m.ciudad && norma(m.ciudad) === norma(ciudad));
+const carta = (tipo, c, f, extra) => "carta.html?" + new URLSearchParams({ tipo, placa: c, ...(f ? { ciudad: f.ciudad, fecha: f.fecha ? iso(f.fecha) : "", valor: f.valor || "" } : {}), ...extra });
 
-  // Lo que no se pudo revisar: SIMIT primero (cubre casi todo el país), luego el resto plegado.
+function resultado(c, res) {
+  const nac = res.find(r => r.m === NACIONAL);
+  const ok = res.filter(r => r.regs && r.m !== NACIONAL), fallos = res.filter(r => r.error);
+  // Del registro nacional: historial completo, pagadas y sin pagar.
+  const hist = (nac && nac.regs || []).map(r => ({ ciudad: (mapaDe(r.ciudad) || {}).ciudad || r.ciudad, depto: r.departamento, fecha: fecha(r.fecha_multa),
+    valor: +r.valor_multa || 0, pagada: r.pagado_si_no === "SI" })).sort((a, b) => b.fecha - a.fecha);
+  const yaNac = new Set(hist.filter(f => !f.pagada).map(f => norma(f.ciudad)));
+  // De las ciudades consultadas hoy: solo lo que no esté ya en el registro nacional de esa ciudad, para no contar dos veces.
+  const hoy = ok.filter(r => !yaNac.has(norma(r.m.ciudad))).flatMap(r => r.regs.map(reg => ({ m: r.m, ciudad: r.m.ciudad, fecha: null,
+    w: campo(reg, /infracci|descrip|concepto|codigo/i), valor: campo(reg, /valor|total|saldo|deuda/i, true) || 0,
+    st: campo(reg, /estado/i), pagada: false, hoy: true })));
+  const debe = [...hoy, ...hist.filter(f => !f.pagada)], pagadas = hist.filter(f => f.pagada);
+  const total = debe.reduce((s, f) => s + f.valor, 0);
+
+  // Señales a favor de la persona.
+  const avisos = [];
+  const viejas = debe.filter(prescrita);
+  if (viejas.length) avisos.push({ cls: "sun", t: viejas.length === 1 ? "Esta multa podría estar vencida" : `${viejas.length} multas podrían estar vencidas`,
+    p: "Pasaron más de 3 años y no aparece pagada. La ley dice que ya no se puede cobrar, salvo que le hayan notificado un cobro. Puede pedir que la borren.",
+    href: carta("prescripcion", c, viejas[0]), b: "Preparar la carta" });
+  const porDia = {};
+  hist.forEach(f => f.fecha && (porDia[iso(f.fecha)] ||= []).push(f));
+  const choque = Object.values(porDia).find(fs => {
+    const ds = [...new Set(fs.map(f => norma(f.depto)))];
+    return ds.length > 1 && !VECINOS.some(v => ds.every(d => v.includes(d)));
+  });
+  if (choque) avisos.push({ cls: "red", t: "Su carro aparece en dos lugares lejanos el mismo día",
+    p: `El ${dia(choque[0].fecha)}: ${[...new Set(choque.map(f => f.ciudad))].join(" y ")}. Puede ser una placa clonada.`,
+    href: (f => carta("clonada", c, f, { otra: choque.find(o => norma(o.depto) !== norma(f.depto)).ciudad }))(choque.find(f => !f.pagada) || choque[0]), b: "Preparar la carta" });
+  $("avisos").innerHTML = avisos.map(a => `<article class="aviso ${a.cls}"><h2>${esc(a.t)}</h2><p>${esc(a.p)}</p>
+    <a class="primary" href="${esc(a.href)}">${esc(a.b)}</a></article>`).join("");
+
+  $("who").textContent = c;
+  if (debe.length) {
+    $("amount").textContent = total ? fmt(total) : debe.length;
+    $("title").textContent = debe.length === 1 ? "1 multa sin pagar" : `${debe.length} multas sin pagar`;
+  } else if (nac && nac.regs || ok.length) {
+    $("amount").textContent = fmt(0);
+    $("title").textContent = "No aparecen multas sin pagar" + (pagadas.length ? `. Tiene ${pagadas.length} ya ${pagadas.length === 1 ? "pagada" : "pagadas"}.` : ".");
+  } else {
+    $("amount").textContent = "Revíselo usted";
+    $("title").textContent = "No pudimos consultar desde aquí";
+  }
+
+  const pagar = f => (f.m || mapaDe(f.ciudad) || {}).front || linkSimit(c);
+  $("fines").innerHTML = debe.map(f => `<article class="fine">
+    <span class="state ${prescrita(f) ? "" : "no"}">${prescrita(f) ? "Podría estar vencida" : "Sin pagar"}</span>
+    <div class="mini"><span class="what">${f.fecha ? esc(dia(f.fecha)) : esc(f.w || "Comparendo")}</span><span class="amt">${f.valor ? fmt(f.valor) : ""}</span>
+    <span class="where">${esc(f.ciudad)}${f.hoy ? " · consultado hoy" : ""}</span></div>
+    <a class="primary" href="${esc(pagar(f))}" target="_blank" rel="noopener">Pagar</a>
+    <a class="outline" href="${esc(carta("pruebas", c, f))}">No fui yo: pedir las fotos</a></article>`).join("");
+  $("pagadas").innerHTML = pagadas.length ? `<details class="card"><summary>Ya pagadas (${pagadas.length})</summary>
+    ${pagadas.map(f => `<div class="row2"><span>${esc(dia(f.fecha))}<br><span class="muted">${esc(f.ciudad)}</span></span><b>${fmt(f.valor)}</b></div>`).join("")}</details>` : "";
+
+  // Lo que no se pudo revisar: el registro nacional llega hasta 2025, así que el SIMIT siempre aparece para lo reciente.
   const ids = new Set(ok.map(r => r.m.id));
-  const pend = mapas.filter(m => !ids.has(m.id));
+  const pend = mapas.filter(m => !ids.has(m.id) && m.id !== "simit");
   const fila = m => `<div class="row2"><b>${esc(corto(m))}</b><a href="${esc(m.front)}" target="_blank" rel="noopener">Abrir</a></div>`;
-  const simit = pend.find(m => m.id === "simit"), otras = pend.filter(m => m.id !== "simit");
-  // El SIMIT (todo el país) pide un captcha: se abre con la placa o cédula ya escrita para que la persona lo resuelva.
-  const linkSimit = simit && `${simit.front.split("#")[0]}#/estado-cuenta?numDocPlacaProp=${encodeURIComponent(c)}`;
-  $("miss").innerHTML = pend.length ? `<b>Revísalo tú en la página oficial</b>
-    ${simit ? `<p class="muted">El SIMIT reúne las multas de todo el país.</p><a class="primary" href="${esc(linkSimit)}" target="_blank" rel="noopener">Revisar en el SIMIT</a>` : ""}
-    ${otras.length ? `<details><summary>Otras ${otras.length} ciudades</summary>${otras.map(fila).join("")}</details>` : ""}` : "";
-  $("miss").hidden = !pend.length;
+  $("miss").innerHTML = `<b>Multas de este año</b>
+    <p>${nac && nac.regs ? `El registro nacional llega hasta ${HASTA}.` : "No pudimos leer el registro nacional."} Para ver lo más reciente, revise el SIMIT.</p>
+    <a class="primary" href="${esc(linkSimit(c))}" target="_blank" rel="noopener">Revisar en el SIMIT</a>
+    ${pend.length ? `<details><summary>Otras ${pend.length} ciudades</summary>${pend.map(fila).join("")}</details>` : ""}`;
   if (window.Android) {
     $("alerta").hidden = false;
     $("watch").checked = window.Android.vigilando(c);
@@ -138,15 +190,23 @@ function resultado(c, res) {
   show("s3");
 }
 
+// El SIMIT (todo el país) pide un captcha: se abre con la placa o cédula ya escrita para que la persona lo resuelva.
+function linkSimit(c) {
+  const s = mapas.find(m => m.id === "simit");
+  return s ? `${s.front.split("#")[0]}#/estado-cuenta?numDocPlacaProp=${encodeURIComponent(c)}` : "https://www.fcm.org.co/simit/";
+}
+
+$("imprimir").onclick = () => { document.querySelectorAll("#pagadas details").forEach(d => d.open = true); print(); };
 $("again").onclick = () => { $("q").value = ""; hint(); show("s1"); $("q").focus(); };
 
 document.querySelectorAll("[data-talk]").forEach(b => b.onclick = () => {
   if (!$("s3").hidden) {
     const parts = [[null, `${$("amount").textContent.replace(/^\$\s/, "")} ${$("amount").textContent.startsWith("$") ? "pesos" : ""}. ${$("title").textContent}`]];
     document.querySelectorAll(".fine").forEach(f => parts.push([f, f.querySelector(".mini").innerText.replace(/\s+/g, " ")]));
-    if (!$("miss").hidden) parts.push([$("miss"), "Revisa también el SIMIT, que reúne las multas de todo el país. Toca el botón amarillo"]);
+    document.querySelectorAll(".aviso").forEach(a => parts.push([a, a.innerText.replace(/\s+/g, " ")]));
+    parts.push([$("miss"), $("miss").querySelector("p").innerText]);
     speak(parts);
-  } else speak([[null, "Escribe tu placa o tu cédula y toca el botón amarillo, Buscar."]]);
+  } else speak([[null, "Escriba su placa o su cédula y toque el botón amarillo, Buscar."]]);
 });
 
 let instalar = null;

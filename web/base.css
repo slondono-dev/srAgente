@@ -31,3 +31,20 @@ h2{font:800 1.35rem/1.25 var(--display);margin:0;text-wrap:balance}
 .fact b{font-family:var(--display)}
 .note{font-size:.9rem;color:var(--muted);text-align:center}
 button:focus-visible,a:focus-visible,summary:focus-visible,input:focus-visible{outline:3px solid var(--sky);outline-offset:3px}
+/* Botones y tarjetas comunes: grandes, de alto contraste y fáciles de tocar. */
+.primary{width:100%;min-height:60px;border:0;border-radius:16px;background:var(--sun);color:#0a2b5e;font:800 1.1rem var(--display);cursor:pointer;box-shadow:0 6px 16px -6px #c58f0066;transition:transform .1s;display:flex;align-items:center;justify-content:center;text-decoration:none}
+.primary:active{transform:scale(.98)}
+.primary:disabled{opacity:.45;box-shadow:none;cursor:default}
+.howbtn{display:flex;align-items:center;justify-content:space-between;gap:12px;background:var(--sheet);border-radius:20px;padding:20px;box-shadow:0 4px 18px -10px #0a2b5e40;color:var(--fg);font:700 1.05rem var(--display);text-decoration:none}
+.howbtn .ico{width:40px;height:40px;border-radius:50%;background:var(--sky-soft);display:grid;place-items:center;flex:none;color:var(--sky)}
+.outline{width:100%;min-height:60px;border-radius:16px;border:2px solid var(--sky);background:var(--sheet);display:flex;align-items:center;justify-content:center;text-align:center;padding:8px 14px;text-decoration:none;color:var(--fg);font:700 1.05rem var(--display);cursor:pointer}
+.card{background:var(--sheet);border-radius:20px;padding:18px 20px;box-shadow:0 4px 18px -10px #0a2b5e40}
+.card summary{cursor:pointer;font:700 1.05rem var(--display);list-style:none;min-height:48px;display:flex;align-items:center}
+.card summary::-webkit-details-marker{display:none}
+.card summary::after{content:"+";margin-left:auto;font-size:1.2rem;color:var(--sky)}
+.card[open] summary::after{content:"–"}
+.row2{display:flex;gap:12px;align-items:center;justify-content:space-between;min-height:44px}
+.row2 a{color:var(--fg);font-weight:700;text-decoration-color:var(--sky);text-underline-offset:3px;flex:none;padding:8px 0}
+.textbtn{background:none;border:0;color:var(--fg);text-decoration:underline;text-decoration-color:var(--sky);text-underline-offset:4px;font:700 1.05rem var(--display);cursor:pointer;padding:16px;min-height:56px;justify-self:center}
+.stack{display:grid;gap:16px}.stack:empty{display:none}
+.sheetcard{background:var(--sheet);border-radius:20px;padding:20px;box-shadow:0 4px 18px -10px #0a2b5e40;display:grid;gap:14px}

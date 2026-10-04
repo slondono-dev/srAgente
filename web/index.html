@@ -30,12 +30,6 @@ label.q{font-weight:700}
 #q::placeholder{color:#0f1d3366}
 .plate:focus-within{box-shadow:0 0 0 4px var(--sky-soft)}
 #q:focus{outline:none}
-.primary{width:100%;min-height:60px;border:0;border-radius:16px;background:var(--sun);color:#0a2b5e;font:800 1.1rem var(--display);cursor:pointer;box-shadow:0 6px 16px -6px #c58f0066;transition:transform .1s;display:flex;align-items:center;justify-content:center;text-decoration:none}
-.primary:active{transform:scale(.98)}
-.primary:disabled{opacity:.45;box-shadow:none;cursor:default}
-.textbtn{background:none;border:0;color:var(--sky);font:700 1rem var(--display);cursor:pointer;padding:14px;justify-self:center}
-.howbtn{display:flex;align-items:center;justify-content:space-between;gap:12px;background:var(--sheet);border-radius:20px;padding:20px;box-shadow:0 4px 18px -10px #0a2b5e40;color:var(--fg);font:700 1.05rem var(--display);text-decoration:none}
-.howbtn .ico{width:40px;height:40px;border-radius:50%;background:var(--sky-soft);display:grid;place-items:center;flex:none;color:var(--sky)}
 .under{padding:20px 14px 28px;display:grid;gap:14px}
 /* buscando */
 .ring{width:132px;height:132px;margin:8px auto 0;display:block}
@@ -57,17 +51,10 @@ label.q{font-weight:700}
 .mini .where{color:var(--muted)}
 .miss{background:var(--sky-soft);border-radius:20px;padding:18px 20px;display:grid;gap:10px}
 .miss b{font-family:var(--display)}
-.row2{display:flex;gap:12px;align-items:center;justify-content:space-between;min-height:44px}
-.row2 a{color:var(--fg);font-weight:700;text-decoration-color:var(--sky);text-underline-offset:3px;flex:none;padding:8px 0}
 .miss details summary{cursor:pointer;color:var(--fg);font:700 .98rem var(--display);list-style:none;min-height:44px;display:flex;align-items:center}
 .miss details summary::-webkit-details-marker{display:none}
 .miss details summary::after{content:"+";margin-left:8px;font-size:1.2rem;color:var(--sky)}
 .miss details[open] summary::after{content:"–"}
-.card{background:var(--sheet);border-radius:20px;padding:18px 20px;box-shadow:0 4px 18px -10px #0a2b5e40}
-.card summary{cursor:pointer;font:700 1.05rem var(--display);list-style:none;min-height:32px;display:flex;align-items:center}
-.card summary::-webkit-details-marker{display:none}
-.card summary::after{content:"+";margin-left:auto;font-size:1.2rem;color:var(--sky)}
-.card[open] summary::after{content:"–"}
 .guide{list-style:none;margin:14px 0 0;padding:0;display:grid}
 .guide li{display:grid;grid-template-columns:32px 1fr;gap:14px;padding-bottom:18px;position:relative}
 .guide li:not(:last-child)::before{content:"";position:absolute;left:15px;top:32px;bottom:0;width:2px;background:var(--line)}
@@ -75,7 +62,14 @@ label.q{font-weight:700}
 .guide li:nth-child(n+3) .n{background:var(--red-soft)}
 .guide b{font-family:var(--display)}
 .guide p{margin:2px 0 0;color:var(--muted)}
-.outline{min-height:52px;border-radius:14px;border:2px solid var(--sky);display:flex;align-items:center;justify-content:center;text-decoration:none;color:var(--fg);font-weight:700;margin-top:8px}
+.menu{display:grid;gap:12px}
+.state.no{background:var(--red-soft)}.state.no::before{background:var(--red)}
+.aviso{border-radius:20px;padding:20px;display:grid;gap:12px;border:3px solid}
+.aviso.sun{background:var(--sun-soft);border-color:var(--sun)}
+.aviso.red{background:var(--red-soft);border-color:var(--red)}
+#pagadas .row2{border-top:1px solid var(--line);padding:10px 0}
+@media print{.hero{background:none;color:#000;padding:0 0 12px}.hero::after,.tools,.foot,#alerta,.card:not(#pagadas .card),.primary,.outline,#miss details{display:none!important}
+.amount{color:#000}.sum .lbl{color:#333}.content{margin:0}.fine,.aviso,.miss{box-shadow:none;border:1px solid #999;break-inside:avoid}#pagadas details{display:block}}
 .set input{width:100%;font:1rem var(--body);padding:12px;border-radius:10px;border:1.5px solid var(--line);background:var(--bg);color:var(--fg);margin-top:8px}
 .set small{display:block;color:var(--muted);margin-top:6px;font-size:.9rem}
 .alert{display:flex;gap:14px;align-items:center;background:var(--sheet);border-radius:20px;padding:18px 20px;box-shadow:0 4px 18px -10px #0a2b5e40}
@@ -85,7 +79,7 @@ label.q{font-weight:700}
 .switch::after{content:"";position:absolute;top:4px;left:4px;width:24px;height:24px;border-radius:50%;background:#fff;transition:left .2s;box-shadow:0 1px 3px #0003}
 .switch:checked{background:var(--sky)}.switch:checked::after{left:24px}
 .android .set,.android #instalar{display:none!important}
-.foot{display:grid;padding-inline:14px;padding-block:0 28px}
+.foot{display:grid;gap:8px;padding-inline:14px;padding-block:0 28px}
 </style>
 </head>
 <body>
@@ -93,20 +87,24 @@ label.q{font-weight:700}
 <section id="s1">
   <div class="hero">
     <div class="tools"><button class="tool" data-big>A+</button><button class="tool" data-talk></button></div>
-    <h1>¿Tienes multas de tránsito?</h1>
+    <h1>¿Tiene multas de tránsito?</h1>
   </div>
   <div class="sheet">
-    <label class="q" for="q">Tu placa o cédula</label>
+    <label class="q" for="q">Su placa o su cédula</label>
     <div class="plate" id="plate"><input id="q" autocomplete="off" autocapitalize="characters" spellcheck="false" placeholder="ABC123"><small id="plateTag">COLOMBIA</small></div>
     <button class="primary" id="go" disabled>Buscar</button>
   </div>
   <div class="under">
-    <a class="howbtn" href="guia.html"><span>¿Me pusieron un comparendo? Así funciona</span><span class="ico"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></span></a>
+    <nav class="menu" aria-label="Más">
+      <a class="howbtn" href="guia.html"><span>Cómo funciona una multa</span><span class="ico"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></span></a>
+      <a class="howbtn" href="comunidad.html"><span>Casos de otras personas</span><span class="ico"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></span></a>
+      <a class="howbtn" href="cifras.html"><span>Las multas en Colombia</span><span class="ico"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></span></a>
+    </nav>
     <button class="primary" id="instalar" hidden>Instalar en este celular</button>
     <details class="card set"><summary>Ajustes</summary>
       <label for="proxy">Servidor de consultas</label>
       <input id="proxy" placeholder="https://comparendos.su-cuenta.workers.dev" inputmode="url">
-      <small>Dirección del servidor que hace las consultas. Déjelo vacío para usar el de la app.</small>
+      <small>Dirección del servidor que hace las consultas. Déjela vacía para usar el de la app.</small>
     </details>
   </div>
 </section>
@@ -125,19 +123,21 @@ label.q{font-weight:700}
     <div class="sum"><span class="lbl" id="who"></span><span class="amount" id="amount"></span><span class="lbl" id="title"></span></div>
   </div>
   <div class="content">
-    <div id="fines" style="display:grid;gap:16px"></div>
+    <div id="avisos" class="stack"></div>
+    <div id="fines" class="stack"></div>
+    <div id="pagadas"></div>
     <div class="miss" id="miss"></div>
     <div class="alert" id="alerta" hidden><label for="watch"><b>Avisarme si llega otra</b><span class="muted">El teléfono revisa una vez al día.</span></label><input type="checkbox" class="switch" id="watch"></div>
-    <details class="card"><summary>¿Y si no fui yo o no pago?</summary>
+    <details class="card"><summary>¿Y si no pago?</summary>
       <ol class="guide">
-        <li><span class="n">1</span><div><b>Con descuento</b><p>Los primeros días pagas hasta la mitad.</p></div></li>
-        <li><span class="n">2</span><div><b>Precio completo</b><p>Después pierdes el descuento.</p></div></li>
-        <li><span class="n">3</span><div><b>Cobro</b><p>Suben los intereses y pueden embargarte.</p></div></li>
+        <li><span class="n">1</span><div><b>Con descuento</b><p>Los primeros días paga hasta la mitad.</p></div></li>
+        <li><span class="n">2</span><div><b>Precio completo</b><p>Después pierde el descuento.</p></div></li>
+        <li><span class="n">3</span><div><b>Cobro</b><p>Suben los intereses y le pueden embargar.</p></div></li>
       </ol>
       <a class="outline" href="guia.html">Ver la guía completa</a>
     </details>
   </div>
-  <div class="foot"><button class="textbtn" id="again">Buscar otra</button></div>
+  <div class="foot"><button class="outline" id="imprimir">Imprimir este resumen</button><button class="textbtn" id="again">Buscar otra placa</button></div>
 </section>
 </div>
 <script src="ui.js"></script>

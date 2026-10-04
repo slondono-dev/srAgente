@@ -1,0 +1,205 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0a2b5e">
+<title>Carta para el tránsito</title>
+<meta name="description" content="Prepare una carta para pedir las fotos de una multa, que borren una multa vencida o que revisen una placa clonada.">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icon.svg">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;700;800&family=Atkinson+Hyperlegible:wght@400;700&display=swap">
+<link rel="stylesheet" href="base.css">
+<style>
+/* Formulario corto arriba, la carta lista abajo; al imprimir solo sale la carta. */
+.wrap{max-width:560px;margin:0 auto;padding-inline:14px;padding-block:0 40px;display:grid;gap:18px}
+.wrap>.hero{margin-inline:-14px;padding-bottom:40px}
+.lift{margin-top:-36px;position:relative;z-index:1}
+.pick{display:grid;gap:12px}
+.pick a{justify-content:flex-start;text-align:left}
+.field{display:grid;gap:6px}
+.field label{font:700 1.05rem var(--display)}
+.field input{font:1.2rem var(--body);min-height:60px;padding:10px 14px;border-radius:14px;border:2px solid var(--muted);background:var(--sheet);color:var(--fg);width:100%}
+.field input:focus{outline:3px solid var(--sky);outline-offset:2px}
+.field small{color:var(--muted)}
+.paper{background:#fff;color:#111;border-radius:12px;padding:24px 20px;border:1px solid var(--line);font-size:1.05rem;line-height:1.6;white-space:pre-wrap;word-break:break-word}
+.paper .falta{background:#fff1b8;border-radius:4px;padding:0 4px}
+.steps{margin:0;padding-left:1.4em;display:grid;gap:10px}
+.steps li::marker{font:800 1rem var(--display);color:var(--sky)}
+.small{font-size:.95rem;color:var(--muted)}
+.ok{min-height:1.5em;text-align:center;font-weight:700;color:var(--green)}
+@media print{body{background:#fff}.wrap>*:not(#hoja){display:none!important}#hoja{box-shadow:none;padding:0}#hoja h2,#hoja .small{display:none}.paper{border:0;padding:0;font-size:12pt}.paper .falta{background:none}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header class="hero">
+  <div class="tools"><a class="tool back" href="./">Volver</a><button class="tool" data-big>A+</button><button class="tool" data-talk></button></div>
+  <h1 id="titulo">Una carta para el tránsito</h1>
+  <p id="bajada">Escriba sus datos. La carta se llena sola.</p>
+</header>
+
+<section class="sheetcard lift" id="elegir" hidden>
+  <h2>¿Qué necesita pedir?</h2>
+  <div class="pick">
+    <a class="outline" href="?tipo=pruebas">Las fotos y pruebas de una multa</a>
+    <a class="outline" href="?tipo=clonada">Revisar una multa: mi placa fue clonada</a>
+    <a class="outline" href="?tipo=prescripcion">Borrar una multa de hace más de 3 años</a>
+  </div>
+</section>
+
+<section class="sheetcard lift" id="datos" hidden>
+  <h2>1. Sus datos</h2>
+  <div class="field"><label for="nombre">Nombre completo</label><input id="nombre" autocomplete="name"></div>
+  <div class="field"><label for="cedula">Número de cédula</label><input id="cedula" inputmode="numeric" autocomplete="off"></div>
+  <div class="field"><label for="contacto">Correo o dirección para la respuesta</label><input id="contacto" autocomplete="email"></div>
+  <div class="field"><label for="celular">Celular</label><input id="celular" inputmode="tel" autocomplete="tel"></div>
+  <p class="small">Sus datos se guardan solo en este celular. No se envían a ninguna parte.</p>
+  <details class="card"><summary>Datos de la multa</summary>
+    <div class="field"><label for="placa">Placa</label><input id="placa" autocapitalize="characters"></div>
+    <div class="field"><label for="ciudad">Ciudad de la multa</label><input id="ciudad"></div>
+    <div class="field"><label for="fecha">Fecha de la multa</label><input id="fecha" type="date"></div>
+    <div class="field"><label for="valor">Valor en pesos</label><input id="valor" inputmode="numeric"></div>
+    <div class="field" id="campoOtra" hidden><label for="otra">La otra ciudad del mismo día</label><input id="otra"></div>
+  </details>
+</section>
+
+<section class="sheetcard" id="hoja" hidden>
+  <h2>2. Su carta</h2>
+  <div class="paper" id="carta"></div>
+  <p class="small">Lo que está en amarillo le falta por llenar.</p>
+</section>
+
+<section class="stack" id="acciones" hidden>
+  <button class="primary" id="imprimir">Imprimir la carta</button>
+  <button class="outline" id="copiar">Copiar el texto</button>
+  <a class="outline" id="correo" href="#">Enviar por correo</a>
+  <p class="ok" id="aviso" aria-live="polite"></p>
+</section>
+
+<section class="sheetcard" id="despues" hidden>
+  <h2>3. Qué hacer después</h2>
+  <ol class="steps">
+    <li>Firme la carta.</li>
+    <li>Llévela a la Secretaría de Movilidad de <b class="ciu">su ciudad</b>, o envíela por su página web o por correo. Lleve una copia de su cédula<span id="anexos"></span>.</li>
+    <li>Pida el <b>número de radicado</b> y guárdelo. Es la prueba de que la entregó.</li>
+    <li>Tienen <b>15 días hábiles</b> para responder. Si no responden, puede poner una tutela.</li>
+  </ol>
+  <p class="small">Esta carta es un modelo basado en la ley. No reemplaza a un abogado.</p>
+</section>
+</div>
+<script src="ui.js"></script>
+<script>
+const $ = id => document.getElementById(id);
+const q = new URLSearchParams(location.search);
+const tipo = q.get("tipo");
+const TIPOS = {
+  pruebas: { t: "Pedir las fotos de la multa", b: "Si no sabe de qué es la multa o cree que no fue usted, pida las pruebas.",
+    asunto: "Derecho de petición: copia de las pruebas de un comparendo", anexos: "" },
+  clonada: { t: "Mi placa fue clonada", b: "Pida que revisen las fotos y quiten la multa. Si puede, ponga también la denuncia en la Fiscalía.",
+    asunto: "Derecho de petición: revocatoria de comparendo por posible placa clonada", anexos: ", de la licencia de tránsito y fotos de su carro" },
+  prescripcion: { t: "Borrar una multa vencida", b: "Si pasaron más de 3 años y no le notificaron un cobro, ya no se la pueden cobrar.",
+    asunto: "Derecho de petición: prescripción de multa de tránsito", anexos: "" }
+};
+const CAMPOS = ["nombre", "cedula", "contacto", "celular"];
+const fmt = n => "$ " + Number(n).toLocaleString("es-CO");
+const largo = s => new Date(s + "T12:00").toLocaleDateString("es-CO", { day: "numeric", month: "long", year: "numeric" });
+const v = id => $(id).value.trim();
+const falta = (x, txt) => x || `[${txt}]`;
+
+if (!TIPOS[tipo]) { $("elegir").hidden = false; }
+else {
+  const T = TIPOS[tipo];
+  document.title = T.t;
+  $("titulo").textContent = T.t;
+  $("bajada").textContent = T.b;
+  ["datos", "hoja", "acciones", "despues"].forEach(id => $(id).hidden = false);
+  $("anexos").textContent = T.anexos;
+  $("campoOtra").hidden = tipo !== "clonada";
+  for (const k of ["placa", "ciudad", "fecha", "valor", "otra"]) if (q.get(k)) $(k).value = q.get(k);
+  try { CAMPOS.forEach(k => $(k).value = localStorage.getItem("carta-" + k) || ""); } catch {}
+  document.querySelectorAll("input").forEach(i => i.addEventListener("input", () => {
+    if (CAMPOS.includes(i.id)) try { localStorage.setItem("carta-" + i.id, i.value); } catch {}
+    pintar();
+  }));
+  pintar();
+}
+
+function texto() {
+  const placa = falta(v("placa").toUpperCase(), "placa"), ciudad = falta(v("ciudad"), "ciudad");
+  const fecha = v("fecha") ? largo(v("fecha")) : "[fecha de la multa]";
+  const valor = v("valor") ? ` por ${fmt(v("valor"))}` : "";
+  const multa = `la multa del ${fecha}${valor}, impuesta en ${ciudad} al vehículo de placa ${placa}`;
+  const hoy = new Date().toLocaleDateString("es-CO", { day: "numeric", month: "long", year: "numeric" });
+  const cuerpo = {
+    pruebas: [
+      `En el registro del SIMIT aparece ${multa}. No tengo conocimiento claro de esta infracción.`,
+      "Por eso solicito:",
+      "1. Copia de la orden de comparendo y de las fotos o videos de la infracción.",
+      "2. Copia de la constancia de envío de la notificación, con la fecha y la dirección a la que se envió. La Ley 1843 de 2017 (artículo 8) exige enviarla dentro de los 3 días hábiles siguientes.",
+      "3. Documento que demuestre que la cámara estaba autorizada por la Agencia Nacional de Seguridad Vial y señalizada en esa fecha.",
+      "4. Si alguna de estas pruebas no existe, que se revoque la multa y se retire del SIMIT."
+    ],
+    clonada: [
+      `En el registro del SIMIT aparece ${multa}.` + (v("otra") ? ` Ese mismo día la placa también aparece con una multa en ${v("otra")}, y no es posible estar en los dos lugares.` : ""),
+      `Mi vehículo no estuvo en ${ciudad} en esa fecha. Creo que mi placa fue clonada.`,
+      "Por eso solicito:",
+      "1. Copia de las fotos o videos de la infracción.",
+      "2. Que se compare el vehículo de las fotos con el mío (marca, línea y color), según la licencia de tránsito que adjunto.",
+      "3. Que se revoque la multa, según el artículo 93 de la Ley 1437 de 2011, y se retire del SIMIT.",
+      "4. Si es necesario, que se me cite a audiencia para presentar mis pruebas."
+    ],
+    prescripcion: [
+      `En el registro del SIMIT aparece ${multa}. Han pasado más de tres (3) años desde esa fecha.`,
+      "Por eso solicito:",
+      "1. Que se declare la prescripción de la sanción, según el artículo 159 de la Ley 769 de 2002 (Código Nacional de Tránsito), que establece que la sanción prescribe en tres años contados desde la ocurrencia del hecho.",
+      "2. Que se retire la multa del SIMIT y de sus bases de datos.",
+      "3. Si consideran que la prescripción fue interrumpida, que me envíen copia del mandamiento de pago y de la constancia de su notificación."
+    ]
+  }[tipo];
+  return [
+    `${hoy}`,
+    "",
+    "Señores",
+    `Secretaría de Movilidad de ${ciudad}`,
+    "",
+    `Asunto: ${TIPOS[tipo].asunto}`,
+    "",
+    `Yo, ${falta(v("nombre"), "su nombre completo")}, con cédula de ciudadanía número ${falta(v("cedula"), "su cédula")}, en ejercicio del derecho de petición (artículo 23 de la Constitución y Ley 1755 de 2015), les escribo por lo siguiente:`,
+    "",
+    ...cuerpo.flatMap((p, i) => i && !/^\d/.test(p) ? ["", p] : [p]),
+    "",
+    `Recibo respuesta en: ${falta(v("contacto"), "su correo o dirección")}`,
+    `Celular: ${falta(v("celular"), "su celular")}`,
+    "",
+    "Atentamente,",
+    "",
+    "",
+    "_____________________________",
+    falta(v("nombre"), "su nombre completo"),
+    `C.C. ${falta(v("cedula"), "su cédula")}`
+  ].join("\n");
+}
+
+function pintar() {
+  const t = texto();
+  const esc = s => s.replace(/[&<>]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;" })[c]);
+  $("carta").innerHTML = esc(t).replace(/\[[^\]]+\]/g, m => `<span class="falta">${m}</span>`);
+  document.querySelectorAll(".ciu").forEach(e => e.textContent = v("ciudad") || "su ciudad");
+  $("correo").href = "mailto:?" + new URLSearchParams({ subject: TIPOS[tipo].asunto, body: t }).toString().replace(/\+/g, "%20");
+}
+
+if ($("imprimir")) {
+  $("imprimir").onclick = () => print();
+  $("copiar").onclick = async () => {
+    try { await navigator.clipboard.writeText(texto()); $("aviso").textContent = "Texto copiado. Péguelo donde lo necesite."; }
+    catch { $("aviso").textContent = "No se pudo copiar. Use el botón de imprimir."; }
+  };
+}
+document.querySelectorAll("[data-talk]").forEach(b => b.onclick = () => speak(TIPOS[tipo]
+  ? [[null, `${TIPOS[tipo].t}. ${TIPOS[tipo].b} Escriba su nombre, su cédula y cómo le responden. La carta se llena sola. Después toque Imprimir la carta.`]]
+  : [[null, "¿Qué necesita pedir? Toque una de las tres opciones."]]));
+</script>
+</body>
+</html>

@@ -3,7 +3,7 @@ on:
   schedule:
     - cron: "0 9 * * 1"
   push:
-    paths: [".github/workflows/datos.yml"]
+    paths: [".github/workflows/datos.yml", "scripts/cifras.sh"]
   workflow_dispatch:
 permissions:
   contents: write
@@ -19,6 +19,8 @@ jobs:
           curl -sSfL "https://www.datos.gov.co/api/views/72nf-y4v3.json" -o data/simit-meta.json
           curl -sSfL "https://www.datos.gov.co/resource/72nf-y4v3.json?\$limit=50" -o data/simit-muestra.json
           ls -la data
+      - name: Resumir cifras
+        run: scripts/cifras.sh
       - name: Guardar cambios
         run: |
           git config user.name "slondono-dev"
