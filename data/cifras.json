@@ -1,0 +1,167 @@
+{
+  "actualizado": "2026-10-04",
+  "anios": [
+    {
+      "anio": "2019",
+      "n": 3597979,
+      "v": 1847753455601,
+      "sin_pagar_n": 1214180,
+      "sin_pagar_v": 769379652217
+    },
+    {
+      "anio": "2020",
+      "n": 3638160,
+      "v": 1991201997211,
+      "sin_pagar_n": 1523259,
+      "sin_pagar_v": 956934372253
+    },
+    {
+      "anio": "2021",
+      "n": 3200758,
+      "v": 1817239695608,
+      "sin_pagar_n": 1360381,
+      "sin_pagar_v": 902063877615
+    },
+    {
+      "anio": "2022",
+      "n": 4454109,
+      "v": 2663859127642,
+      "sin_pagar_n": 1822193,
+      "sin_pagar_v": 1260860288921
+    },
+    {
+      "anio": "2023",
+      "n": 5365657,
+      "v": 3605126151194,
+      "sin_pagar_n": 2321935,
+      "sin_pagar_v": 1792431011318
+    },
+    {
+      "anio": "2024",
+      "n": 5543007,
+      "v": 4104708966691,
+      "sin_pagar_n": 2668119,
+      "sin_pagar_v": 2241433921030
+    },
+    {
+      "anio": "2025",
+      "n": 6040047,
+      "v": 4665748993237,
+      "sin_pagar_n": 3255809,
+      "sin_pagar_v": 2794691541916
+    }
+  ],
+  "municipios": 377,
+  "ciudades": [
+    {
+      "ciudad": "Bogotá D.C.",
+      "departamento": "Bogota D.C.",
+      "n": 5775165,
+      "v": 3150458355146,
+      "sin_pagar_n": 1651431
+    },
+    {
+      "ciudad": "Medellin",
+      "departamento": "Antioquia",
+      "n": 4557331,
+      "v": 2988161664753,
+      "sin_pagar_n": 2622644
+    },
+    {
+      "ciudad": "Cali",
+      "departamento": "Valle del Cauca",
+      "n": 3802028,
+      "v": 2790297608326,
+      "sin_pagar_n": 2232293
+    },
+    {
+      "ciudad": "Itaguí",
+      "departamento": "Antioquia",
+      "n": 1293992,
+      "v": 881782671977,
+      "sin_pagar_n": 761254
+    },
+    {
+      "ciudad": "Bello",
+      "departamento": "Antioquia",
+      "n": 1245958,
+      "v": 818101739088,
+      "sin_pagar_n": 684235
+    },
+    {
+      "ciudad": "Barranquilla",
+      "departamento": "Atlantico",
+      "n": 1215689,
+      "v": 764718715191,
+      "sin_pagar_n": 643717
+    },
+    {
+      "ciudad": "Popayan",
+      "departamento": "Cauca",
+      "n": 600045,
+      "v": 418836581356,
+      "sin_pagar_n": 339281
+    },
+    {
+      "ciudad": "Atlantico",
+      "departamento": "Atlantico",
+      "n": 495161,
+      "v": 299463362844,
+      "sin_pagar_n": 207185
+    },
+    {
+      "ciudad": "Cucuta",
+      "departamento": "Norte de Santander",
+      "n": 493355,
+      "v": 389575390915,
+      "sin_pagar_n": 242069
+    },
+    {
+      "ciudad": "Santa Marta",
+      "departamento": "Magdalena",
+      "n": 399556,
+      "v": 264020781836,
+      "sin_pagar_n": 235812
+    },
+    {
+      "ciudad": "Sabaneta",
+      "departamento": "Antioquia",
+      "n": 378172,
+      "v": 253760031752,
+      "sin_pagar_n": 163738
+    },
+    {
+      "ciudad": "Neiva",
+      "departamento": "Huila",
+      "n": 324227,
+      "v": 193037829910,
+      "sin_pagar_n": 136200
+    },
+    {
+      "ciudad": "Cartagena",
+      "departamento": "Bolivar",
+      "n": 315126,
+      "v": 221006591533,
+      "sin_pagar_n": 215126
+    },
+    {
+      "ciudad": "Rionegro",
+      "departamento": "Antioquia",
+      "n": 292515,
+      "v": 201600768884,
+      "sin_pagar_n": 112628
+    },
+    {
+      "ciudad": "Los Patios",
+      "departamento": "Norte de Santander",
+      "n": 284886,
+      "v": 172793847678,
+      "sin_pagar_n": 115001
+    }
+  ],
+  "camaras": {
+    "operando": 368,
+    "por_instalar": 437,
+    "vencidas": 534
+  }
+}
