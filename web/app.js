@@ -38,7 +38,7 @@ const SERVIDOR = "https://odd-poetry-a447.jslondono145.workers.dev/";
 const servidor = () => $("proxy").value.trim() || SERVIDOR;
 
 async function consultarServidor(m, criterio, esPlaca) {
-  const ctl = new AbortController(), t = setTimeout(() => ctl.abort(), 30000);
+  const ctl = new AbortController(), t = setTimeout(() => ctl.abort(), 20000);
   try {
     const r = await fetch(servidor(), { method: "POST", signal: ctl.signal, headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ portal: m.id, criterio, esPlaca }) });
@@ -83,14 +83,16 @@ $("go").onclick = async () => {
   await listos;
   const auto = mapas.filter(m => m.modo === "auto" && m.plataforma === "quipux");
   let hechos = 0;
+  const faltan = new Set(auto);
   const avance = () => {
     $("arc").style.strokeDashoffset = 314 * (1 - hechos / auto.length);
-    $("now").textContent = `${hechos} de ${auto.length} ciudades`;
+    const lentas = faltan.size && faltan.size <= 3 ? ` · Esperando a ${[...faltan].map(corto).join(", ")}` : "";
+    $("now").textContent = `${hechos} de ${auto.length} ciudades${lentas}`;
   };
   avance();
   const res = await Promise.all(auto.map(m => consultar(m, c, tipo === "placa")
     .then(regs => ({ m, regs }), e => ({ m, error: e }))
-    .finally(() => { hechos++; avance(); })));
+    .finally(() => { hechos++; faltan.delete(m); avance(); })));
   resultado(c, res);
 };
 
@@ -107,7 +109,7 @@ function resultado(c, res) {
     $("title").textContent = fines.length === 1 ? "1 multa encontrada" : `${fines.length} multas encontradas`;
   } else if (ok.length) {
     $("amount").textContent = fmt(0);
-    $("title").textContent = `Sin multas en ${ok.length} ${ok.length === 1 ? "ciudad revisada" : "ciudades revisadas"}`;
+    $("title").textContent = `Sin multas en ${ok.length} ${ok.length === 1 ? "ciudad" : "ciudades"}. Falta revisar el resto del país en el SIMIT.`;
   } else {
     $("amount").textContent = "Revísalo tú";
     $("title").textContent = "Los portales no nos dejaron consultar desde aquí";
@@ -120,9 +122,12 @@ function resultado(c, res) {
   // Lo que no se pudo revisar: SIMIT primero (cubre casi todo el país), luego el resto plegado.
   const ids = new Set(ok.map(r => r.m.id));
   const pend = mapas.filter(m => !ids.has(m.id));
-  const fila = m => `<div class="row2"><b>${esc(m.id === "simit" ? "Todo el país (SIMIT)" : corto(m))}</b><a href="${esc(m.front)}" target="_blank" rel="noopener">Abrir</a></div>`;
+  const fila = m => `<div class="row2"><b>${esc(corto(m))}</b><a href="${esc(m.front)}" target="_blank" rel="noopener">Abrir</a></div>`;
   const simit = pend.find(m => m.id === "simit"), otras = pend.filter(m => m.id !== "simit");
-  $("miss").innerHTML = pend.length ? `<b>Revísalo tú en la página oficial</b>${simit ? fila(simit) : ""}
+  // El SIMIT (todo el país) pide un captcha: se abre con la placa o cédula ya escrita para que la persona lo resuelva.
+  const linkSimit = simit && `${simit.front.split("#")[0]}#/estado-cuenta?numDocPlacaProp=${encodeURIComponent(c)}`;
+  $("miss").innerHTML = pend.length ? `<b>Revísalo tú en la página oficial</b>
+    ${simit ? `<p class="muted">El SIMIT reúne las multas de todo el país.</p><a class="primary" href="${esc(linkSimit)}" target="_blank" rel="noopener">Revisar en el SIMIT</a>` : ""}
     ${otras.length ? `<details><summary>Otras ${otras.length} ciudades</summary>${otras.map(fila).join("")}</details>` : ""}` : "";
   $("miss").hidden = !pend.length;
   if (window.Android) {
@@ -139,7 +144,7 @@ document.querySelectorAll("[data-talk]").forEach(b => b.onclick = () => {
   if (!$("s3").hidden) {
     const parts = [[null, `${$("amount").textContent.replace(/^\$\s/, "")} ${$("amount").textContent.startsWith("$") ? "pesos" : ""}. ${$("title").textContent}`]];
     document.querySelectorAll(".fine").forEach(f => parts.push([f, f.querySelector(".mini").innerText.replace(/\s+/g, " ")]));
-    if (!$("miss").hidden) parts.push([$("miss"), "Revisa tú en la página oficial del SIMIT. Toca Abrir"]);
+    if (!$("miss").hidden) parts.push([$("miss"), "Revisa también el SIMIT, que reúne las multas de todo el país. Toca el botón amarillo"]);
     speak(parts);
   } else speak([[null, "Escribe tu placa o tu cédula y toca el botón amarillo, Buscar."]]);
 });
