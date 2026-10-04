@@ -1,0 +1,584 @@
+{
+  "id" : "72nf-y4v3",
+  "name" : "Historial de Multas reportados en el SIMIT - FCM",
+  "assetType" : "dataset",
+  "attribution" : "Federación Colombiana de Municipios",
+  "averageRating" : 0,
+  "category" : "Función pública",
+  "createdAt" : 1676490127,
+  "description" : "Historial de comparendos reportados en el Sistema Integrado de Información sobre Multas y Sanciones por Infracciones de Transito - Simit de la función pública delegada de la Federación Colombiana de Municipios, con corte desde el 01 de enero de 2019 al 31 de diciembre de 2025.",
+  "diciBackend" : false,
+  "displayType" : "table",
+  "downloadCount" : 4250,
+  "hideFromCatalog" : false,
+  "hideFromDataJson" : false,
+  "licenseId" : "OGL-PEI",
+  "locked" : false,
+  "newBackend" : true,
+  "numberOfComments" : 0,
+  "oid" : 39309726,
+  "provenance" : "official",
+  "publicationAppendEnabled" : false,
+  "publicationDate" : 1676499326,
+  "publicationGroup" : 19056602,
+  "publicationStage" : "published",
+  "rowsUpdatedAt" : 1790203993,
+  "rowsUpdatedBy" : "52af-2ake",
+  "tableId" : 19056602,
+  "totalTimesRated" : 0,
+  "viewCount" : 193490,
+  "viewLastModified" : 1790199312,
+  "viewType" : "tabular",
+  "approvals" : [ {
+    "reviewedAt" : 1677182287,
+    "reviewedAutomatically" : false,
+    "state" : "approved",
+    "submissionId" : 5300544,
+    "submissionObject" : "public_audience_request",
+    "submissionOutcome" : "change_audience",
+    "submittedAt" : 1676499326,
+    "targetAudience" : "public",
+    "workflowId" : 2188,
+    "reviewer" : {
+      "id" : "vc9x-zjzh",
+      "displayName" : "soporteccc"
+    },
+    "submissionDetails" : {
+      "permissionType" : "READ"
+    },
+    "submissionOutcomeApplication" : {
+      "endedAt" : 1677182287,
+      "failureCount" : 0,
+      "startedAt" : 1677182287,
+      "status" : "success"
+    },
+    "submitter" : {
+      "id" : "52af-2ake",
+      "displayName" : "Pedro Antonio Reina Bohórquez"
+    }
+  } ],
+  "clientContext" : {
+    "clientContextVariables" : [ ],
+    "inheritedVariables" : { }
+  },
+  "columns" : [ {
+    "id" : 571831852,
+    "name" : "VIGENCIA",
+    "dataTypeName" : "text",
+    "description" : "VIGENCIA DE IMPOSICIÓN DEL COMPARENDO",
+    "fieldName" : "vigencia",
+    "position" : 1,
+    "renderTypeName" : "text",
+    "tableColumnId" : 145753379,
+    "cachedContents" : {
+      "non_null" : "31839717",
+      "largest" : "2025",
+      "null" : "0",
+      "top" : [ {
+        "item" : "2025",
+        "count" : "6040047"
+      }, {
+        "item" : "2024",
+        "count" : "5543007"
+      }, {
+        "item" : "2023",
+        "count" : "5365657"
+      }, {
+        "item" : "2022",
+        "count" : "4454109"
+      }, {
+        "item" : "2020",
+        "count" : "3638160"
+      }, {
+        "item" : "2019",
+        "count" : "3597979"
+      }, {
+        "item" : "2021",
+        "count" : "3200758"
+      } ],
+      "smallest" : "2019",
+      "count" : "31839717",
+      "cardinality" : "31839717"
+    },
+    "format" : {
+      "decimalSeparator" : ".",
+      "groupSeparator" : ","
+    }
+  }, {
+    "id" : 571831851,
+    "name" : "PLACA",
+    "dataTypeName" : "text",
+    "description" : "PLACA DEL VEHÍCULO AL QUE SE IMPUSO EL COMPARENDO",
+    "fieldName" : "placa",
+    "position" : 2,
+    "renderTypeName" : "text",
+    "tableColumnId" : 145753378,
+    "cachedContents" : {
+      "non_null" : "31839717",
+      "largest" : "ZZZDZ",
+      "null" : "0",
+      "top" : [ {
+        "item" : "SIN",
+        "count" : "28409"
+      }, {
+        "item" : "SIM",
+        "count" : "14701"
+      }, {
+        "item" : "AAA123",
+        "count" : "10807"
+      }, {
+        "item" : "XXX000",
+        "count" : "2593"
+      }, {
+        "item" : "ABC12",
+        "count" : "1590"
+      }, {
+        "item" : "ABC123",
+        "count" : "1400"
+      }, {
+        "item" : "NULL",
+        "count" : "1025"
+      }, {
+        "item" : "PKH648",
+        "count" : "822"
+      }, {
+        "item" : "NO APL",
+        "count" : "771"
+      }, {
+        "item" : "NA",
+        "count" : "748"
+      }, {
+        "item" : "NO TIENE",
+        "count" : "580"
+      }, {
+        "item" : "KDI675",
+        "count" : "574"
+      }, {
+        "item" : "KKL127",
+        "count" : "563"
+      }, {
+        "item" : "ABC125",
+        "count" : "540"
+      }, {
+        "item" : "null",
+        "count" : "538"
+      }, {
+        "item" : "NO TIEN",
+        "count" : "531"
+      }, {
+        "item" : "VCN56C",
+        "count" : "527"
+      }, {
+        "item" : "NO",
+        "count" : "521"
+      }, {
+        "item" : "TMW509",
+        "count" : "472"
+      }, {
+        "item" : "EVH26F",
+        "count" : "469"
+      } ],
+      "smallest" : "\"\"*",
+      "count" : "31839717",
+      "cardinality" : "31839717"
+    },
+    "format" : { }
+  }, {
+    "id" : 571831850,
+    "name" : "FECHA_MULTA",
+    "dataTypeName" : "text",
+    "description" : "FECHA DE IMPOSICIÓN DEL COMPARENDO",
+    "fieldName" : "fecha_multa",
+    "position" : 3,
+    "renderTypeName" : "text",
+    "tableColumnId" : 145753377,
+    "cachedContents" : {
+      "non_null" : "31839717",
+      "largest" : "31/12/2025",
+      "null" : "0",
+      "top" : [ {
+        "item" : "12/09/2025",
+        "count" : "23239"
+      }, {
+        "item" : "28/10/2024",
+        "count" : "23019"
+      }, {
+        "item" : "22/12/2025",
+        "count" : "21820"
+      }, {
+        "item" : "10/09/2025",
+        "count" : "21659"
+      }, {
+        "item" : "13/11/2024",
+        "count" : "21464"
+      }, {
+        "item" : "16/10/2025",
+        "count" : "21374"
+      }, {
+        "item" : "31/10/2025",
+        "count" : "21312"
+      }, {
+        "item" : "11/09/2025",
+        "count" : "21162"
+      }, {
+        "item" : "15/09/2025",
+        "count" : "20874"
+      }, {
+        "item" : "26/09/2025",
+        "count" : "20786"
+      }, {
+        "item" : "30/11/2023",
+        "count" : "20658"
+      }, {
+        "item" : "17/09/2025",
+        "count" : "20642"
+      }, {
+        "item" : "11/10/2024",
+        "count" : "20598"
+      }, {
+        "item" : "14/10/2025",
+        "count" : "20557"
+      }, {
+        "item" : "19/08/2025",
+        "count" : "20531"
+      }, {
+        "item" : "15/08/2025",
+        "count" : "20520"
+      }, {
+        "item" : "25/09/2025",
+        "count" : "20486"
+      }, {
+        "item" : "17/10/2025",
+        "count" : "20407"
+      }, {
+        "item" : "30/07/2025",
+        "count" : "20406"
+      }, {
+        "item" : "14/08/2025",
+        "count" : "20367"
+      } ],
+      "smallest" : "01/01/2019",
+      "count" : "31839717",
+      "cardinality" : "31839717"
+    },
+    "format" : { }
+  }, {
+    "id" : 571831849,
+    "name" : "VALOR_MULTA",
+    "dataTypeName" : "number",
+    "description" : "VALOR DE LA INFRACCIÓN DEL COMPARENDO",
+    "fieldName" : "valor_multa",
+    "position" : 4,
+    "renderTypeName" : "number",
+    "tableColumnId" : 145753376,
+    "cachedContents" : {
+      "non_null" : "31839717",
+      "largest" : "115955048",
+      "null" : "0",
+      "top" : [ {
+        "item" : "438900",
+        "count" : "2001249"
+      }, {
+        "item" : "414060",
+        "count" : "1659143"
+      }, {
+        "item" : "572520",
+        "count" : "1517766"
+      }, {
+        "item" : "603930",
+        "count" : "1456686"
+      }, {
+        "item" : "468450",
+        "count" : "1435825"
+      }, {
+        "item" : "522795",
+        "count" : "1401136"
+      }, {
+        "item" : "447555",
+        "count" : "1217095"
+      }, {
+        "item" : "522900",
+        "count" : "1016402"
+      }, {
+        "item" : "522940",
+        "count" : "924537"
+      }, {
+        "item" : "572600",
+        "count" : "913043"
+      }, {
+        "item" : "468500",
+        "count" : "911913"
+      }, {
+        "item" : "604054",
+        "count" : "810367"
+      }, {
+        "item" : "1145040",
+        "count" : "752843"
+      }, {
+        "item" : "604100",
+        "count" : "695939"
+      }, {
+        "item" : "1207860",
+        "count" : "678129"
+      }, {
+        "item" : "1045590",
+        "count" : "677208"
+      }, {
+        "item" : "877800",
+        "count" : "634049"
+      }, {
+        "item" : "468589",
+        "count" : "598608"
+      }, {
+        "item" : "572628",
+        "count" : "538718"
+      }, {
+        "item" : "603928",
+        "count" : "530993"
+      } ],
+      "smallest" : "0",
+      "count" : "31839717",
+      "cardinality" : "31839717"
+    },
+    "format" : {
+      "decimalSeparator" : ".",
+      "groupSeparator" : ","
+    }
+  }, {
+    "id" : 571831848,
+    "name" : "DEPARTAMENTO",
+    "dataTypeName" : "text",
+    "description" : "DEPARTAMENTO DE LA IMPOSICIÓN DEL COMPARENDO",
+    "fieldName" : "departamento",
+    "position" : 5,
+    "renderTypeName" : "text",
+    "tableColumnId" : 145753375,
+    "cachedContents" : {
+      "non_null" : "31839717",
+      "largest" : "Valle del Cauca",
+      "null" : "0",
+      "top" : [ {
+        "item" : "Antioquia",
+        "count" : "8602683"
+      }, {
+        "item" : "Bogota D.C.",
+        "count" : "5775165"
+      }, {
+        "item" : "Valle del Cauca",
+        "count" : "5127318"
+      }, {
+        "item" : "Atlantico",
+        "count" : "2111872"
+      }, {
+        "item" : "Cundinamarca",
+        "count" : "1503524"
+      }, {
+        "item" : "Magdalena",
+        "count" : "1010441"
+      }, {
+        "item" : "Norte de Santander",
+        "count" : "916818"
+      }, {
+        "item" : "Santander",
+        "count" : "776726"
+      }, {
+        "item" : "Cesar",
+        "count" : "699511"
+      }, {
+        "item" : "Cauca",
+        "count" : "689590"
+      }, {
+        "item" : "Bolivar",
+        "count" : "610683"
+      }, {
+        "item" : "Huila",
+        "count" : "532867"
+      }, {
+        "item" : "Caldas",
+        "count" : "480097"
+      }, {
+        "item" : "Narino",
+        "count" : "362345"
+      }, {
+        "item" : "Boyaca",
+        "count" : "347638"
+      }, {
+        "item" : "Meta",
+        "count" : "312913"
+      }, {
+        "item" : "Risaralda",
+        "count" : "298248"
+      }, {
+        "item" : "Quindio",
+        "count" : "273137"
+      }, {
+        "item" : "Tolima",
+        "count" : "272920"
+      }, {
+        "item" : "Sucre",
+        "count" : "250213"
+      } ],
+      "smallest" : "Amazonas",
+      "count" : "31839717",
+      "cardinality" : "31839717"
+    },
+    "format" : { }
+  }, {
+    "id" : 571831847,
+    "name" : "CIUDAD",
+    "dataTypeName" : "text",
+    "description" : "CIUDAD DE IMPOSICIÓN DEL COMPARENDO",
+    "fieldName" : "ciudad",
+    "position" : 6,
+    "renderTypeName" : "text",
+    "tableColumnId" : 145753374,
+    "cachedContents" : {
+      "non_null" : "31839717",
+      "largest" : "Zulia (Dept)",
+      "null" : "0",
+      "top" : [ {
+        "item" : "Bogotá D.C.",
+        "count" : "5775165"
+      }, {
+        "item" : "Medellin",
+        "count" : "4557331"
+      }, {
+        "item" : "Cali",
+        "count" : "3802028"
+      }, {
+        "item" : "Itaguí",
+        "count" : "1293992"
+      }, {
+        "item" : "Bello",
+        "count" : "1245958"
+      }, {
+        "item" : "Barranquilla",
+        "count" : "1215689"
+      }, {
+        "item" : "Popayan",
+        "count" : "600045"
+      }, {
+        "item" : "Atlantico",
+        "count" : "495161"
+      }, {
+        "item" : "Cucuta",
+        "count" : "493355"
+      }, {
+        "item" : "Santa Marta",
+        "count" : "399556"
+      }, {
+        "item" : "Sabaneta",
+        "count" : "378172"
+      }, {
+        "item" : "Neiva",
+        "count" : "324227"
+      }, {
+        "item" : "Cartagena",
+        "count" : "315126"
+      }, {
+        "item" : "Rionegro",
+        "count" : "292515"
+      }, {
+        "item" : "Los Patios",
+        "count" : "284886"
+      }, {
+        "item" : "BUGALAGRANDE - DEPT VALLE",
+        "count" : "278318"
+      }, {
+        "item" : "Manizales",
+        "count" : "266212"
+      }, {
+        "item" : "Pasto",
+        "count" : "262998"
+      }, {
+        "item" : "Bucaramanga",
+        "count" : "259976"
+      }, {
+        "item" : "Choconta",
+        "count" : "251579"
+      } ],
+      "smallest" : "Abejorral",
+      "count" : "31839717",
+      "cardinality" : "31839717"
+    },
+    "format" : { }
+  }, {
+    "id" : 571831846,
+    "name" : "PAGADO_SI_NO",
+    "dataTypeName" : "text",
+    "description" : "IDENTIFICA SI UN COMPARENDO, A LA FECHA, ESTÁ PAGO O NO",
+    "fieldName" : "pagado_si_no",
+    "position" : 7,
+    "renderTypeName" : "text",
+    "tableColumnId" : 145753373,
+    "cachedContents" : {
+      "non_null" : "31839717",
+      "largest" : "SI",
+      "null" : "0",
+      "top" : [ {
+        "item" : "SI",
+        "count" : "17673841"
+      }, {
+        "item" : "NO",
+        "count" : "14165876"
+      } ],
+      "smallest" : "NO",
+      "count" : "31839717",
+      "cardinality" : "31839717"
+    },
+    "format" : { }
+  } ],
+  "grants" : [ {
+    "inherited" : false,
+    "type" : "viewer",
+    "flags" : [ "public" ]
+  } ],
+  "license" : {
+    "name" : "Open Government Licence - Prince Edward Island",
+    "termsLink" : "https://www.princeedwardisland.ca/en/information/finance/open-government-licence-prince-edward-island"
+  },
+  "metadata" : {
+    "custom_fields" : {
+      "Información de la Entidad" : {
+        "Municipio" : "Bogotá D.C.",
+        "Nombre de la Entidad" : "Federación Colombiana de Municipios - FCM, Bogotá D.C.",
+        "DIVIPOLA Municipio" : "11001",
+        "Orden" : "Nacional",
+        "Sector" : "Función Pública",
+        "Área o dependencia" : "Dirección de Tecnologías de la Información y Dirección Nacional Simit",
+        "Departamento" : "Bogotá D.C."
+      },
+      "Información de Datos" : {
+        "Cobertura Geográfica" : "Nacional",
+        "Idioma" : "Español",
+        "Frecuencia de Actualización" : "Anual"
+      }
+    },
+    "rowLabel" : "comparendos",
+    "availableDisplayTypes" : [ "table", "fatrow", "page" ]
+  },
+  "owner" : {
+    "id" : "52af-2ake",
+    "displayName" : "Pedro Antonio Reina Bohórquez",
+    "profileImageUrlLarge" : "/api/users/52af-2ake/profile_images/LARGE",
+    "profileImageUrlMedium" : "/api/users/52af-2ake/profile_images/THUMB",
+    "profileImageUrlSmall" : "/api/users/52af-2ake/profile_images/TINY",
+    "screenName" : "Pedro Antonio Reina Bohórquez",
+    "type" : "interactive",
+    "flags" : [ "acceptedEula", "mayBeStoriesCoOwner" ]
+  },
+  "query" : { },
+  "rights" : [ "read" ],
+  "tableAuthor" : {
+    "id" : "52af-2ake",
+    "displayName" : "Pedro Antonio Reina Bohórquez",
+    "profileImageUrlLarge" : "/api/users/52af-2ake/profile_images/LARGE",
+    "profileImageUrlMedium" : "/api/users/52af-2ake/profile_images/THUMB",
+    "profileImageUrlSmall" : "/api/users/52af-2ake/profile_images/TINY",
+    "screenName" : "Pedro Antonio Reina Bohórquez",
+    "type" : "interactive",
+    "flags" : [ "acceptedEula", "mayBeStoriesCoOwner" ]
+  },
+  "tags" : [ "simit", "federación colombiana de municipios", "fcm", "comparendo", "municipios" ],
+  "flags" : [ "default", "ownerMayBeContacted", "restorable", "restorePossibleForType" ]
+}
