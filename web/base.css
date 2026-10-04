@@ -17,7 +17,6 @@ img{max-width:100%}
 p{margin:0}
 .muted{color:var(--muted)}
 .hero{background:radial-gradient(120% 90% at 100% 0%,var(--navy-2) 0%,var(--navy) 60%);color:var(--on-navy);padding:calc(20px + env(safe-area-inset-top,0px)) 22px 64px;position:relative;overflow:hidden}
-.hero::after{content:"";position:absolute;right:-60px;top:-60px;width:200px;height:200px;border-radius:50%;border:28px solid var(--sky);opacity:.18;pointer-events:none}
 .hero p{color:var(--on-navy-muted);margin:10px 0 0}
 h1{font:800 1.85rem/1.15 var(--display);margin:0;text-wrap:balance;letter-spacing:-.015em}
 h2{font:800 1.35rem/1.25 var(--display);margin:0;text-wrap:balance}

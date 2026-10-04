@@ -1,0 +1,53 @@
+name: Contar mi caso
+description: Cuente qué le pasó con una multa de tránsito para ayudar a otras personas.
+title: "Mi caso: "
+labels: ["caso"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Su historia se publica en la página de casos cuando la revisemos.
+        **No escriba su cédula, su dirección ni su teléfono.** En la página de casos no aparece su usuario, pero aquí en GitHub sí.
+  - type: input
+    id: ciudad
+    attributes:
+      label: Ciudad
+      placeholder: Medellín
+    validations:
+      required: true
+  - type: dropdown
+    id: tipo
+    attributes:
+      label: ¿Qué pasó?
+      options:
+        - Me llegó una multa de un carro que no es mío
+        - La multa me llegó muy tarde o nunca me llegó
+        - La cámara no tenía aviso
+        - Me cobraron una multa que ya pagué o que estaba vencida
+        - Otra cosa
+    validations:
+      required: true
+  - type: textarea
+    id: historia
+    attributes:
+      label: Cuéntenos su historia
+      description: Qué pasó, qué hizo y qué le respondieron.
+    validations:
+      required: true
+  - type: dropdown
+    id: resultado
+    attributes:
+      label: ¿Cómo terminó?
+      options:
+        - Todavía no sé
+        - Me quitaron la multa
+        - No me quitaron la multa
+    validations:
+      required: true
+  - type: checkboxes
+    id: permiso
+    attributes:
+      label: Permiso
+      options:
+        - label: Acepto que mi historia se publique en la página de casos.
+          required: true

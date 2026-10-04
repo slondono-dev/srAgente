@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0a2b5e">
+<title>Casos de otras personas</title>
+<meta name="description" content="Historias reales de personas con multas de tránsito: qué pasó, qué hicieron y cómo terminó.">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icon.svg">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;700;800&family=Atkinson+Hyperlegible:wght@400;700&display=swap">
+<link rel="stylesheet" href="base.css">
+<style>
+/* Historias en tarjetas simples: de dónde, qué pasó, cómo terminó. Contar la propia va arriba. */
+.wrap{max-width:560px;margin:0 auto;padding-inline:14px;padding-block:0 40px;display:grid;gap:18px}
+.wrap>.hero{margin-inline:-14px;padding-bottom:40px}
+.lift{margin-top:-36px;position:relative;z-index:1}
+.caso{background:var(--sheet);border-radius:20px;padding:20px;box-shadow:0 4px 18px -10px #0a2b5e40;display:grid;gap:10px}
+.caso .tipo{font:800 1.15rem/1.3 var(--display)}
+.caso .donde{color:var(--muted)}
+.caso .texto{white-space:pre-line}
+.fin{display:inline-flex;align-items:center;gap:8px;font:700 1rem var(--display);padding:5px 12px;border-radius:99px;justify-self:start;background:var(--sky-soft)}
+.fin::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--sky)}
+.fin.si{background:var(--green-soft)}.fin.si::before{background:var(--green)}
+.fin.no{background:var(--red-soft)}.fin.no::before{background:var(--red)}
+.mas{background:none;border:0;padding:8px 0;min-height:44px;color:var(--fg);font:700 1rem var(--display);text-decoration:underline;text-decoration-color:var(--sky);text-underline-offset:4px;cursor:pointer;justify-self:start}
+.small{font-size:.92rem;color:var(--muted)}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header class="hero">
+  <div class="tools"><a class="tool back" href="./">Volver</a><button class="tool" data-big>A+</button><button class="tool" data-talk></button></div>
+  <h1>Casos de otras personas</h1>
+  <p>Lo que les pasó con una multa y cómo lo resolvieron.</p>
+</header>
+
+<section class="sheetcard lift">
+  <h2>¿Le pasó algo parecido?</h2>
+  <p>Su historia puede ayudar a otra persona a no pagar lo que no debe.</p>
+  <a class="primary" href="https://github.com/slondono-dev/srAgente/issues/new?template=caso.yml" target="_blank" rel="noopener">Contar mi caso</a>
+  <p class="small">Se necesita una cuenta gratuita de GitHub. Si no tiene, pida ayuda a un familiar. Revisamos cada historia antes de publicarla.</p>
+</section>
+
+<section class="stack" id="casos" aria-live="polite"><div class="sheetcard"><p>Cargando los casos…</p></div></section>
+</div>
+<script src="ui.js"></script>
+<script>
+const $ = id => document.getElementById(id);
+const esc = s => String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]);
+// Solo se muestran los casos que el equipo marcó como "publicado" en GitHub.
+const API = "https://api.github.com/repos/slondono-dev/srAgente/issues?labels=publicado&state=all&per_page=50";
+// El formulario de GitHub guarda cada respuesta bajo un título "### Pregunta".
+const partes = body => Object.fromEntries((body || "").split(/^### /m).slice(1).map(b => {
+  const [t, ...r] = b.split("\n");
+  return [t.trim(), r.join("\n").trim()];
+}));
+const CORTO = 320;
+let leer = [];
+
+fetch(API, { headers: { Accept: "application/vnd.github+json" } }).then(r => { if (!r.ok) throw 0; return r.json(); }).then(issues => {
+  const casos = issues.filter(i => !i.pull_request).map(i => {
+    const p = partes(i.body);
+    return { url: i.html_url, ciudad: p["Ciudad"] || "", tipo: p["¿Qué pasó?"] || i.title.replace(/^Mi caso:\s*/, ""),
+      texto: p["Cuéntenos su historia"] || "", fin: p["¿Cómo terminó?"] || "", comentarios: i.comments,
+      fecha: new Date(i.created_at).toLocaleDateString("es-CO", { month: "long", year: "numeric" }) };
+  });
+  if (!casos.length) {
+    $("casos").innerHTML = '<div class="sheetcard"><h2>Todavía no hay casos publicados</h2><p>Sea la primera persona en contar el suyo.</p></div>';
+    leer = [[null, "Todavía no hay casos publicados."]];
+    return;
+  }
+  $("casos").innerHTML = casos.map((c, i) => {
+    const largo = c.texto.length > CORTO;
+    const cls = /quitaron la multa$/.test(c.fin) ? (/^No /.test(c.fin) ? "no" : "si") : "";
+    return `<article class="caso">
+      <span class="tipo">${esc(c.tipo)}</span>
+      <span class="donde">${esc(c.ciudad)}${c.ciudad ? " · " : ""}${esc(c.fecha)}</span>
+      <p class="texto" id="t${i}">${esc(largo ? c.texto.slice(0, CORTO).replace(/\s+\S*$/, "") + "…" : c.texto)}</p>
+      ${largo ? `<button class="mas" data-i="${i}">Leer todo</button>` : ""}
+      ${c.fin ? `<span class="fin ${cls}">${esc(c.fin)}</span>` : ""}
+      <a class="outline" href="${esc(c.url)}" target="_blank" rel="noopener">${c.comentarios ? `Ver ${c.comentarios} ${c.comentarios === 1 ? "comentario" : "comentarios"} y comentar` : "Comentar"}</a>
+    </article>`;
+  }).join("");
+  document.querySelectorAll(".mas").forEach(b => b.onclick = () => { $("t" + b.dataset.i).textContent = casos[b.dataset.i].texto; b.remove(); });
+  leer = [...document.querySelectorAll(".caso")].map((el, i) => [el, `${casos[i].tipo}. En ${casos[i].ciudad}. ${casos[i].texto} ${casos[i].fin}`]);
+}).catch(() => {
+  $("casos").innerHTML = '<div class="sheetcard"><p>No pudimos cargar los casos. Revise su conexión e intente de nuevo.</p></div>';
+});
+
+document.querySelectorAll("[data-talk]").forEach(b => b.onclick = () => speak(leer.length ? leer : [[null, "Aquí están las historias de otras personas con multas. Si le pasó algo parecido, toque Contar mi caso."]]));
+</script>
+</body>
+</html>
