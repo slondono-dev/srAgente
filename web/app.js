@@ -34,7 +34,7 @@ function show(id) { ["s1", "s2", "s3"].forEach(s => $(s).hidden = s !== id); scr
 
 // El navegador no puede consultar los portales directamente (CORS sin cookies), así que la web
 // usa el servidor intermedio de worker/worker.js. Se puede cambiar en Ajustes.
-const SERVIDOR = "";
+const SERVIDOR = "https://odd-poetry-a447.jslondono145.workers.dev/";
 const servidor = () => $("proxy").value.trim() || SERVIDOR;
 
 async function consultarServidor(m, criterio, esPlaca) {
