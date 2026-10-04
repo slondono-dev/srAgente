@@ -1,0 +1,5 @@
+# Cloudflare publica este Worker solo desde GitHub (Settings > Build, carpeta raíz: worker).
+name = "odd-poetry-a447"
+main = "worker.js"
+compatibility_date = "2026-10-01"
+workers_dev = true
