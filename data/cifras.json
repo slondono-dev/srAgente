@@ -1,0 +1,553 @@
+{
+  "actualizado": "2026-10-05",
+  "anios": [
+    {
+      "anio": "2019",
+      "n": 3597979,
+      "v": 1847753455601,
+      "sin_pagar_n": 1214180,
+      "sin_pagar_v": 769379652217
+    },
+    {
+      "anio": "2020",
+      "n": 3638160,
+      "v": 1991201997211,
+      "sin_pagar_n": 1523259,
+      "sin_pagar_v": 956934372253
+    },
+    {
+      "anio": "2021",
+      "n": 3200758,
+      "v": 1817239695608,
+      "sin_pagar_n": 1360381,
+      "sin_pagar_v": 902063877615
+    },
+    {
+      "anio": "2022",
+      "n": 4454109,
+      "v": 2663859127642,
+      "sin_pagar_n": 1822193,
+      "sin_pagar_v": 1260860288921
+    },
+    {
+      "anio": "2023",
+      "n": 5365657,
+      "v": 3605126151194,
+      "sin_pagar_n": 2321935,
+      "sin_pagar_v": 1792431011318
+    },
+    {
+      "anio": "2024",
+      "n": 5543007,
+      "v": 4104708966691,
+      "sin_pagar_n": 2668119,
+      "sin_pagar_v": 2241433921030
+    },
+    {
+      "anio": "2025",
+      "n": 6040047,
+      "v": 4665748993237,
+      "sin_pagar_n": 3255809,
+      "sin_pagar_v": 2794691541916
+    }
+  ],
+  "municipios": 377,
+  "ciudades": [
+    {
+      "ciudad": "Bogotá D.C.",
+      "departamento": "Bogota D.C.",
+      "n": 5775165,
+      "v": 3150458355146,
+      "sin_pagar_n": 1651431
+    },
+    {
+      "ciudad": "Medellin",
+      "departamento": "Antioquia",
+      "n": 4557331,
+      "v": 2988161664753,
+      "sin_pagar_n": 2622644
+    },
+    {
+      "ciudad": "Cali",
+      "departamento": "Valle del Cauca",
+      "n": 3802028,
+      "v": 2790297608326,
+      "sin_pagar_n": 2232293
+    },
+    {
+      "ciudad": "Itaguí",
+      "departamento": "Antioquia",
+      "n": 1293992,
+      "v": 881782671977,
+      "sin_pagar_n": 761254
+    },
+    {
+      "ciudad": "Bello",
+      "departamento": "Antioquia",
+      "n": 1245958,
+      "v": 818101739088,
+      "sin_pagar_n": 684235
+    },
+    {
+      "ciudad": "Barranquilla",
+      "departamento": "Atlantico",
+      "n": 1215689,
+      "v": 764718715191,
+      "sin_pagar_n": 643717
+    },
+    {
+      "ciudad": "Popayan",
+      "departamento": "Cauca",
+      "n": 600045,
+      "v": 418836581356,
+      "sin_pagar_n": 339281
+    },
+    {
+      "ciudad": "Atlantico",
+      "departamento": "Atlantico",
+      "n": 495161,
+      "v": 299463362844,
+      "sin_pagar_n": 207185
+    },
+    {
+      "ciudad": "Cucuta",
+      "departamento": "Norte de Santander",
+      "n": 493355,
+      "v": 389575390915,
+      "sin_pagar_n": 242069
+    },
+    {
+      "ciudad": "Santa Marta",
+      "departamento": "Magdalena",
+      "n": 399556,
+      "v": 264020781836,
+      "sin_pagar_n": 235812
+    },
+    {
+      "ciudad": "Sabaneta",
+      "departamento": "Antioquia",
+      "n": 378172,
+      "v": 253760031752,
+      "sin_pagar_n": 163738
+    },
+    {
+      "ciudad": "Neiva",
+      "departamento": "Huila",
+      "n": 324227,
+      "v": 193037829910,
+      "sin_pagar_n": 136200
+    },
+    {
+      "ciudad": "Cartagena",
+      "departamento": "Bolivar",
+      "n": 315126,
+      "v": 221006591533,
+      "sin_pagar_n": 215126
+    },
+    {
+      "ciudad": "Rionegro",
+      "departamento": "Antioquia",
+      "n": 292515,
+      "v": 201600768884,
+      "sin_pagar_n": 112628
+    },
+    {
+      "ciudad": "Los Patios",
+      "departamento": "Norte de Santander",
+      "n": 284886,
+      "v": 172793847678,
+      "sin_pagar_n": 115001
+    }
+  ],
+  "camaras": {
+    "operando": 368,
+    "por_instalar": 437,
+    "vencidas": 534
+  },
+  "camaras_municipio": [
+    {
+      "m": "AGUACHICA",
+      "d": "CESAR",
+      "op": 0,
+      "ven": 5
+    },
+    {
+      "m": "AGUSTIN CODAZZI",
+      "d": "CESAR",
+      "op": 2,
+      "ven": 0
+    },
+    {
+      "m": "ARJONA",
+      "d": "BOLIVAR",
+      "op": 0,
+      "ven": 1
+    },
+    {
+      "m": "BARANOA",
+      "d": "ATLANTICO",
+      "op": 1,
+      "ven": 1
+    },
+    {
+      "m": "BARRANCABERMEJA",
+      "d": "SANTANDER",
+      "op": 5,
+      "ven": 37
+    },
+    {
+      "m": "BARRANQUILLA",
+      "d": "ATLANTICO",
+      "op": 29,
+      "ven": 38
+    },
+    {
+      "m": "BELLO",
+      "d": "ANTIOQUIA",
+      "op": 7,
+      "ven": 10
+    },
+    {
+      "m": "Bogota D.C",
+      "d": "Bogota D.C",
+      "op": 91,
+      "ven": 129
+    },
+    {
+      "m": "CAJICA",
+      "d": "CUNDINAMARCA",
+      "op": 0,
+      "ven": 2
+    },
+    {
+      "m": "CALARCA",
+      "d": "QUINDIO",
+      "op": 1,
+      "ven": 0
+    },
+    {
+      "m": "CALDAS",
+      "d": "ANTIOQUIA",
+      "op": 1,
+      "ven": 0
+    },
+    {
+      "m": "CALI",
+      "d": "VALLE DEL CAUCA",
+      "op": 67,
+      "ven": 42
+    },
+    {
+      "m": "CAMPO DE LA CRUZ",
+      "d": "ATLANTICO",
+      "op": 3,
+      "ven": 3
+    },
+    {
+      "m": "CARTAGO",
+      "d": "VALLE DEL CAUCA",
+      "op": 0,
+      "ven": 4
+    },
+    {
+      "m": "CHIA",
+      "d": "CUNDINAMARCA",
+      "op": 2,
+      "ven": 0
+    },
+    {
+      "m": "CHOCONTA",
+      "d": "CUNDINAMARCA",
+      "op": 0,
+      "ven": 2
+    },
+    {
+      "m": "CIENAGA",
+      "d": "MAGDALENA",
+      "op": 3,
+      "ven": 6
+    },
+    {
+      "m": "COROZAL",
+      "d": "SUCRE",
+      "op": 0,
+      "ven": 3
+    },
+    {
+      "m": "COTA",
+      "d": "CUNDINAMARCA",
+      "op": 0,
+      "ven": 4
+    },
+    {
+      "m": "CUCUTA",
+      "d": "N. DE SANTANDER",
+      "op": 15,
+      "ven": 21
+    },
+    {
+      "m": "DAGUA",
+      "d": "VALLE DEL CAUCA",
+      "op": 1,
+      "ven": 0
+    },
+    {
+      "m": "ENVIGADO",
+      "d": "ANTIOQUIA",
+      "op": 4,
+      "ven": 0
+    },
+    {
+      "m": "FUNDACION",
+      "d": "MAGDALENA",
+      "op": 0,
+      "ven": 2
+    },
+    {
+      "m": "GALAPA",
+      "d": "ATLANTICO",
+      "op": 0,
+      "ven": 3
+    },
+    {
+      "m": "ITAGUI",
+      "d": "ANTIOQUIA",
+      "op": 13,
+      "ven": 5
+    },
+    {
+      "m": "JUAN DE ACOSTA",
+      "d": "ATLANTICO",
+      "op": 2,
+      "ven": 2
+    },
+    {
+      "m": "LA DORADA",
+      "d": "CALDAS",
+      "op": 0,
+      "ven": 2
+    },
+    {
+      "m": "LA MESA",
+      "d": "CUNDINAMARCA",
+      "op": 0,
+      "ven": 1
+    },
+    {
+      "m": "LOS PATIOS",
+      "d": "N. DE SANTANDER",
+      "op": 6,
+      "ven": 6
+    },
+    {
+      "m": "MALAMBO",
+      "d": "ATLANTICO",
+      "op": 0,
+      "ven": 3
+    },
+    {
+      "m": "MANIZALES",
+      "d": "CALDAS",
+      "op": 23,
+      "ven": 0
+    },
+    {
+      "m": "MEDELLIN",
+      "d": "ANTIOQUIA",
+      "op": 41,
+      "ven": 82
+    },
+    {
+      "m": "MONTERIA",
+      "d": "CORDOBA",
+      "op": 0,
+      "ven": 11
+    },
+    {
+      "m": "PAILITAS",
+      "d": "CESAR",
+      "op": 0,
+      "ven": 1
+    },
+    {
+      "m": "PALERMO",
+      "d": "HUILA",
+      "op": 0,
+      "ven": 3
+    },
+    {
+      "m": "PALMAR DE VARELA",
+      "d": "ATLANTICO",
+      "op": 1,
+      "ven": 1
+    },
+    {
+      "m": "PALMIRA",
+      "d": "VALLE DEL CAUCA",
+      "op": 0,
+      "ven": 5
+    },
+    {
+      "m": "PASTO",
+      "d": "NARINO",
+      "op": 2,
+      "ven": 0
+    },
+    {
+      "m": "PLANETA RICA",
+      "d": "CORDOBA",
+      "op": 0,
+      "ven": 1
+    },
+    {
+      "m": "PONEDERA",
+      "d": "ATLANTICO",
+      "op": 2,
+      "ven": 2
+    },
+    {
+      "m": "POPAYAN",
+      "d": "CAUCA",
+      "op": 3,
+      "ven": 8
+    },
+    {
+      "m": "PUEBLOVIEJO",
+      "d": "MAGDALENA",
+      "op": 0,
+      "ven": 3
+    },
+    {
+      "m": "PUERTO COLOMBIA",
+      "d": "ATLANTICO",
+      "op": 1,
+      "ven": 5
+    },
+    {
+      "m": "RICAURTE",
+      "d": "CUNDINAMARCA",
+      "op": 0,
+      "ven": 2
+    },
+    {
+      "m": "RIONEGRO",
+      "d": "ANTIOQUIA",
+      "op": 7,
+      "ven": 0
+    },
+    {
+      "m": "SABANAGRANDE",
+      "d": "ATLANTICO",
+      "op": 0,
+      "ven": 1
+    },
+    {
+      "m": "SABANETA",
+      "d": "ANTIOQUIA",
+      "op": 5,
+      "ven": 6
+    },
+    {
+      "m": "SAN ALBERTO",
+      "d": "CESAR",
+      "op": 0,
+      "ven": 2
+    },
+    {
+      "m": "SAN PEDRO",
+      "d": "VALLE DEL CAUCA",
+      "op": 0,
+      "ven": 6
+    },
+    {
+      "m": "SANTA MARTA",
+      "d": "MAGDALENA",
+      "op": 9,
+      "ven": 17
+    },
+    {
+      "m": "SANTANDER DE QUILICHAO",
+      "d": "CAUCA",
+      "op": 0,
+      "ven": 3
+    },
+    {
+      "m": "SIBATE",
+      "d": "CUNDINAMARCA",
+      "op": 0,
+      "ven": 3
+    },
+    {
+      "m": "SITIONUEVO",
+      "d": "MAGDALENA",
+      "op": 0,
+      "ven": 1
+    },
+    {
+      "m": "SOLEDAD",
+      "d": "ATLANTICO",
+      "op": 3,
+      "ven": 4
+    },
+    {
+      "m": "SUAN",
+      "d": "ATLANTICO",
+      "op": 1,
+      "ven": 1
+    },
+    {
+      "m": "TUBARA",
+      "d": "ATLANTICO",
+      "op": 0,
+      "ven": 1
+    },
+    {
+      "m": "TURBACO",
+      "d": "BOLIVAR",
+      "op": 0,
+      "ven": 2
+    },
+    {
+      "m": "VALLEDUPAR",
+      "d": "CESAR",
+      "op": 9,
+      "ven": 0
+    },
+    {
+      "m": "VILLA DEL ROSARIO",
+      "d": "N. DE SANTANDER",
+      "op": 0,
+      "ven": 2
+    },
+    {
+      "m": "VILLAVICENCIO",
+      "d": "META",
+      "op": 0,
+      "ven": 15
+    },
+    {
+      "m": "YOTOCO",
+      "d": "VALLE DEL CAUCA",
+      "op": 3,
+      "ven": 3
+    },
+    {
+      "m": "YUMBO",
+      "d": "VALLE DEL CAUCA",
+      "op": 3,
+      "ven": 6
+    },
+    {
+      "m": "ZIPAQUIRA",
+      "d": "CUNDINAMARCA",
+      "op": 0,
+      "ven": 5
+    },
+    {
+      "m": "ZONA BANANERA",
+      "d": "MAGDALENA",
+      "op": 2,
+      "ven": 0
+    }
+  ]
+}

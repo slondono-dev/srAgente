@@ -2,10 +2,10 @@
 <html lang="es">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="theme-color" content="#1565c0">
-<title>Guía de fotomultas</title>
-<meta name="description" content="Qué hacer si le llega una fotomulta: notificación, plazos, pago y audiencia si clonaron su placa.">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0a2b5e">
+<title>¿Y si no pago?</title>
+<meta name="description" content="Cómo funciona un comparendo: el aviso, los plazos, el pago y la audiencia si clonaron su placa.">
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="icon" href="icon.svg">
 <link rel="icon" href="icon-192.png" type="image/png" sizes="192x192">
@@ -13,232 +13,202 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="Comparendos">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;700;800&family=Atkinson+Hyperlegible:wght@400;700&display=swap">
+<link rel="stylesheet" href="base.css">
 <style>
-:root{--bg:#f5f7fa;--fg:#1a1a1a;--muted:#444;--card:#fff;--acc:#1565c0;--warn:#b71c1c;--warn-bg:#fdecea;--line:#d7dde5}
-@media (prefers-color-scheme:dark){:root{--bg:#121212;--fg:#f2f2f2;--muted:#ccc;--card:#1e1e1e;--acc:#90caf9;--warn:#ff8a80;--warn-bg:#3a1f1f;--line:#333}}
-*{box-sizing:border-box}
-html{scroll-behavior:smooth}
-body{margin:0;font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;font-size:1.25rem;line-height:1.5;background:var(--bg);color:var(--fg)}
-main{max-width:720px;margin:auto;padding:16px}
-header h1{font-size:2rem;line-height:1.2;margin:8px 0 4px}
-header p{margin:0 0 16px;color:var(--muted)}
-nav{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px;margin-bottom:24px}
-nav a{display:block;padding:14px;border-radius:12px;background:var(--card);border:2px solid var(--line);color:var(--fg);text-decoration:none;font-weight:600;text-align:center}
-h2{font-size:1.6rem;margin:36px 0 12px;padding-top:8px;border-top:4px solid var(--acc)}
-.card{background:var(--card);border-radius:16px;overflow:hidden;margin-bottom:20px;border:1px solid var(--line)}
-.card img{display:block;width:100%;height:auto;aspect-ratio:16/9;background:var(--line)}
-.txt{padding:16px 18px 18px}
-.num{display:inline-block;font-size:.95rem;font-weight:700;color:var(--acc);margin-bottom:2px}
-h3{font-size:1.45rem;line-height:1.25;margin:0 0 8px}
-.txt p{margin:0 0 8px}
-.big{font-size:1.6rem;font-weight:800}
-.warn{background:var(--warn-bg);color:var(--warn);border-radius:10px;padding:10px 14px;font-weight:700}
-ul{margin:0 0 8px;padding-left:1.2em}
-li{margin-bottom:4px}
-.say{margin-top:8px;padding:10px 16px;font-size:1.05rem;font-weight:600;border-radius:10px;border:2px solid var(--acc);background:transparent;color:var(--acc);cursor:pointer}
-.say[aria-pressed=true]{background:var(--acc);color:var(--card)}
-a{color:var(--acc)}
-footer{margin:36px 0 24px;color:var(--muted);font-size:1rem}
-.back{display:inline-block;margin:8px 0 0;font-weight:600}
+/* Relato vertical en escenas ilustradas: cámara, aviso, reloj de días, caminos, audiencia, cobro. */
+.wrap{max-width:520px;margin:0 auto;padding-inline:16px;padding-block:0 40px;display:grid;gap:20px}
+.wrap>.hero{margin-inline:-16px;padding-bottom:40px}
+.scene{background:var(--sheet);border-radius:22px;padding:20px;display:grid;gap:14px;box-shadow:0 4px 18px -10px #0a2b5e40}
+.art{display:block;width:100%;height:auto;aspect-ratio:16/9;object-fit:cover;border-radius:14px;background:var(--sky-soft)}
+.step{font:800 .9rem var(--display);color:var(--sky);letter-spacing:.04em}
+/* reloj */
+input[type=range]{width:100%;height:52px;accent-color:var(--sun);min-width:0}
+.paso{display:grid;grid-template-columns:60px 1fr 60px;gap:10px;align-items:center}
+.paso .outline{font-size:1.6rem;padding:0;min-height:56px}
+.daybig{font:800 2.4rem/1 var(--display);font-variant-numeric:tabular-nums}
+.ruler{display:grid;grid-template-columns:11fr 15fr 4fr 22fr;height:16px;border-radius:99px;overflow:hidden}
+.ruler span:nth-child(1){background:var(--green)}.ruler span:nth-child(2){background:var(--sun)}.ruler span:nth-child(3){background:var(--muted);opacity:.5}.ruler span:nth-child(4){background:var(--red)}
+.ticks{display:grid;grid-template-columns:11fr 15fr 4fr 22fr;font-size:.8rem;color:var(--muted)}
+.now{display:grid;gap:10px}
+.opt{display:flex;gap:12px;align-items:center;padding:12px 14px;border-radius:14px;border:2px solid var(--line)}
+.opt.on{border-color:var(--green);background:var(--green-soft)}
+.opt.bad{border-color:var(--red);background:var(--red-soft)}
+.opt.bad .mk{color:var(--red)}
+.opt.off{opacity:.45;text-decoration:line-through}
+.opt .mk{font:800 1.1rem var(--display);width:28px;text-align:center}
+.price{font:800 1.5rem var(--display);font-variant-numeric:tabular-nums}
+/* caminos */
+.paths{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.path{border-radius:16px;padding:16px;display:grid;gap:6px;align-content:start}
+.path.pay{background:var(--green-soft)}.path.talk{background:var(--sky-soft)}
+.path b{font:800 1.05rem var(--display)}
+/* casos */
+.cases{display:grid;gap:10px}
+.case{border:2px solid var(--line);border-radius:16px;background:var(--sheet)}
+.case summary{list-style:none;cursor:pointer;display:flex;gap:14px;align-items:center;padding:14px 16px;min-height:44px;font:700 1.05rem var(--display)}
+.case summary::-webkit-details-marker{display:none}
+.case summary .em{flex:none;color:var(--sky)}
+.case summary::after{content:"+";margin-left:auto;font-size:1.4rem;color:var(--sky)}
+.case[open] summary::after{content:"–"}
+.case[open]{border-color:var(--sky)}
+.case .in{padding:0 16px 16px;display:grid;gap:10px}
+.case ul{margin:0;padding-left:1.2em;display:grid;gap:4px}
+.lbl{font:800 .85rem var(--display);color:var(--muted)}
+/* cobro */
+.ladder{display:grid}
+.rung{display:grid;grid-template-columns:44px 1fr;gap:12px;padding-bottom:16px;position:relative}
+.rung:not(:last-child)::before{content:"";position:absolute;left:21px;top:44px;bottom:0;width:2px;background:var(--line)}
+.rung .dot{width:44px;height:44px;border-radius:50%;display:grid;place-items:center;font:800 1.1rem var(--display);color:var(--red);background:var(--red-soft)}
+.rung b{font-family:var(--display)}
 </style>
 </head>
 <body>
-<main>
-<header id="top">
-  <a class="back" href="./">Volver a Alerta Comparendos</a>
-  <h1>Le llegó una fotomulta. ¿Qué hago?</h1>
-  <p>Mire cada dibujo. Toque <b>Escuchar</b> si prefiere oír el texto.</p>
+<div class="wrap">
+<header class="hero">
+  <div class="tools"><a class="tool back" href="./">Volver</a><button class="tool" data-big>Letra grande</button><button class="tool" data-talk></button></div>
+  <h1>¿Me pusieron un comparendo? Así funciona</h1>
+  <p>Por cámara o por un agente: del primer día al cobro.</p>
 </header>
 
-<nav aria-label="Temas">
-  <a href="#llega">Cómo llega</a>
-  <a href="#plazos">Plazos</a>
-  <a href="#hacer">Pagar o reclamar</a>
-  <a href="#clonada">Placa clonada</a>
-  <a href="#otros">Robo, venta, préstamo</a>
-</nav>
+<section class="scene">
+  <span class="step">1 · LA CÁMARA</span>
+  <img class="art" src="img/1-camara-640.webp" srcset="img/1-camara-640.webp 640w, img/1-camara.webp 1200w" sizes="(max-width:520px) 92vw, 480px" width="1200" height="675" alt="Una cámara en un poste toma foto a un carro. Antes hay un aviso de cámara.">
+  <h2>Una cámara toma la foto de la placa</h2>
+  <p class="muted">La foto muestra la placa, no a la persona que manejaba.</p>
+  <div class="fact"><p>La cámara debe estar <b>autorizada</b> por la Agencia de Seguridad Vial y tener un <b>aviso visible</b> antes de llegar a ella.</p></div>
+</section>
 
-<h2 id="llega">Cómo llega la multa</h2>
+<section class="scene">
+  <span class="step">O TAMBIÉN · UN AGENTE</span>
+  <img class="art" src="img/2-agente-640.webp" srcset="img/2-agente-640.webp 640w, img/2-agente.webp 1200w" sizes="(max-width:520px) 92vw, 480px" width="1200" height="675" loading="lazy" alt="Un agente de tránsito entrega un papel al conductor por la ventana.">
+  <h2>Si lo para un agente, el aviso es en el momento</h2>
+  <p class="muted">El agente le entrega el comparendo en la calle. Ese mismo día empieza a correr el reloj, y los plazos son más cortos: <b>5 días hábiles</b> para pagar la mitad o pedir audiencia, y <b>20</b> para pagar 25&nbsp;% menos.</p>
+  <div class="fact"><p><b>Revise lo que firma.</b> Si no está de acuerdo, puede pedir audiencia.</p></div>
+</section>
 
-<article class="card">
-  <img src="img/1-camara.webp" srcset="img/1-camara-640.webp 640w, img/1-camara.webp 1200w" sizes="(max-width:720px) 100vw, 720px" width="1200" height="675" alt="Una cámara en un poste toma foto a un carro en la calle. Hay un aviso de cámara antes.">
-  <div class="txt">
-    <span class="num">Paso 1</span>
-    <h3>Una cámara le toma foto al carro</h3>
-    <p>La foto muestra la placa. Nadie lo detiene en la calle.</p>
+<section class="scene">
+  <span class="step">2 · EL AVISO</span>
+  <img class="art" src="img/3-notificacion-640.webp" srcset="img/3-notificacion-640.webp 640w, img/3-notificacion.webp 1200w" sizes="(max-width:520px) 92vw, 480px" width="1200" height="675" loading="lazy" alt="Un mensajero entrega un sobre a una señora en la puerta de su casa.">
+  <h2>Le mandan el aviso al dueño del vehículo</h2>
+  <p class="muted">Llega por correo certificado a la dirección que tiene registrada en el RUNT. Deben enviarlo en los <b>3 días hábiles</b> siguientes.</p>
+  <div class="fact"><p>Si no lo encuentran, lo publican en la página de tránsito y <b>cuenta como si lo hubiera recibido</b>. Mantenga su dirección del RUNT al día.</p></div>
+  <div class="tip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3 4 6v6c0 5 3.5 8 8 9 4.5-1 8-4 8-9V6z"/><path d="m8.5 12 2.5 2.5 4.5-5"/></svg><p><b>Cuidado con los engaños.</b> Tránsito no cobra por WhatsApp ni por mensajes de texto. Pague solo en la página oficial de su ciudad o en el SIMIT.</p></div>
+</section>
+
+<section class="scene" id="reloj">
+  <span class="step">3 · EL RELOJ</span>
+  <img class="art" src="img/5-plazos-640.webp" srcset="img/5-plazos-640.webp 640w, img/5-plazos.webp 1200w" sizes="(max-width:520px) 92vw, 480px" width="1200" height="675" loading="lazy" alt="Un calendario y un reloj de arena.">
+  <h2>Fotomulta: desde el aviso empieza a correr el tiempo</h2>
+  <p class="muted">Toque <b>+</b> o <b>−</b>, o mueva la barra, y mire qué puede hacer cada día. Son días hábiles: no cuentan sábados, domingos ni festivos. Al final de la barra empiezan los intereses.</p>
+  <div><span class="daybig" id="d">Día 3</span> <span class="muted" id="du">después del aviso</span></div>
+  <div class="paso"><button class="outline" id="menos" aria-label="Menos días">−</button><input type="range" id="r" min="0" max="52" value="3" aria-label="Tiempo después del aviso"><button class="outline" id="mas" aria-label="Más días">+</button></div>
+  <div class="ruler" aria-hidden="true"><span></span><span></span><span></span><span></span></div>
+  <div class="ticks" aria-hidden="true"><span>Día 0 a 11</span><span>12 a 26</span><span></span><span style="text-align:right">intereses</span></div>
+  <div class="now">
+    <div class="opt" id="o1"><span class="mk" id="m1"></span><div><b>Pagar con descuento</b><br><span class="muted" id="t1"></span></div></div>
+    <div class="opt" id="o2"><span class="mk" id="m2"></span><div><b>Pedir audiencia</b><br><span class="muted" id="t2"></span></div></div>
+    <div class="opt" id="o3"><span class="mk" id="m3"></span><div><b>Intereses de mora</b><br><span class="muted" id="t3"></span></div></div>
   </div>
-</article>
+  <div id="costo">Una multa de <b>$ 604.100</b> le costaría hoy <span class="price" id="p"></span><br><span class="muted" id="pi"></span></div>
+  <p class="note">Ejemplo con una fotomulta común. El descuento exige hacer el curso de seguridad vial. Si la multa se la puso un agente en la calle, los plazos son 5 y 20 días. Los intereses usan una tasa aproximada de 25 % al año; la tasa real cambia cada mes.</p>
+</section>
 
-<article class="card">
-  <img src="img/2-agente.webp" srcset="img/2-agente-640.webp 640w, img/2-agente.webp 1200w" sizes="(max-width:720px) 100vw, 720px" width="1200" height="675" alt="Un agente de tránsito entrega un papel al conductor por la ventana.">
-  <div class="txt">
-    <span class="num">Ojo</span>
-    <h3>No es lo mismo que un agente</h3>
-    <p>Si un agente lo para, le entrega el papel en la mano. La fotomulta, en cambio, llega después.</p>
+<section class="scene">
+  <span class="step">4 · DOS CAMINOS</span>
+  <img class="art" src="img/6-caminos-640.webp" srcset="img/6-caminos-640.webp 640w, img/6-caminos.webp 1200w" sizes="(max-width:520px) 92vw, 480px" width="1200" height="675" loading="lazy" alt="Una persona frente a dos caminos: a un lado alguien paga con el celular, al otro alguien habla en una oficina.">
+  <h2>¿Fue usted o no?</h2>
+  <div class="paths">
+    <div class="path pay"><b>Sí fui yo</b><p>Haga el curso y pague pronto. Paga menos.</p></div>
+    <div class="path talk"><b>No fui yo</b><p>Pida audiencia en los primeros 11 días hábiles. No pague antes.</p></div>
   </div>
-</article>
+  <div class="fact"><p>La Corte Constitucional dijo que <b>no basta con ser el dueño</b>: tránsito debe probar quién manejaba.</p></div>
+</section>
 
-<article class="card">
-  <img src="img/3-notificacion.webp" srcset="img/3-notificacion-640.webp 640w, img/3-notificacion.webp 1200w" sizes="(max-width:720px) 100vw, 720px" width="1200" height="675" alt="Un mensajero entrega un sobre a una señora en la puerta de su casa.">
-  <div class="txt">
-    <span class="num">Paso 2</span>
-    <h3>Le llega una carta a la casa</h3>
-    <p>Un mensajero la entrega en la dirección que usted tiene en el RUNT.</p>
-    <p class="warn">Mantenga su dirección al día. Si la carta no lo encuentra, igual corre el tiempo.</p>
+<section class="scene">
+  <span class="step">5 · LA AUDIENCIA</span>
+  <img class="art" src="img/9-audiencia-640.webp" srcset="img/9-audiencia-640.webp 640w, img/9-audiencia.webp 1200w" sizes="(max-width:520px) 92vw, 480px" width="1200" height="675" loading="lazy" alt="Un señor muestra fotos de su carro a una funcionaria de tránsito.">
+  <h2>“Ese no era yo”: qué llevar según su caso</h2>
+  <p class="muted">Toque el que se parezca a lo que le pasó. Puede ser en persona o virtual.</p>
+  <div class="cases">
+    <details class="case"><summary><svg class="em" viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="7" width="8" height="5" rx="1"/><rect x="13" y="12" width="8" height="5" rx="1"/></svg>Me clonaron la placa</summary><div class="in">
+      <img class="art" src="img/7-vehiculo-640.webp" width="640" height="360" loading="lazy" alt="Dos carros iguales con la misma placa; cada uno tiene un golpe distinto.">
+      <p>Otro carro anda con una placa igual a la suya (“le gemelearon la placa”).</p>
+      <span class="lbl">LLEVE</span><ul><li>Denuncia en la Fiscalía (se hace en línea)</li><li>Fotos de su carro: color, modelo, detalles que no coinciden con la foto</li><li>Prueba de dónde estaba ese día y hora</li></ul>
+      <a class="outline" href="carta.html?tipo=clonada">Preparar la carta</a></div></details>
+    <details class="case"><summary><svg class="em" viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="8" cy="12" r="4"/><path d="M12 12h9M18 12v3M21 12v2"/></svg>Otra persona manejaba</summary><div class="in">
+      <img class="art" src="img/13-llaves-640.webp" width="640" height="360" loading="lazy" alt="Una mano entrega las llaves del carro a otra persona.">
+      <p>Prestó el carro o lo maneja alguien más.</p>
+      <span class="lbl">LLEVE</span><ul><li>Explique que no era usted; tránsito tiene que probar quién conducía</li><li>Si sabe quién era, puede decirlo</li><li>Prueba de dónde estaba</li></ul></div></details>
+    <details class="case"><summary><svg class="em" viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6h10v12H4z"/><path d="M7 10h4M7 13h4M16 9l4 3-4 3"/></svg>Ya lo vendí</summary><div class="in">
+      <img class="art" src="img/12-venta-640.webp" width="640" height="360" loading="lazy" alt="Dos personas se dan la mano frente a un carro con un contrato encima.">
+      <p>Vendió el vehículo pero sigue a su nombre en el RUNT.</p>
+      <span class="lbl">LLEVE</span><ul><li>Contrato de compraventa con fecha</li><li>Si no encuentra al comprador, existe el “traspaso a persona indeterminada”</li></ul></div></details>
+    <details class="case"><summary><svg class="em" viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l9 17H3z"/><path d="M12 10v4M12 17h.01"/></svg>Me lo robaron</summary><div class="in">
+      <img class="art" src="img/11-robo-640.webp" width="640" height="360" loading="lazy" alt="Un parqueadero vacío de noche con vidrios rotos en el piso.">
+      <span class="lbl">LLEVE</span><ul><li>Denuncia del robo con fecha anterior a la foto</li></ul></div></details>
+    <details class="case"><summary><svg class="em" viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="7" width="18" height="12" rx="2"/><circle cx="12" cy="13" r="3.5"/><path d="M8 7l2-3h4l2 3"/></svg>La cámara no tenía aviso</summary><div class="in">
+      <img class="art" src="img/8-senalizacion-640.webp" width="640" height="360" loading="lazy" alt="Una cámara en una avenida y un poste vacío, sin aviso.">
+      <span class="lbl">LLEVE</span><ul><li>Fotos del sitio sin la señal</li><li>Revise en el mapa de la Agencia Nacional de Seguridad Vial si la cámara estaba autorizada</li></ul>
+      <a class="outline" href="carta.html?tipo=pruebas">Pedir las pruebas de la cámara</a></div></details>
+    <details class="case"><summary><svg class="em" viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="6" width="18" height="12" rx="2"/><path d="M3 7l9 6 9-6"/></svg>El aviso llegó tarde o nunca llegó</summary><div class="in">
+      <img class="art" src="img/4-sorpresa-640.webp" width="640" height="360" loading="lazy" alt="Un conductor preocupado mientras un agente le muestra un papel.">
+      <p>Si no le avisaron bien, puede pedir que la anulen.</p>
+      <span class="lbl">LLEVE</span><ul><li>Fecha de la foto y fecha en que se enteró</li><li>Prueba de su dirección registrada</li></ul>
+      <a class="outline" href="carta.html?tipo=pruebas">Pedir las pruebas del aviso</a></div></details>
   </div>
-</article>
+</section>
 
-<article class="card">
-  <img src="img/4-sorpresa.webp" srcset="img/4-sorpresa-640.webp 640w, img/4-sorpresa.webp 1200w" sizes="(max-width:720px) 100vw, 720px" width="1200" height="675" alt="Un conductor preocupado se toca la frente mientras un agente le muestra un papel.">
-  <div class="txt">
-    <span class="num">Ojo</span>
-    <h3>No espere la sorpresa</h3>
-    <p>Revise su placa y su cédula en <a href="https://www.fcm.org.co/simit/" rel="noopener">SIMIT</a> o en esta app.</p>
+<section class="scene">
+  <span class="step">6 · SI NO HACE NADA</span>
+  <img class="art" src="img/10-consecuencias-640.webp" srcset="img/10-consecuencias-640.webp 640w, img/10-consecuencias.webp 1200w" sizes="(max-width:520px) 92vw, 480px" width="1200" height="675" loading="lazy" alt="Escalones que suben: un papel, un candado, una gráfica que sube y una alcancía encadenada.">
+  <h2>La multa sube de escalón</h2>
+  <div class="ladder">
+    <div class="rung"><span class="dot">1</span><div><b>Queda como responsable</b><p class="muted">Si no va en unos 30 días, deciden sin usted. Precio completo.</p></div></div>
+    <div class="rung"><span class="dot">2</span><div><b>Le bloquean trámites</b><p class="muted">Aparece en el SIMIT: no puede renovar la licencia ni vender el vehículo.</p></div></div>
+    <div class="rung"><span class="dot">3</span><div><b>Cobro con intereses</b><p class="muted">Cada mes suma intereses de mora.</p></div></div>
+    <div class="rung"><span class="dot">4</span><div><b>Embargo</b><p class="muted">Pueden embargar cuentas, salario o bienes.</p></div></div>
   </div>
-</article>
+  <div class="fact"><p>Una multa <b>prescribe a los 3 años</b> si tránsito no inicia el cobro. Si ya lo inició, el tiempo vuelve a empezar.</p></div>
+  <a class="outline" href="carta.html?tipo=prescripcion">Pedir que borren una multa vencida</a>
+</section>
 
-<h2 id="plazos">Los plazos</h2>
+<p class="note">Información general según el Código Nacional de Tránsito y la ley de fotodetección. No reemplaza la asesoría de un abogado.</p>
+</div>
 
-<article class="card">
-  <img src="img/5-plazos.webp" srcset="img/5-plazos-640.webp 640w, img/5-plazos.webp 1200w" sizes="(max-width:720px) 100vw, 720px" width="1200" height="675" alt="Un calendario y un reloj de arena.">
-  <div class="txt">
-    <span class="num">Paso 3</span>
-    <h3>Cuente los días desde que le llega la carta</h3>
-    <p>Solo cuentan de lunes a viernes, sin festivos.</p>
-    <ul>
-      <li><span class="big">11 días</span>: pague con <b>50% de descuento</b> haciendo el curso, o pida audiencia.</li>
-      <li><span class="big">26 días</span>: todavía puede pagar con <b>25% de descuento</b> haciendo el curso.</li>
-    </ul>
-    <p class="warn">Si quiere reclamar, hágalo antes de que pasen los 11 días.</p>
-  </div>
-</article>
-
-<h2 id="hacer">Pagar o reclamar</h2>
-
-<article class="card">
-  <img src="img/6-caminos.webp" srcset="img/6-caminos-640.webp 640w, img/6-caminos.webp 1200w" sizes="(max-width:720px) 100vw, 720px" width="1200" height="675" alt="Una persona frente a dos caminos: a un lado alguien paga con el celular, al otro alguien habla en una oficina.">
-  <div class="txt">
-    <span class="num">Paso 4</span>
-    <h3>Escoja un camino</h3>
-    <p><b>Sí fui yo:</b> haga el curso y pague con descuento.</p>
-    <p><b>No fui yo:</b> pida una audiencia en la secretaría de tránsito.</p>
-  </div>
-</article>
-
-<article class="card">
-  <img src="img/10-consecuencias.webp" srcset="img/10-consecuencias-640.webp 640w, img/10-consecuencias.webp 1200w" sizes="(max-width:720px) 100vw, 720px" width="1200" height="675" alt="Escalones que suben: un papel, un candado, una gráfica que sube y una alcancía encadenada.">
-  <div class="txt">
-    <span class="num">Ojo</span>
-    <h3>Si no hace nada, empeora</h3>
-    <ul>
-      <li>Pierde los descuentos.</li>
-      <li>Le cobran intereses.</li>
-      <li>No puede hacer trámites de tránsito.</li>
-      <li>Le pueden embargar cuentas.</li>
-    </ul>
-  </div>
-</article>
-
-<h2 id="clonada">Si clonaron su placa</h2>
-
-<article class="card">
-  <img src="img/7-vehiculo.webp" srcset="img/7-vehiculo-640.webp 640w, img/7-vehiculo.webp 1200w" sizes="(max-width:720px) 100vw, 720px" width="1200" height="675" alt="Dos carros iguales con la misma placa. Cada uno tiene un golpe diferente marcado.">
-  <div class="txt">
-    <span class="num">Paso 1</span>
-    <h3>Compare la foto con su carro</h3>
-    <p>Mire color, golpes, rines, adhesivos. Busque lo que es distinto.</p>
-  </div>
-</article>
-
-<article class="card">
-  <img src="img/8-senalizacion.webp" srcset="img/8-senalizacion-640.webp 640w, img/8-senalizacion.webp 1200w" sizes="(max-width:720px) 100vw, 720px" width="1200" height="675" alt="Una cámara en una avenida y un poste vacío sin aviso.">
-  <div class="txt">
-    <span class="num">Paso 2</span>
-    <h3>Mire si había aviso de cámara</h3>
-    <p>La ley pide un aviso antes de la cámara. Si no había, también lo puede decir.</p>
-  </div>
-</article>
-
-<article class="card">
-  <img src="img/9-audiencia.webp" srcset="img/9-audiencia-640.webp 640w, img/9-audiencia.webp 1200w" sizes="(max-width:720px) 100vw, 720px" width="1200" height="675" alt="Un señor muestra fotos de su carro a una funcionaria de tránsito en una oficina.">
-  <div class="txt">
-    <span class="num">Paso 3</span>
-    <h3>Pida la audiencia y lleve pruebas</h3>
-    <ul>
-      <li>Cédula y tarjeta de propiedad.</li>
-      <li>La carta de la multa.</li>
-      <li>Fotos de su carro.</li>
-      <li>Prueba de dónde estaba ese día.</li>
-      <li>Denuncia ante la Fiscalía por la placa clonada.</li>
-    </ul>
-    <p class="warn">Antes de 11 días hábiles.</p>
-  </div>
-</article>
-
-<h2 id="otros">Robo, venta o préstamo</h2>
-
-<article class="card">
-  <img src="img/11-robo.webp" srcset="img/11-robo-640.webp 640w, img/11-robo.webp 1200w" sizes="(max-width:720px) 100vw, 720px" width="1200" height="675" alt="Un parqueadero vacío de noche con vidrios rotos en el piso.">
-  <div class="txt">
-    <h3>Le robaron el carro</h3>
-    <p>Denuncie de inmediato. Las multas de después del robo no son suyas: lleve la denuncia a la audiencia.</p>
-  </div>
-</article>
-
-<article class="card">
-  <img src="img/12-venta.webp" srcset="img/12-venta-640.webp 640w, img/12-venta.webp 1200w" sizes="(max-width:720px) 100vw, 720px" width="1200" height="675" alt="Dos personas se dan la mano frente a un carro con un contrato encima.">
-  <div class="txt">
-    <h3>Vendió el carro</h3>
-    <p>Haga el traspaso en tránsito. Si no, las multas le siguen llegando a usted.</p>
-  </div>
-</article>
-
-<article class="card">
-  <img src="img/13-llaves.webp" srcset="img/13-llaves-640.webp 640w, img/13-llaves.webp 1200w" sizes="(max-width:720px) 100vw, 720px" width="1200" height="675" alt="Una mano entrega las llaves del carro a otra persona.">
-  <div class="txt">
-    <h3>Prestó el carro</h3>
-    <p>La carta le llega a usted, el dueño. En la audiencia puede decir quién manejaba.</p>
-  </div>
-</article>
-
-<footer>
-  <p>Esta guía es una ayuda general. Para su caso, pregunte en la secretaría de tránsito de su ciudad.</p>
-  <a href="#top">Volver arriba</a>
-</footer>
-</main>
+<script src="ui.js"></script>
 <script>
-(() => {
-  const s = window.speechSynthesis;
-  if (!s || !window.SpeechSynthesisUtterance) return;
-  let voz = null;
-  const elegir = () => { const vs = s.getVoices(); voz = vs.find(v => v.lang === "es-CO") || vs.find(v => v.lang.startsWith("es")) || null; };
-  elegir();
-  s.onvoiceschanged = elegir;
-  let activo = null;
-  const parar = () => { s.cancel(); if (activo) activo.setAttribute("aria-pressed", "false"); activo = null; };
-  document.querySelectorAll(".card .txt").forEach(t => {
-    const b = document.createElement("button");
-    b.className = "say";
-    b.type = "button";
-    b.textContent = "Escuchar";
-    b.setAttribute("aria-pressed", "false");
-    b.onclick = () => {
-      const era = activo === b;
-      parar();
-      if (era) return;
-      const u = new SpeechSynthesisUtterance(t.innerText.replace("Escuchar", ""));
-      u.lang = voz ? voz.lang : "es-CO";
-      if (voz) u.voice = voz;
-      u.rate = 0.9;
-      u.onend = () => { if (activo === b) parar(); };
-      activo = b;
-      b.setAttribute("aria-pressed", "true");
-      s.speak(u);
-    };
-    t.appendChild(b);
-  });
-})();
-if ("serviceWorker" in navigator) navigator.serviceWorker.register("sw.js");
+const r = document.getElementById("r"), $ = id => document.getElementById(id), base = 604100, fmt = n => "$\u00a0" + Math.round(n).toLocaleString("es-CO");
+// Barra: posiciones 0–30 son días hábiles; de 31 en adelante, cada paso es un mes de mora.
+const TASA = .25, MORA = 30, porDia = base * (Math.pow(1 + TASA, 1 / 365) - 1);
+function upd() {
+  const d = +r.value, meses = Math.max(0, d - MORA), mora = meses > 0;
+  $("d").textContent = mora ? (meses === 1 ? "1 mes" : meses + " meses") : "Día " + d;
+  $("du").textContent = mora ? "de mora" : "después del aviso";
+  let disc, dt;
+  if (d <= 11) { disc = .5; dt = "Paga la mitad (50\u00a0% menos) hasta el día 11"; }
+  else if (d <= 26) { disc = .25; dt = "Paga 25\u00a0% menos hasta el día 26"; }
+  else { disc = 0; dt = "Ya no hay descuento"; }
+  const aud = d <= 11;
+  $("o1").className = "opt " + (disc ? "on" : "off"); $("m1").textContent = disc ? "✓" : "✕"; $("t1").textContent = dt;
+  $("o2").className = "opt " + (aud ? "on" : "off"); $("m2").textContent = aud ? "✓" : "✕";
+  $("t2").textContent = aud ? `Le quedan ${11 - d} días hábiles para pedirla` : "Se venció el plazo de 11 días";
+  $("o3").className = "opt " + (mora ? "bad" : "off"); $("m3").textContent = mora ? "!" : "";
+  $("t3").textContent = mora ? `Cada día suma cerca de ${fmt(porDia)}` : "Empiezan si no paga en unos 30 días";
+  const interes = mora ? base * (Math.pow(1 + TASA, meses / 12) - 1) : 0;
+  $("p").textContent = fmt(base * (1 - disc) + interes);
+  $("pi").textContent = mora ? `${fmt(interes)} son intereses` : "";
+}
+r.oninput = upd; upd();
+$("menos").onclick = () => { r.value = +r.value - 1; upd(); };
+$("mas").onclick = () => { r.value = +r.value + 1; upd(); };
+
+// Escuchar: lee cada escena (título y texto principal), resaltándola.
+document.querySelector("[data-talk]").onclick = () => speak([...document.querySelectorAll(".scene")].map(s => {
+  const t = [s.querySelector("h2"), ...s.querySelectorAll(":scope > p.muted, :scope > .fact, :scope > .paths, :scope > .ladder")]
+    .filter(Boolean).map(e => e.innerText.replace(/\s+/g, " ").trim()).join(". ");
+  return [s, s.id === "reloj" ? [t, $("o1").innerText, $("o2").innerText, $("o3").innerText, $("costo").innerText].join(". ") : t];
+}));
 </script>
 </body>
 </html>

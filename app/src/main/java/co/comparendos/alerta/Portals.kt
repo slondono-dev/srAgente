@@ -13,8 +13,8 @@ class CaptchaException : Exception("El portal pide captcha")
 object Portals {
     // ponytail: solo los mapas empaquetados; descargar desde el repo cuando exista su URL pública.
     fun mapas(ctx: Context): List<Mapa> =
-        ctx.assets.list("")!!.filter { it.endsWith(".json") }.sorted().map { f ->
-            val o = JSONObject(ctx.assets.open(f).bufferedReader().readText())
+        ctx.assets.list("web/maps")!!.filter { it.endsWith(".json") }.sorted().map { f ->
+            val o = JSONObject(ctx.assets.open("web/maps/$f").bufferedReader().readText())
             Mapa(o.getString("id"), o.getString("nombre"), o.getString("plataforma"), o.getString("modo"),
                 o.getString("front"), o.getString("backend"))
         }

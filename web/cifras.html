@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0a2b5e">
+<title>Las multas en Colombia</title>
+<meta name="description" content="Cuántas multas de tránsito hay en Colombia, cuántas quedan sin pagar y cuántas cámaras tienen permiso. Datos públicos.">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icon.svg">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;700;800&family=Atkinson+Hyperlegible:wght@400;700&display=swap">
+<link rel="stylesheet" href="base.css">
+<style>
+/* Cifras grandes primero, luego barras con el número escrito al lado: nada que haya que adivinar. */
+.wrap{max-width:560px;margin:0 auto;padding-inline:14px;padding-block:0 40px;display:grid;grid-template-columns:minmax(0,1fr);gap:18px}
+.wrap>.hero{margin-inline:-14px;padding-bottom:40px}
+.lift{margin-top:-36px;position:relative;z-index:1}
+.tiles{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+html.big .tiles{grid-template-columns:1fr}
+.tile{background:var(--sheet);border-radius:18px;padding:16px;box-shadow:0 4px 18px -10px #0a2b5e40;display:grid;gap:4px;align-content:start}
+.tile b{font:800 1.7rem/1.1 var(--display);font-variant-numeric:tabular-nums}
+.tile span{color:var(--muted);font-size:.95rem;line-height:1.35}
+.tile.wide{grid-column:1/-1}
+.bars{display:grid;gap:14px;margin:0;padding:0;list-style:none}
+.bars li{display:grid;gap:4px}
+.bars .top{display:flex;justify-content:space-between;gap:12px;font-weight:700}
+.bars .top span:first-child{min-width:0;overflow-wrap:anywhere}
+.bars .top span:last-child{font-variant-numeric:tabular-nums;white-space:nowrap}
+.bars .track{height:14px;border-radius:4px;background:var(--line)}
+.bars .fill{height:100%;border-radius:4px;background:var(--sky)}
+.bars small{color:var(--muted);font-size:.9rem}
+.cams{display:grid;gap:10px}
+.cam{display:flex;gap:14px;align-items:baseline}
+.cam b{font:800 1.6rem var(--display);min-width:3.2ch;text-align:right;font-variant-numeric:tabular-nums}
+.small{font-size:.92rem;color:var(--muted)}
+.small a{color:var(--fg)}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header class="hero">
+  <div class="tools"><a class="tool back" href="./">Volver</a><button class="tool" data-big>Letra grande</button><button class="tool" data-talk></button></div>
+  <h1>Las multas en Colombia</h1>
+  <p>Lo que dicen los datos públicos, de 2019 a 2025.</p>
+</header>
+
+<section class="lift stack" id="cargando"><div class="sheetcard"><p>Cargando las cifras…</p></div></section>
+
+<section class="lift tiles" id="tiles" hidden></section>
+
+<section class="sheetcard" id="anios" hidden>
+  <h2>Multas por año</h2>
+  <ol class="bars" id="barsAnio"></ol>
+</section>
+
+<section class="sheetcard" id="ciudades" hidden>
+  <h2>Ciudades con más multas</h2>
+  <ol class="bars" id="barsCiudad"></ol>
+</section>
+
+<section class="sheetcard" id="camaras" hidden>
+  <h2>Cámaras de fotomultas</h2>
+  <div class="cams" id="cams"></div>
+  <p>Una cámara solo puede poner multas si tiene el permiso vigente de la Agencia Nacional de Seguridad Vial. Si le llegó una multa de cámara, puede pedir que lo demuestren.</p>
+  <a class="outline" href="carta.html?tipo=pruebas">Preparar la carta</a>
+</section>
+
+<section class="stack" id="compartir" hidden>
+  <button class="primary" id="share">Compartir estas cifras</button>
+  <a class="outline" href="comunidad.html">Leer casos de otras personas</a>
+</section>
+
+<p class="small" id="fuente" hidden>Fuentes: <a href="https://www.datos.gov.co/d/72nf-y4v3" target="_blank" rel="noopener">Historial de multas del SIMIT</a> (Federación Colombiana de Municipios) y <a href="https://fotodeteccion.ansv.gov.co/" target="_blank" rel="noopener">mapa de cámaras de la ANSV</a>. Se actualiza solo cada semana. Última vez: <span id="fecha"></span>.</p>
+</div>
+<script src="ui.js"></script>
+<script>
+const $ = id => document.getElementById(id);
+const esc = s => String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]);
+const coma = (n, d = 1) => n.toLocaleString("es-CO", { maximumFractionDigits: d });
+// Escalas en palabras: en Colombia un billón es un millón de millones.
+const cuanto = n => n >= 1e6 ? `${coma(n / 1e6)} millones` : n >= 1e3 ? `${coma(n / 1e3, 0)} mil` : coma(n, 0);
+const pesos = v => v >= 1e12 ? `$ ${coma(v / 1e12)} billones` : `$ ${coma(v / 1e6, 0)} millones`;
+const pct = (a, b) => b ? Math.round(100 * a / b) + "%" : "0%";
+// Los datos vienen sin tildes en algunos nombres.
+const TILDES = { Medellin: "Medellín", Popayan: "Popayán", Atlantico: "Atlántico", Cucuta: "Cúcuta", Ibague: "Ibagué", Monteria: "Montería",
+  Chia: "Chía", Facatativa: "Facatativá", Zipaquira: "Zipaquirá", Tulua: "Tuluá", Envigado: "Envigado", Bolivar: "Bolívar", Quibdo: "Quibdó" };
+const nombre = c => TILDES[c] || c.replace(/^Bogota\b/, "Bogotá");
+let leer = [];
+
+fetch("data/cifras.json").then(r => r.json()).then(d => {
+  const n = d.anios.reduce((s, a) => s + a.n, 0), v = d.anios.reduce((s, a) => s + a.v, 0);
+  const sn = d.anios.reduce((s, a) => s + a.sin_pagar_n, 0), sv = d.anios.reduce((s, a) => s + a.sin_pagar_v, 0);
+  const t = [
+    [cuanto(n), `multas en ${d.anios.length} años`, "wide"],
+    [pesos(v), "en total"],
+    [pct(sn, n), "siguen sin pagar"],
+    [pesos(sv), "sin pagar"],
+    [coma(d.municipios, 0), "municipios con multas"]
+  ];
+  $("tiles").innerHTML = t.map(([b, s, c]) => `<div class="tile ${c || ""}"><b>${esc(b)}</b><span>${esc(s)}</span></div>`).join("");
+  const maxA = Math.max(...d.anios.map(a => a.n));
+  $("barsAnio").innerHTML = d.anios.map(a => `<li><div class="top"><span>${esc(a.anio)}</span><span>${cuanto(a.n)}</span></div>
+    <div class="track"><div class="fill" style="width:${100 * a.n / maxA}%"></div></div><small>${pct(a.sin_pagar_n, a.n)} sin pagar</small></li>`).join("");
+  const maxC = d.ciudades[0].n;
+  $("barsCiudad").innerHTML = d.ciudades.map(c => `<li><div class="top"><span>${esc(nombre(c.ciudad))}</span><span>${cuanto(c.n)}</span></div>
+    <div class="track"><div class="fill" style="width:${100 * c.n / maxC}%"></div></div><small>${pct(c.sin_pagar_n, c.n)} sin pagar</small></li>`).join("");
+  const k = d.camaras;
+  $("cams").innerHTML = [[k.operando, "con permiso vigente"], [k.vencidas, "puntos con el permiso vencido"], [k.por_instalar, "aprobadas, por instalar"]]
+    .map(([b, s]) => `<div class="cam"><b>${coma(b, 0)}</b><span>${s}</span></div>`).join("");
+  $("fecha").textContent = new Date(d.actualizado + "T12:00").toLocaleDateString("es-CO", { day: "numeric", month: "long", year: "numeric" });
+  $("cargando").hidden = true;
+  ["tiles", "anios", "ciudades", "camaras", "compartir", "fuente"].forEach(id => $(id).hidden = false);
+  leer = [[$("tiles"), `En Colombia hubo ${cuanto(n)} de multas de tránsito en ${d.anios.length} años. El ${pct(sn, n)} sigue sin pagar.`],
+    [$("ciudades"), `La ciudad con más multas es ${nombre(d.ciudades[0].ciudad)}, con ${cuanto(d.ciudades[0].n)}.`],
+    [$("camaras"), `Hay ${k.operando} cámaras con permiso vigente y ${k.vencidas} puntos con el permiso vencido.`]];
+}).catch(() => { $("cargando").innerHTML = '<div class="sheetcard"><p>No pudimos cargar las cifras. Revise su conexión e intente de nuevo.</p></div>'; });
+
+document.querySelectorAll("[data-talk]").forEach(b => b.onclick = () => speak(leer.length ? leer : [[null, "Cargando las cifras."]]));
+$("share").onclick = async () => {
+  const datos = { title: document.title, text: leer.map(p => p[1]).join(" "), url: location.href };
+  try { if (navigator.share) await navigator.share(datos); else { await navigator.clipboard.writeText(`${datos.text} ${datos.url}`); $("share").textContent = "Enlace copiado"; } } catch {}
+};
+</script>
+</body>
+</html>

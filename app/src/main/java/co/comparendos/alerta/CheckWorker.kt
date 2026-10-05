@@ -15,6 +15,21 @@ import java.util.concurrent.TimeUnit
 
 fun prefs(ctx: Context): SharedPreferences = ctx.getSharedPreferences("datos", Context.MODE_PRIVATE)
 
+/** Placas (true) y cédulas (false) que se revisan cada día. */
+fun criterios(ctx: Context): List<Pair<String, Boolean>> {
+    val p = prefs(ctx)
+    val cedulas = p.getString("cedula", "")!!.split(",").map { it.trim() }.filter { it.isNotEmpty() }
+    val placas = p.getString("placas", "")!!.split(",").map { it.trim().uppercase() }.filter { it.isNotEmpty() }
+    return cedulas.map { it to false } + placas.map { it to true }
+}
+
+fun guardarCriterio(ctx: Context, criterio: String, esPlaca: Boolean, activo: Boolean) {
+    val clave = if (esPlaca) "placas" else "cedula"
+    val p = prefs(ctx)
+    val lista = p.getString(clave, "")!!.split(",").map { it.trim() }.filter { it.isNotEmpty() && it != criterio }
+    p.edit().putString(clave, (if (activo) lista + criterio else lista).joinToString(",")).apply()
+}
+
 /** Estado de la última consulta de un portal, guardado en el teléfono. */
 data class Estado(val fecha: String, val ok: Boolean, val mensaje: String)
 
@@ -41,16 +56,14 @@ class CheckWorker(ctx: Context, params: WorkerParameters) : CoroutineWorker(ctx,
 
         fun revisar(ctx: Context) {
             val p = prefs(ctx)
-            val cedula = p.getString("cedula", "")!!.trim()
-            val placas = p.getString("placas", "")!!.split(",").map { it.trim().uppercase() }.filter { it.isNotEmpty() }
-            val criterios = listOfNotNull(cedula.takeIf { it.isNotEmpty() }?.let { it to false }) + placas.map { it to true }
+            val criterios = criterios(ctx)
             if (criterios.isEmpty()) return
 
             val vistos = p.getStringSet("vistos", emptySet())!!.toMutableSet()
             val nuevos = mutableListOf<String>()
             val fecha = SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.US).format(Date())
 
-            for (m in Portals.mapas(ctx)) {
+            for (m in Portals.mapas(ctx).filter { it.plataforma == "quipux" }) {
                 val e = if (m.modo == "asistido") Estado(fecha, false, "Requiere consulta manual (captcha)") else try {
                     var total = 0
                     for ((c, esPlaca) in criterios) {

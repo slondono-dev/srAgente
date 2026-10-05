@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0a2b5e">
+<title>¿Es real este mensaje?</title>
+<meta name="description" content="Pegue el mensaje de una multa que le llegó y le decimos si el enlace es de una página oficial.">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icon.svg">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;700;800&family=Atkinson+Hyperlegible:wght@400;700&display=swap">
+<link rel="stylesheet" href="base.css">
+<style>
+/* Una sola caja para pegar el mensaje y una respuesta grande con color y palabra: sí, no o cuidado. */
+.wrap{max-width:560px;margin:0 auto;padding-inline:14px;padding-block:0 40px;display:grid;grid-template-columns:minmax(0,1fr);gap:18px}
+.wrap>.hero{margin-inline:-14px;padding-bottom:40px}
+.lift{margin-top:-36px;position:relative;z-index:1}
+textarea{width:100%;min-height:150px;font:1.15rem/1.5 var(--body);padding:14px;border-radius:14px;border:2px solid var(--muted);background:var(--sheet);color:var(--fg);resize:vertical}
+textarea:focus{outline:3px solid var(--sky);outline-offset:2px}
+.veredicto{border-radius:20px;padding:20px;display:grid;gap:10px;border:3px solid}
+.veredicto h2{font-size:1.5rem}
+.veredicto.no{background:var(--red-soft);border-color:var(--red)}
+.veredicto.ojo{background:var(--sun-soft);border-color:var(--sun)}
+.veredicto.si{background:var(--green-soft);border-color:var(--green)}
+.veredicto ul{margin:0;padding-left:1.2em;display:grid;gap:6px}
+.host{font-family:ui-monospace,monospace;word-break:break-all;font-weight:700}
+.small{font-size:.95rem;color:var(--muted)}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header class="hero">
+  <div class="tools"><a class="tool back" href="./">Volver</a><button class="tool" data-big>Letra grande</button><button class="tool" data-talk></button></div>
+  <h1>¿Es real este mensaje?</h1>
+  <p>Hay muchos mensajes falsos de multas. Revíselo antes de pagar.</p>
+</header>
+
+<section class="sheetcard lift">
+  <label for="msg"><h2>Pegue aquí el mensaje o el enlace</h2></label>
+  <p class="small">Mantenga el dedo sobre el mensaje en WhatsApp o en sus mensajes, toque <b>Copiar</b> y después péguelo aquí.</p>
+  <textarea id="msg" placeholder="Por ejemplo: Tiene una multa pendiente, pague con 70% de descuento en..."></textarea>
+  <button class="outline" id="pegar" hidden>Pegar lo que copié</button>
+  <button class="primary" id="revisar">Revisar</button>
+</section>
+
+<section id="resultado" aria-live="polite"></section>
+
+<section class="sheetcard">
+  <h2>Cómo reconocer un engaño</h2>
+  <ul class="steps" style="margin:0;padding-left:1.2em;display:grid;gap:8px">
+    <li>Tránsito avisa por <b>correo certificado</b> o correo electrónico. <b>Nunca por WhatsApp</b>.</li>
+    <li>No existen descuentos del 70&nbsp;% ni "solo por hoy".</li>
+    <li>Nadie oficial le pide pagar por Nequi, Daviplata o a una cuenta personal.</li>
+    <li>Las páginas oficiales casi siempre terminan en <b>.gov.co</b>. El SIMIT oficial es <b>fcm.org.co</b>.</li>
+  </ul>
+  <a class="outline" href="./">Buscar mis multas reales con mi placa</a>
+</section>
+</div>
+<script src="ui.js"></script>
+<script>
+const $ = id => document.getElementById(id);
+const esc = s => String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]);
+const IDS = ["simit", "medellin", "bello", "itagui", "envigado", "sabaneta", "rionegro", "apartado", "bogota", "cundinamarca",
+  "girardot", "cali", "valle", "yumbo", "popayan", "pasto", "armenia", "pereira", "dosquebradas", "manizales", "villavicencio",
+  "arauca", "bucaramanga", "floridablanca", "barrancabermeja", "cucuta", "barranquilla", "atlantico", "soledad", "cartagena",
+  "santamarta", "valledupar"];
+// Páginas oficiales: todo lo que termine en .gov.co, el SIMIT y los portales de pago que usan las ciudades (de maps/).
+const oficiales = new Set(["fcm.org.co", "www.fcm.org.co", "simit.org.co", "www.simit.org.co"]);
+const listos = Promise.all(IDS.map(id => fetch(`maps/${id}.json`).then(r => r.json()).then(m => oficiales.add(new URL(m.front).hostname)).catch(() => {})));
+const esOficial = h => h.endsWith(".gov.co") || oficiales.has(h);
+const SENALES = [
+  [/\b(50|60|70|80|90)\s*%|descuento especial|solo (por )?hoy|última oportunidad|ultimo aviso|último aviso/i, "Promete descuentos o le apura. Tránsito no hace eso."],
+  [/whats\s?app|wa\.me|chat\.whatsapp/i, "Le pide escribir o pagar por WhatsApp."],
+  [/nequi|daviplata|consign|transfer|cuenta de ahorros|llave/i, "Le pide pagar por Nequi, Daviplata o a una cuenta."],
+  [/embargo inmediato|orden de captura|cárcel|carcel|suspensión inmediata/i, "Le asusta con castigos inmediatos."],
+  [/bit\.ly|tinyurl|cutt\.ly|t\.co\/|shorturl|acortar|is\.gd/i, "Usa un enlace acortado que esconde la página real."]
+];
+
+function hosts(t) {
+  const out = new Set();
+  for (const m of t.matchAll(/\b((?:https?:\/\/)?(?:[a-z0-9-]+\.)+[a-z]{2,}(?::\d+)?)(?:[\/?#][^\s]*)?/gi)) {
+    if (/@/.test(t.slice(Math.max(0, m.index - 1), m.index))) continue;  // correos electrónicos
+    try { out.add(new URL(/^https?:/i.test(m[1]) ? m[1] : "https://" + m[1]).hostname.toLowerCase()); } catch {}
+  }
+  return [...out];
+}
+
+async function revisar() {
+  await listos;
+  const t = $("msg").value.trim();
+  if (!t) { $("resultado").innerHTML = '<div class="veredicto ojo"><h2>La caja está vacía</h2><p>Primero pegue el mensaje que le llegó.</p></div>'; return; }
+  const hs = hosts(t), malos = hs.filter(h => !esOficial(h)), buenos = hs.filter(esOficial);
+  const senales = SENALES.filter(([re]) => re.test(t)).map(s => s[1]);
+  let cls, titulo, texto;
+  if (malos.length) {
+    cls = "no"; titulo = "No es una página oficial";
+    texto = `<p>No abra este enlace ni pague ahí:</p><ul>${malos.map(h => `<li class="host">${esc(h)}</li>`).join("")}</ul>`;
+  } else if (senales.length) {
+    cls = "no"; titulo = "Parece un engaño";
+    texto = "<p>No pague ni responda.</p>";
+  } else if (buenos.length) {
+    cls = "si"; titulo = "El enlace es de una página oficial";
+    texto = `<ul>${buenos.map(h => `<li class="host">${esc(h)}</li>`).join("")}</ul><p>Aun así, es más seguro buscar su placa aquí que abrir enlaces de mensajes.</p>`;
+  } else {
+    cls = "ojo"; titulo = "No encontramos enlaces";
+    texto = "<p>Si el mensaje le pide pagar, no lo haga desde ahí. Busque su placa aquí para ver si la multa existe.</p>";
+  }
+  if (senales.length) texto += `<p><b>Señales de engaño:</b></p><ul>${senales.map(s => `<li>${esc(s)}</li>`).join("")}</ul>`;
+  $("resultado").innerHTML = `<div class="veredicto ${cls}"><h2>${titulo}</h2>${texto}<a class="primary" href="./">Buscar mis multas reales</a></div>`;
+  $("resultado").scrollIntoView({ behavior: "smooth", block: "start" });
+}
+$("revisar").onclick = revisar;
+if (navigator.clipboard && navigator.clipboard.readText) {
+  $("pegar").hidden = false;
+  $("pegar").onclick = async () => { try { $("msg").value = await navigator.clipboard.readText(); revisar(); } catch { $("msg").focus(); } };
+}
+document.querySelectorAll("[data-talk]").forEach(b => b.onclick = () => {
+  const r = $("resultado").innerText.trim();
+  speak([[null, r || "Pegue aquí el mensaje de la multa que le llegó y toque Revisar. Le diremos si el enlace es de una página oficial."]]);
+});
+</script>
+</body>
+</html>

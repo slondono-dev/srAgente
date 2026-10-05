@@ -1,7 +1,15 @@
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
-    id("org.jetbrains.kotlin.plugin.compose")
+}
+
+// La app muestra la misma web de web/ (diseño aprobado) y los mapas de maps/, empaquetados.
+val webAssets = layout.buildDirectory.dir("generated/webassets")
+val copiarWeb by tasks.registering(Sync::class) {
+    from("../web") { exclude("sw.js", "manifest.webmanifest") }
+    from("../maps") { into("maps") }
+    from("../data") { include("cifras.json"); into("data") }
+    into(webAssets.map { it.dir("web") })
 }
 
 android {
@@ -12,14 +20,12 @@ android {
         applicationId = "co.comparendos.alerta"
         minSdk = 26
         targetSdk = 36
-        versionCode = 1
-        versionName = "0.1"
+        versionCode = 2
+        versionName = "0.2"
     }
 
-    // Los mapas del repo se empaquetan como respaldo offline.
-    sourceSets["main"].assets.srcDir("../maps")
+    sourceSets["main"].assets.srcDir(webAssets)
 
-    buildFeatures { compose = true }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
@@ -27,9 +33,10 @@ android {
     kotlinOptions { jvmTarget = "17" }
 }
 
+tasks.named("preBuild") { dependsOn(copiarWeb) }
+
 dependencies {
-    implementation(platform("androidx.compose:compose-bom:2025.05.01"))
-    implementation("androidx.compose.material3:material3")
-    implementation("androidx.activity:activity-compose:1.10.1")
+    implementation("androidx.activity:activity-ktx:1.10.1")
+    implementation("androidx.webkit:webkit:1.13.0")
     implementation("androidx.work:work-runtime-ktx:2.10.1")
 }

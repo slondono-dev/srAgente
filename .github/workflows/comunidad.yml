@@ -1,0 +1,29 @@
+name: Comunidad
+# Supabase gratis pausa el proyecto tras 7 días sin uso: esto lo mantiene activo
+# y abre un aviso cuando hay casos esperando revisión.
+on:
+  schedule:
+    - cron: "0 13 */3 * *"
+  workflow_dispatch:
+permissions:
+  issues: write
+jobs:
+  revisar:
+    runs-on: ubuntu-latest
+    if: vars.SUPABASE_URL != ''
+    steps:
+      - name: Contar casos pendientes
+        env:
+          URL: ${{ vars.SUPABASE_URL }}
+          KEY: ${{ vars.SUPABASE_ANON_KEY }}
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+        run: |
+          n=$(curl -sSf -X POST "${URL%/}/rest/v1/rpc/pendientes" -H "apikey: $KEY" -H "Authorization: Bearer $KEY" -H "Content-Type: application/json" -d '{}')
+          echo "Pendientes: $n"
+          [ "$n" -gt 0 ] || exit 0
+          gh label create revisar --color c23a24 --description "Casos de la comunidad por revisar" 2>/dev/null || true
+          titulo="Hay casos de la comunidad por revisar"
+          cuerpo="Hay **$n** casos esperando revisión. Para publicarlos: Supabase > Table Editor > casos > marque publicado = true. Para descartar uno, bórrelo."
+          num=$(gh issue list --label revisar --state open --json number -q '.[0].number')
+          if [ -n "$num" ]; then gh issue edit "$num" --body "$cuerpo"; else gh issue create --title "$titulo" --label revisar --body "$cuerpo"; fi

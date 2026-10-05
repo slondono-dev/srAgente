@@ -2,9 +2,10 @@
 <html lang="es">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="theme-color" content="#1565c0">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0a2b5e">
 <title>Alerta Comparendos</title>
+<meta name="description" content="Busque sus multas de tránsito por placa o cédula.">
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="icon" href="icon.svg">
 <link rel="icon" href="icon-192.png" type="image/png" sizes="192x192">
@@ -12,37 +13,145 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="Comparendos">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;700;800&family=Atkinson+Hyperlegible:wght@400;700&display=swap">
+<link rel="stylesheet" href="base.css">
 <style>
-:root{--bg:#f5f7fa;--fg:#1a1a1a;--card:#fff;--acc:#1565c0;--err:#c62828}
-@media (prefers-color-scheme:dark){:root{--bg:#121212;--fg:#eee;--card:#1e1e1e;--acc:#64b5f6}}
-body{margin:0;font-family:system-ui,sans-serif;background:var(--bg);color:var(--fg)}
-main{max-width:560px;margin:auto;padding:16px}
-h1{font-size:1.4rem}
-.card{background:var(--card);border-radius:12px;padding:16px;margin-bottom:12px}
-input,select,button{width:100%;box-sizing:border-box;padding:12px;margin:6px 0;font-size:1rem;border-radius:8px;border:1px solid #8884}
-button{background:var(--acc);color:#fff;border:0;font-weight:600}
-.err{color:var(--err)}
-.guia{display:block;padding:14px;border-radius:12px;background:var(--card);color:var(--acc);font-weight:600;text-decoration:none}
-pre{white-space:pre-wrap;word-break:break-word;font-size:.8rem}
+/* Cabecera azul profunda con la acción en amarillo; contenido sobre hoja clara que sube sobre la cabecera. */
+.app{max-width:480px;margin:0 auto;min-height:100vh;display:flex;flex-direction:column}
+.sheet{background:var(--sheet);margin:-40px 14px 0;border-radius:22px;padding:22px;box-shadow:0 12px 32px -12px #0a2b5e33;display:grid;gap:18px;position:relative;z-index:1}
+.content{padding-inline:14px;padding-block:0 32px;margin-top:-36px;position:relative;z-index:1;display:grid;gap:16px}
+label.q{font-weight:700}
+.plate{background:var(--sun);border:3px solid #0f1d33;border-radius:14px;padding:6px 10px 4px;text-align:center;transition:background .2s}
+.plate.id{background:var(--bg);border-color:var(--line)}
+.ej{color:var(--muted);font-size:.98rem;margin-top:-6px}
+.ej.mal{color:var(--red);font-weight:700}
+.plate small{display:block;font:800 .8rem var(--display);letter-spacing:.35em;color:#0f1d33;min-height:1.1em}
+.plate.id small{color:var(--muted);letter-spacing:.1em}
+#q{width:100%;font:800 2.3rem var(--display);letter-spacing:.1em;text-transform:uppercase;padding:6px;border:0;background:none;color:#0f1d33;text-align:center}
+.plate.id #q{color:var(--fg)}
+#q::placeholder{color:#0f1d3333}
+.plate:focus-within{box-shadow:0 0 0 4px var(--sky-soft)}
+#q:focus{outline:none}
+.under{padding:20px 14px 28px;display:grid;gap:14px}
+/* buscando */
+.ring{width:132px;height:132px;margin:8px auto 0;display:block}
+.ring circle{fill:none;stroke-width:10}
+.ring .bgc{stroke:var(--line)}.ring .fgc{stroke:var(--sun);stroke-linecap:round;transform:rotate(-90deg);transform-origin:50% 50%;transition:stroke-dashoffset .25s}
+.now{text-align:center;font:700 1.1rem var(--display)}
+@media (prefers-reduced-motion:reduce){.ring .fgc,.primary{transition:none}}
+/* resultado */
+.sum{display:grid;gap:4px}
+.sum .lbl{color:var(--on-navy-muted)}
+.amount{font:800 3rem/1 var(--display);font-variant-numeric:tabular-nums;color:var(--sun);letter-spacing:-.02em}
+.fine{background:var(--sheet);border-radius:20px;padding:20px;display:grid;gap:14px;box-shadow:0 4px 18px -10px #0a2b5e40}
+.state{display:inline-flex;align-items:center;gap:8px;font:700 1rem var(--display);padding:5px 12px;border-radius:99px;justify-self:start;background:var(--sun-soft)}
+.state::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--sun)}
+.state.ok{background:var(--green-soft)}.state.ok::before{background:var(--green)}
+.mini{display:grid;grid-template-columns:1fr auto;gap:6px 12px;align-items:center}
+.mini .what{font:800 1.2rem var(--display)}
+.mini .amt{font:800 1.3rem var(--display);font-variant-numeric:tabular-nums;white-space:nowrap}
+.mini .where{color:var(--muted)}
+.miss{background:var(--sky-soft);border-radius:20px;padding:18px 20px;display:grid;gap:10px}
+.miss b{font-family:var(--display)}
+.miss details summary{cursor:pointer;color:var(--fg);font:700 .98rem var(--display);list-style:none;min-height:44px;display:flex;align-items:center}
+.miss details summary::-webkit-details-marker{display:none}
+.miss details summary::after{content:"+";margin-left:8px;font-size:1.2rem;color:var(--sky)}
+.miss details[open] summary::after{content:"–"}
+.guide{list-style:none;margin:14px 0 0;padding:0;display:grid}
+.guide li{display:grid;grid-template-columns:32px 1fr;gap:14px;padding-bottom:18px;position:relative}
+.guide li:not(:last-child)::before{content:"";position:absolute;left:15px;top:32px;bottom:0;width:2px;background:var(--line)}
+.guide .n{width:32px;height:32px;border-radius:50%;background:var(--sky-soft);display:grid;place-items:center;font:800 .9rem var(--display)}
+.guide li:nth-child(n+3) .n{background:var(--red-soft)}
+.guide b{font-family:var(--display)}
+.guide p{margin:2px 0 0;color:var(--muted)}
+.menu{display:grid;gap:12px}
+.howbtn.alerta{background:var(--red-soft);border:2px solid var(--red)}
+.howbtn.alerta .ico{background:var(--sheet);color:var(--red)}
+.state.no{background:var(--red-soft)}.state.no::before{background:var(--red)}
+.aviso{border-radius:20px;padding:20px;display:grid;gap:12px;border:3px solid}
+.aviso.sun{background:var(--sun-soft);border-color:var(--sun)}
+.aviso.red{background:var(--red-soft);border-color:var(--red)}
+#pagadas .row2{border-top:1px solid var(--line);padding:10px 0}
+@media print{.hero{background:none;color:#000;padding:0 0 12px}.tools,.foot,#alerta,.card:not(#pagadas .card),.primary,.outline,#miss details{display:none!important}
+.amount{color:#000}.sum .lbl{color:#333}.content{margin:0}.fine,.aviso,.miss{box-shadow:none;border:1px solid #999;break-inside:avoid}#pagadas details{display:block}}
+.set{box-shadow:none;background:none;padding:6px 4px}.set summary{font-size:.95rem;color:var(--muted)}
+.set input{width:100%;font:1rem var(--body);padding:12px;border-radius:10px;border:1.5px solid var(--line);background:var(--bg);color:var(--fg);margin-top:8px}
+.set small{display:block;color:var(--muted);margin-top:6px;font-size:.9rem}
+.alert{display:flex;gap:14px;align-items:center;background:var(--sheet);border-radius:20px;padding:18px 20px;box-shadow:0 4px 18px -10px #0a2b5e40}
+.alert label{flex:1;display:grid;gap:2px;cursor:pointer}
+.alert b{font-family:var(--display)}
+.switch{appearance:none;width:52px;height:32px;border-radius:99px;background:var(--line);position:relative;cursor:pointer;flex:none;transition:background .2s;margin:0}
+.switch::after{content:"";position:absolute;top:4px;left:4px;width:24px;height:24px;border-radius:50%;background:#fff;transition:left .2s;box-shadow:0 1px 3px #0003}
+.switch:checked{background:var(--sky)}.switch:checked::after{left:24px}
+.android .set,.android #instalar{display:none!important}
+.foot{display:grid;gap:8px;padding-inline:14px;padding-block:0 28px}
 </style>
 </head>
 <body>
-<main>
-<h1>Alerta Comparendos</h1>
-<p><a class="guia" href="guia.html">¿Le llegó una fotomulta? Vea la guía</a></p>
-<button id="instalar" hidden>Instalar en este celular</button>
-<div class="card">
-  <select id="portal"></select>
-  <select id="tipo"><option value="placa">Placa</option><option value="cedula">Cédula</option></select>
-  <input id="criterio" placeholder="ABC123" autocapitalize="characters">
-  <button id="go">Consultar</button>
-  <details><summary>Proxy (opcional)</summary>
-    <input id="proxy" placeholder="https://mi-proxy.example/?url=">
-    <small>Los portales bloquean llamadas desde el navegador (CORS). Si tienes un proxy, ponlo aquí; la URL destino se añade al final.</small>
-  </details>
+<div class="app">
+<section id="s1">
+  <div class="hero">
+    <div class="tools"><button class="tool" data-big>Letra grande</button><button class="tool" data-talk></button></div>
+    <h1>¿Tiene multas de tránsito?</h1>
+  </div>
+  <div class="sheet">
+    <label class="q" for="q">Su placa o su cédula</label>
+    <div class="plate" id="plate"><input id="q" autocomplete="off" autocapitalize="characters" spellcheck="false" placeholder="ABC123"><small id="plateTag">COLOMBIA</small></div>
+    <p class="ej" id="ej">Ejemplo: ABC123. Son las letras y números de la placa del carro o la moto.</p>
+    <button class="primary" id="go">Buscar</button>
+  </div>
+  <div class="under">
+    <nav class="menu" aria-label="Más">
+      <a class="howbtn alerta" href="verificar.html"><span>¿Le llegó un mensaje de una multa? Revise si es real</span><span class="ico"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></span></a>
+      <a class="howbtn" href="guia.html"><span>Cómo funciona una multa</span><span class="ico"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></span></a>
+      <a class="howbtn" href="comunidad.html"><span>Casos de otras personas</span><span class="ico"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></span></a>
+      <a class="howbtn" href="cifras.html"><span>Las multas en Colombia</span><span class="ico"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></span></a>
+    </nav>
+    <div class="tip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3 4 6v6c0 5 3.5 8 8 9 4.5-1 8-4 8-9V6z"/><path d="m8.5 12 2.5 2.5 4.5-5"/></svg><p><b>Es gratis y seguro.</b> No pedimos contraseñas ni datos del banco. Para pagar, lo llevamos a la página oficial.</p></div>
+    <button class="primary" id="instalar" hidden>Instalar en este celular</button>
+    <details class="card set"><summary>Opciones técnicas</summary>
+      <label for="proxy">Servidor de consultas</label>
+      <input id="proxy" placeholder="https://comparendos.su-cuenta.workers.dev" inputmode="url">
+      <small>Dirección del servidor que hace las consultas. Déjela vacía para usar el de la app.</small>
+    </details>
+  </div>
+</section>
+
+<section id="s2" hidden>
+  <div class="hero"><h1>Buscando…</h1></div>
+  <div class="sheet">
+    <svg class="ring" viewBox="0 0 120 120" aria-hidden="true"><circle class="bgc" cx="60" cy="60" r="50"/><circle class="fgc" id="arc" cx="60" cy="60" r="50" stroke-dasharray="314" stroke-dashoffset="314"/></svg>
+    <p class="now" id="now" aria-live="polite"></p>
+    <p class="muted" style="text-align:center">Estamos revisando varias ciudades. Puede tardar un minuto. No cierre esta pantalla.</p>
+  </div>
+</section>
+
+<section id="s3" hidden>
+  <div class="hero">
+    <div class="tools"><button class="tool" data-big>Letra grande</button><button class="tool" data-talk></button></div>
+    <div class="sum"><span class="lbl" id="who"></span><span class="amount" id="amount"></span><span class="lbl" id="title"></span></div>
+  </div>
+  <div class="content">
+    <div id="avisos" class="stack"></div>
+    <div id="fines" class="stack"></div>
+    <div id="pagadas"></div>
+    <div class="sheetcard" id="permisos" hidden></div>
+    <div class="miss" id="miss"></div>
+    <div class="tip" id="seguro" hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3 4 6v6c0 5 3.5 8 8 9 4.5-1 8-4 8-9V6z"/><path d="m8.5 12 2.5 2.5 4.5-5"/></svg><p><b>Cuidado con los engaños.</b> Tránsito no cobra por WhatsApp ni por mensajes de texto. Pague solo en la página oficial de su ciudad o en el SIMIT.</p></div>
+    <div class="alert" id="alerta" hidden><label for="watch"><b>Avisarme si llega otra</b><span class="muted">El teléfono revisa una vez al día.</span></label><input type="checkbox" class="switch" id="watch"></div>
+    <details class="card"><summary>¿Y si no pago?</summary>
+      <ol class="guide">
+        <li><span class="n">1</span><div><b>Con descuento</b><p>Si paga en los primeros 11 días hábiles después del aviso y hace el curso, paga la mitad.</p></div></li>
+        <li><span class="n">2</span><div><b>Precio completo</b><p>Hasta el día 26 paga 25&nbsp;% menos. Después, el precio completo.</p></div></li>
+        <li><span class="n">3</span><div><b>Cobro</b><p>Suben los intereses y le pueden embargar.</p></div></li>
+      </ol>
+      <a class="outline" href="guia.html">Ver la guía completa</a>
+    </details>
+  </div>
+  <div class="foot"><button class="outline" id="imprimir">Imprimir este resumen</button><button class="textbtn" id="again">Buscar otra placa</button></div>
+</section>
 </div>
-<div id="out"></div>
-</main>
+<script src="ui.js"></script>
 <script src="app.js"></script>
 </body>
 </html>
