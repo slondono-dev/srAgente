@@ -20,8 +20,8 @@ p{margin:0}
 .hero p{color:var(--on-navy-muted);margin:10px 0 0}
 h1{font:800 1.85rem/1.15 var(--display);margin:0;text-wrap:balance;letter-spacing:-.015em}
 h2{font:800 1.35rem/1.25 var(--display);margin:0;text-wrap:balance}
-.tools{display:flex;gap:10px;justify-content:flex-end;margin-bottom:20px;position:relative;z-index:1}
-.tool{display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:0 14px;border-radius:99px;border:1.5px solid #ffffff55;background:#ffffff14;color:var(--on-navy);font:700 .95rem var(--display);cursor:pointer;text-decoration:none}
+.tools{display:flex;flex-wrap:wrap;gap:10px;justify-content:flex-end;margin-bottom:20px;position:relative;z-index:1}
+.tool{display:inline-flex;align-items:center;gap:8px;min-height:52px;padding:0 16px;border-radius:99px;border:1.5px solid #ffffff55;background:#ffffff14;color:var(--on-navy);font:700 .95rem var(--display);cursor:pointer;text-decoration:none}
 .tool[aria-pressed="true"]{background:var(--sun);color:#0a2b5e;border-color:var(--sun)}
 .tool.back{margin-right:auto}
 .tool svg{width:20px;height:20px;flex:none}
@@ -46,4 +46,7 @@ button:focus-visible,a:focus-visible,summary:focus-visible,input:focus-visible{o
 .row2 a{color:var(--fg);font-weight:700;text-decoration-color:var(--sky);text-underline-offset:3px;flex:none;padding:8px 0}
 .textbtn{background:none;border:0;color:var(--fg);text-decoration:underline;text-decoration-color:var(--sky);text-underline-offset:4px;font:700 1.05rem var(--display);cursor:pointer;padding:16px;min-height:56px;justify-self:center}
 .stack{display:grid;gap:16px}.stack:empty{display:none}
-.sheetcard{background:var(--sheet);border-radius:20px;padding:20px;box-shadow:0 4px 18px -10px #0a2b5e40;display:grid;gap:14px}
+.sheetcard{background:var(--sheet);border-radius:20px;padding:20px;box-shadow:0 4px 18px -10px #0a2b5e40;display:grid;grid-template-columns:minmax(0,1fr);gap:14px}
+.tip{display:flex;gap:12px;align-items:flex-start;background:var(--green-soft);border-radius:16px;padding:14px 16px;font-size:.98rem}
+.tip svg{flex:none;width:26px;height:26px;color:var(--green);margin-top:2px}
+.tip b{font-family:var(--display)}

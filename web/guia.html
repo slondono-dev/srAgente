@@ -23,7 +23,9 @@
 .art{display:block;width:100%;height:auto;aspect-ratio:16/9;object-fit:cover;border-radius:14px;background:var(--sky-soft)}
 .step{font:800 .9rem var(--display);color:var(--sky);letter-spacing:.04em}
 /* reloj */
-input[type=range]{width:100%;height:44px;accent-color:var(--sun)}
+input[type=range]{width:100%;height:52px;accent-color:var(--sun);min-width:0}
+.paso{display:grid;grid-template-columns:60px 1fr 60px;gap:10px;align-items:center}
+.paso .outline{font-size:1.6rem;padding:0;min-height:56px}
 .daybig{font:800 2.4rem/1 var(--display);font-variant-numeric:tabular-nums}
 .ruler{display:grid;grid-template-columns:5fr 6fr 9fr 10fr 22fr;height:16px;border-radius:99px;overflow:hidden}
 .ruler span:nth-child(1){background:var(--green)}.ruler span:nth-child(2){background:var(--sky)}.ruler span:nth-child(3){background:var(--sun)}.ruler span:nth-child(4){background:var(--muted);opacity:.5}.ruler span:nth-child(5){background:var(--red)}
@@ -64,7 +66,7 @@ input[type=range]{width:100%;height:44px;accent-color:var(--sun)}
 <body>
 <div class="wrap">
 <header class="hero">
-  <div class="tools"><a class="tool back" href="./">Volver</a><button class="tool" data-big>A+</button><button class="tool" data-talk></button></div>
+  <div class="tools"><a class="tool back" href="./">Volver</a><button class="tool" data-big>Letra grande</button><button class="tool" data-talk></button></div>
   <h1>¿Me pusieron un comparendo? Así funciona</h1>
   <p>Por cámara o por un agente: del primer día al cobro.</p>
 </header>
@@ -91,15 +93,16 @@ input[type=range]{width:100%;height:44px;accent-color:var(--sun)}
   <h2>Le mandan el aviso al dueño del vehículo</h2>
   <p class="muted">Llega por correo certificado a la dirección que tiene registrada en el RUNT. Deben enviarlo en los <b>3 días hábiles</b> siguientes.</p>
   <div class="fact"><p>Si no lo encuentran, lo publican en la página de tránsito y <b>cuenta como si lo hubiera recibido</b>. Mantenga su dirección del RUNT al día.</p></div>
+  <div class="tip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3 4 6v6c0 5 3.5 8 8 9 4.5-1 8-4 8-9V6z"/><path d="m8.5 12 2.5 2.5 4.5-5"/></svg><p><b>Cuidado con los engaños.</b> Tránsito no cobra por WhatsApp ni por mensajes de texto. Pague solo en la página oficial de su ciudad o en el SIMIT.</p></div>
 </section>
 
 <section class="scene" id="reloj">
   <span class="step">3 · EL RELOJ</span>
   <img class="art" src="img/5-plazos-640.webp" srcset="img/5-plazos-640.webp 640w, img/5-plazos.webp 1200w" sizes="(max-width:520px) 92vw, 480px" width="1200" height="675" loading="lazy" alt="Un calendario y un reloj de arena.">
   <h2>Desde el aviso empieza a correr el tiempo</h2>
-  <p class="muted">Mueva la barra y mire qué puede hacer cada día. Son días hábiles: no cuentan sábados, domingos ni festivos. Al final de la barra empiezan los intereses.</p>
+  <p class="muted">Toque <b>+</b> o <b>−</b>, o mueva la barra, y mire qué puede hacer cada día. Son días hábiles: no cuentan sábados, domingos ni festivos. Al final de la barra empiezan los intereses.</p>
   <div><span class="daybig" id="d">Día 3</span> <span class="muted" id="du">después del aviso</span></div>
-  <input type="range" id="r" min="0" max="52" value="3" aria-label="Tiempo después del aviso">
+  <div class="paso"><button class="outline" id="menos" aria-label="Menos días">−</button><input type="range" id="r" min="0" max="52" value="3" aria-label="Tiempo después del aviso"><button class="outline" id="mas" aria-label="Más días">+</button></div>
   <div class="ruler" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span></div>
   <div class="ticks" aria-hidden="true"><span>0–5</span><span>6–11</span><span>12–20</span><span>21–30</span><span style="text-align:right">intereses</span></div>
   <div class="now">
@@ -183,8 +186,8 @@ function upd() {
   $("d").textContent = mora ? (meses === 1 ? "1 mes" : meses + " meses") : "Día " + d;
   $("du").textContent = mora ? "de mora" : "después del aviso";
   let disc, dt;
-  if (d <= 5) { disc = .5; dt = "Paga la mitad (50 % menos) hasta el día 5"; }
-  else if (d <= 20) { disc = .25; dt = "Paga 25 % menos hasta el día 20"; }
+  if (d <= 5) { disc = .5; dt = "Paga la mitad (50\u00a0% menos) hasta el día 5"; }
+  else if (d <= 20) { disc = .25; dt = "Paga 25\u00a0% menos hasta el día 20"; }
   else { disc = 0; dt = "Ya no hay descuento"; }
   const aud = d <= 11;
   $("o1").className = "opt " + (disc ? "on" : "off"); $("m1").textContent = disc ? "✓" : "✕"; $("t1").textContent = dt;
@@ -197,6 +200,8 @@ function upd() {
   $("pi").textContent = mora ? `${fmt(interes)} son intereses` : "";
 }
 r.oninput = upd; upd();
+$("menos").onclick = () => { r.value = +r.value - 1; upd(); };
+$("mas").onclick = () => { r.value = +r.value + 1; upd(); };
 
 // Escuchar: lee cada escena (título y texto principal), resaltándola.
 document.querySelector("[data-talk]").onclick = () => speak([...document.querySelectorAll(".scene")].map(s => {

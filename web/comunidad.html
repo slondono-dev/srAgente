@@ -13,7 +13,7 @@
 <link rel="stylesheet" href="base.css">
 <style>
 /* Historias en tarjetas simples: de dónde, qué pasó, cómo terminó. Contar la propia va arriba. */
-.wrap{max-width:560px;margin:0 auto;padding-inline:14px;padding-block:0 40px;display:grid;gap:18px}
+.wrap{max-width:560px;margin:0 auto;padding-inline:14px;padding-block:0 40px;display:grid;grid-template-columns:minmax(0,1fr);gap:18px}
 .wrap>.hero{margin-inline:-14px;padding-bottom:40px}
 .lift{margin-top:-36px;position:relative;z-index:1}
 .caso{background:var(--sheet);border-radius:20px;padding:20px;box-shadow:0 4px 18px -10px #0a2b5e40;display:grid;gap:10px}
@@ -31,7 +31,7 @@
 <body>
 <div class="wrap">
 <header class="hero">
-  <div class="tools"><a class="tool back" href="./">Volver</a><button class="tool" data-big>A+</button><button class="tool" data-talk></button></div>
+  <div class="tools"><a class="tool back" href="./">Volver</a><button class="tool" data-big>Letra grande</button><button class="tool" data-talk></button></div>
   <h1>Casos de otras personas</h1>
   <p>Lo que les pasó con una multa y cómo lo resolvieron.</p>
 </header>

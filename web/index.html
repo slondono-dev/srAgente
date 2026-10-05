@@ -23,11 +23,13 @@
 label.q{font-weight:700}
 .plate{background:var(--sun);border:3px solid #0f1d33;border-radius:14px;padding:6px 10px 4px;text-align:center;transition:background .2s}
 .plate.id{background:var(--bg);border-color:var(--line)}
+.ej{color:var(--muted);font-size:.98rem;margin-top:-6px}
+.ej.mal{color:var(--red);font-weight:700}
 .plate small{display:block;font:800 .8rem var(--display);letter-spacing:.35em;color:#0f1d33;min-height:1.1em}
 .plate.id small{color:var(--muted);letter-spacing:.1em}
 #q{width:100%;font:800 2.3rem var(--display);letter-spacing:.1em;text-transform:uppercase;padding:6px;border:0;background:none;color:#0f1d33;text-align:center}
 .plate.id #q{color:var(--fg)}
-#q::placeholder{color:#0f1d3366}
+#q::placeholder{color:#0f1d3333}
 .plate:focus-within{box-shadow:0 0 0 4px var(--sky-soft)}
 #q:focus{outline:none}
 .under{padding:20px 14px 28px;display:grid;gap:14px}
@@ -70,6 +72,7 @@ label.q{font-weight:700}
 #pagadas .row2{border-top:1px solid var(--line);padding:10px 0}
 @media print{.hero{background:none;color:#000;padding:0 0 12px}.tools,.foot,#alerta,.card:not(#pagadas .card),.primary,.outline,#miss details{display:none!important}
 .amount{color:#000}.sum .lbl{color:#333}.content{margin:0}.fine,.aviso,.miss{box-shadow:none;border:1px solid #999;break-inside:avoid}#pagadas details{display:block}}
+.set{box-shadow:none;background:none;padding:6px 4px}.set summary{font-size:.95rem;color:var(--muted)}
 .set input{width:100%;font:1rem var(--body);padding:12px;border-radius:10px;border:1.5px solid var(--line);background:var(--bg);color:var(--fg);margin-top:8px}
 .set small{display:block;color:var(--muted);margin-top:6px;font-size:.9rem}
 .alert{display:flex;gap:14px;align-items:center;background:var(--sheet);border-radius:20px;padding:18px 20px;box-shadow:0 4px 18px -10px #0a2b5e40}
@@ -86,13 +89,14 @@ label.q{font-weight:700}
 <div class="app">
 <section id="s1">
   <div class="hero">
-    <div class="tools"><button class="tool" data-big>A+</button><button class="tool" data-talk></button></div>
+    <div class="tools"><button class="tool" data-big>Letra grande</button><button class="tool" data-talk></button></div>
     <h1>¿Tiene multas de tránsito?</h1>
   </div>
   <div class="sheet">
     <label class="q" for="q">Su placa o su cédula</label>
     <div class="plate" id="plate"><input id="q" autocomplete="off" autocapitalize="characters" spellcheck="false" placeholder="ABC123"><small id="plateTag">COLOMBIA</small></div>
-    <button class="primary" id="go" disabled>Buscar</button>
+    <p class="ej" id="ej">Ejemplo: ABC123. Son las letras y números de la placa del carro o la moto.</p>
+    <button class="primary" id="go">Buscar</button>
   </div>
   <div class="under">
     <nav class="menu" aria-label="Más">
@@ -100,8 +104,9 @@ label.q{font-weight:700}
       <a class="howbtn" href="comunidad.html"><span>Casos de otras personas</span><span class="ico"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></span></a>
       <a class="howbtn" href="cifras.html"><span>Las multas en Colombia</span><span class="ico"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></span></a>
     </nav>
+    <div class="tip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3 4 6v6c0 5 3.5 8 8 9 4.5-1 8-4 8-9V6z"/><path d="m8.5 12 2.5 2.5 4.5-5"/></svg><p><b>Es gratis y seguro.</b> No pedimos contraseñas ni datos del banco. Para pagar, lo llevamos a la página oficial.</p></div>
     <button class="primary" id="instalar" hidden>Instalar en este celular</button>
-    <details class="card set"><summary>Ajustes</summary>
+    <details class="card set"><summary>Opciones técnicas</summary>
       <label for="proxy">Servidor de consultas</label>
       <input id="proxy" placeholder="https://comparendos.su-cuenta.workers.dev" inputmode="url">
       <small>Dirección del servidor que hace las consultas. Déjela vacía para usar el de la app.</small>
@@ -114,12 +119,13 @@ label.q{font-weight:700}
   <div class="sheet">
     <svg class="ring" viewBox="0 0 120 120" aria-hidden="true"><circle class="bgc" cx="60" cy="60" r="50"/><circle class="fgc" id="arc" cx="60" cy="60" r="50" stroke-dasharray="314" stroke-dashoffset="314"/></svg>
     <p class="now" id="now" aria-live="polite"></p>
+    <p class="muted" style="text-align:center">Estamos revisando varias ciudades. Puede tardar un minuto. No cierre esta pantalla.</p>
   </div>
 </section>
 
 <section id="s3" hidden>
   <div class="hero">
-    <div class="tools"><button class="tool" data-big>A+</button><button class="tool" data-talk></button></div>
+    <div class="tools"><button class="tool" data-big>Letra grande</button><button class="tool" data-talk></button></div>
     <div class="sum"><span class="lbl" id="who"></span><span class="amount" id="amount"></span><span class="lbl" id="title"></span></div>
   </div>
   <div class="content">
@@ -127,6 +133,7 @@ label.q{font-weight:700}
     <div id="fines" class="stack"></div>
     <div id="pagadas"></div>
     <div class="miss" id="miss"></div>
+    <div class="tip" id="seguro" hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3 4 6v6c0 5 3.5 8 8 9 4.5-1 8-4 8-9V6z"/><path d="m8.5 12 2.5 2.5 4.5-5"/></svg><p><b>Cuidado con los engaños.</b> Tránsito no cobra por WhatsApp ni por mensajes de texto. Pague solo en la página oficial de su ciudad o en el SIMIT.</p></div>
     <div class="alert" id="alerta" hidden><label for="watch"><b>Avisarme si llega otra</b><span class="muted">El teléfono revisa una vez al día.</span></label><input type="checkbox" class="switch" id="watch"></div>
     <details class="card"><summary>¿Y si no pago?</summary>
       <ol class="guide">

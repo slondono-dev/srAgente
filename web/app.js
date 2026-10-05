@@ -22,12 +22,20 @@ function kind(v) {
 }
 function hint() {
   const k = kind($("q").value);
-  $("go").disabled = !k;
+  if (k) $("ej").classList.remove("mal");
   $("plate").classList.toggle("id", k === "cedula");
   $("plateTag").textContent = k === "cedula" ? "CÉDULA" : "COLOMBIA";
 }
 $("q").oninput = hint;
-$("q").onkeydown = e => { if (e.key === "Enter" && !$("go").disabled) $("go").click(); };
+$("q").onkeydown = e => { if (e.key === "Enter") $("go").click(); };
+const EJ = $("ej").textContent;
+// El botón nunca se ve apagado: si falta algo, se explica qué escribir.
+function avisar() {
+  const v = $("q").value.trim();
+  $("ej").textContent = v ? "Revise lo que escribió. La placa tiene 3 letras y 3 números, como ABC123. La cédula, solo números." : "Primero escriba su placa o su cédula en el cuadro amarillo.";
+  $("ej").classList.add("mal");
+  $("q").focus();
+}
 hint();
 
 function show(id) { ["s1", "s2", "s3"].forEach(s => $(s).hidden = s !== id); scrollTo(0, 0); }
@@ -98,7 +106,8 @@ const VECINOS = [["bogota", "cundinamarca"]];
 
 $("go").onclick = async () => {
   const c = $("q").value.replace(/\s|-/g, "").toUpperCase(), tipo = kind(c);
-  if (!tipo) return;
+  if (!tipo) return avisar();
+  $("ej").textContent = EJ;
   show("s2");
   await listos;
   const auto = mapas.filter(m => m.modo === "auto" && m.plataforma === "quipux");
@@ -160,8 +169,8 @@ function resultado(c, res) {
     $("amount").textContent = fmt(0);
     $("title").textContent = "No aparecen multas sin pagar" + (pagadas.length ? `. Tiene ${pagadas.length} ya ${pagadas.length === 1 ? "pagada" : "pagadas"}.` : ".");
   } else {
-    $("amount").textContent = "Revíselo usted";
-    $("title").textContent = "No pudimos consultar desde aquí";
+    $("amount").textContent = "Sin respuesta";
+    $("title").textContent = "No pudimos consultar. Revise que tenga internet y toque Buscar otra vez.";
   }
 
   const pagar = f => (f.m || mapaDe(f.ciudad) || {}).front || linkSimit(c);
@@ -169,7 +178,7 @@ function resultado(c, res) {
     <span class="state ${prescrita(f) ? "" : "no"}">${prescrita(f) ? "Podría estar vencida" : "Sin pagar"}</span>
     <div class="mini"><span class="what">${f.fecha ? esc(dia(f.fecha)) : esc(f.w || "Comparendo")}</span><span class="amt">${f.valor ? fmt(f.valor) : ""}</span>
     <span class="where">${esc(f.ciudad)}${f.hoy ? " · consultado hoy" : ""}</span></div>
-    <a class="primary" href="${esc(pagar(f))}" target="_blank" rel="noopener">Pagar</a>
+    <a class="primary" href="${esc(pagar(f))}" target="_blank" rel="noopener">Pagar en la página oficial</a>
     <a class="outline" href="${esc(carta("pruebas", c, f))}">No fui yo: pedir las fotos</a></article>`).join("");
   $("pagadas").innerHTML = pagadas.length ? `<details class="card"><summary>Ya pagadas (${pagadas.length})</summary>
     ${pagadas.map(f => `<div class="row2"><span>${esc(dia(f.fecha))}<br><span class="muted">${esc(f.ciudad)}</span></span><b>${fmt(f.valor)}</b></div>`).join("")}</details>` : "";
@@ -179,9 +188,10 @@ function resultado(c, res) {
   const pend = mapas.filter(m => !ids.has(m.id) && m.id !== "simit");
   const fila = m => `<div class="row2"><b>${esc(corto(m))}</b><a href="${esc(m.front)}" target="_blank" rel="noopener">Abrir</a></div>`;
   $("miss").innerHTML = `<b>Multas de este año</b>
-    <p>${nac && nac.regs ? `El registro nacional llega hasta ${HASTA}.` : "No pudimos leer el registro nacional."} Para ver lo más reciente, revise el SIMIT.</p>
+    <p>${nac && nac.regs ? `El registro nacional llega hasta ${HASTA}.` : "No pudimos leer el registro nacional."} Para ver lo más reciente, revise el SIMIT, la página oficial de multas de todo el país.</p>
     <a class="primary" href="${esc(linkSimit(c))}" target="_blank" rel="noopener">Revisar en el SIMIT</a>
     ${pend.length ? `<details><summary>Otras ${pend.length} ciudades</summary>${pend.map(fila).join("")}</details>` : ""}`;
+  $("seguro").hidden = !debe.length;
   if (window.Android) {
     $("alerta").hidden = false;
     $("watch").checked = window.Android.vigilando(c);
@@ -197,7 +207,7 @@ function linkSimit(c) {
 }
 
 $("imprimir").onclick = () => { document.querySelectorAll("#pagadas details").forEach(d => d.open = true); print(); };
-$("again").onclick = () => { $("q").value = ""; hint(); show("s1"); $("q").focus(); };
+$("again").onclick = () => { $("q").value = ""; $("ej").textContent = EJ; $("ej").classList.remove("mal"); hint(); show("s1"); $("q").focus(); };
 
 document.querySelectorAll("[data-talk]").forEach(b => b.onclick = () => {
   if (!$("s3").hidden) {

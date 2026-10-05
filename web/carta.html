@@ -13,7 +13,7 @@
 <link rel="stylesheet" href="base.css">
 <style>
 /* Formulario corto arriba, la carta lista abajo; al imprimir solo sale la carta. */
-.wrap{max-width:560px;margin:0 auto;padding-inline:14px;padding-block:0 40px;display:grid;gap:18px}
+.wrap{max-width:560px;margin:0 auto;padding-inline:14px;padding-block:0 40px;display:grid;grid-template-columns:minmax(0,1fr);gap:18px}
 .wrap>.hero{margin-inline:-14px;padding-bottom:40px}
 .lift{margin-top:-36px;position:relative;z-index:1}
 .pick{display:grid;gap:12px}
@@ -35,7 +35,7 @@
 <body>
 <div class="wrap">
 <header class="hero">
-  <div class="tools"><a class="tool back" href="./">Volver</a><button class="tool" data-big>A+</button><button class="tool" data-talk></button></div>
+  <div class="tools"><a class="tool back" href="./">Volver</a><button class="tool" data-big>Letra grande</button><button class="tool" data-talk></button></div>
   <h1 id="titulo">Una carta para el tránsito</h1>
   <p id="bajada">Escriba sus datos. La carta se llena sola.</p>
 </header>
@@ -56,7 +56,7 @@
   <div class="field"><label for="contacto">Correo o dirección para la respuesta</label><input id="contacto" autocomplete="email"></div>
   <div class="field"><label for="celular">Celular</label><input id="celular" inputmode="tel" autocomplete="tel"></div>
   <p class="small">Sus datos se guardan solo en este celular. No se envían a ninguna parte.</p>
-  <details class="card"><summary>Datos de la multa</summary>
+  <details class="card" id="multa"><summary>Datos de la multa</summary>
     <div class="field"><label for="placa">Placa</label><input id="placa" autocapitalize="characters"></div>
     <div class="field"><label for="ciudad">Ciudad de la multa</label><input id="ciudad"></div>
     <div class="field"><label for="fecha">Fecha de la multa</label><input id="fecha" type="date"></div>
@@ -67,8 +67,8 @@
 
 <section class="sheetcard" id="hoja" hidden>
   <h2>2. Su carta</h2>
+  <p class="small" id="faltan">Lo que está en amarillo le falta por llenar.</p>
   <div class="paper" id="carta"></div>
-  <p class="small">Lo que está en amarillo le falta por llenar.</p>
 </section>
 
 <section class="stack" id="acciones" hidden>
@@ -76,6 +76,7 @@
   <button class="outline" id="copiar">Copiar el texto</button>
   <a class="outline" id="correo" href="#">Enviar por correo</a>
   <p class="ok" id="aviso" aria-live="polite"></p>
+  <p class="small">¿No tiene impresora? Toque <b>Copiar el texto</b> y envíelo por correo a la Secretaría, o muestre esta pantalla en una papelería para que se la impriman. Al enviar por correo, escriba usted la dirección de la Secretaría; está en su página web.</p>
 </section>
 
 <section class="sheetcard" id="despues" hidden>
@@ -84,7 +85,7 @@
     <li>Firme la carta.</li>
     <li>Llévela a la Secretaría de Movilidad de <b class="ciu">su ciudad</b>, o envíela por su página web o por correo. Lleve una copia de su cédula<span id="anexos"></span>.</li>
     <li>Pida el <b>número de radicado</b> y guárdelo. Es la prueba de que la entregó.</li>
-    <li>Tienen <b>15 días hábiles</b> para responder. Si no responden, puede poner una tutela.</li>
+    <li>Tienen <b>15 días hábiles</b> para responder. Si no responden, puede poner una <b>tutela</b>: una queja ante un juez que se hace sin abogado y es gratis.</li>
   </ol>
   <p class="small">Esta carta es un modelo basado en la ley. No reemplaza a un abogado.</p>
 </section>
@@ -124,6 +125,8 @@ else {
     pintar();
   }));
   pintar();
+  // Si falta algún dato de la multa, se deja abierto para que la persona lo vea.
+  if (["placa", "ciudad", "fecha"].some(k => !v(k))) $("multa").open = true;
 }
 
 function texto() {
@@ -187,6 +190,8 @@ function pintar() {
   const esc = s => s.replace(/[&<>]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;" })[c]);
   $("carta").innerHTML = esc(t).replace(/\[[^\]]+\]/g, m => `<span class="falta">${m}</span>`);
   document.querySelectorAll(".ciu").forEach(e => e.textContent = v("ciudad") || "su ciudad");
+  const n = new Set(t.match(/\[[^\]]+\]/g)).size;
+  $("faltan").textContent = n ? `Lo que está en amarillo le falta por llenar (${n === 1 ? "1 dato" : n + " datos"}).` : "La carta está completa. Ya la puede imprimir o enviar.";
   $("correo").href = "mailto:?" + new URLSearchParams({ subject: TIPOS[tipo].asunto, body: t }).toString().replace(/\+/g, "%20");
 }
 
