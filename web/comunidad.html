@@ -5,27 +5,47 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#0a2b5e">
 <title>Casos de otras personas</title>
-<meta name="description" content="Historias reales de personas con multas de tránsito: qué pasó, qué hicieron y cómo terminó.">
+<meta name="description" content="Historias reales de personas con multas de tránsito: qué pasó, qué hicieron y cómo terminó. Cuente la suya sin crear cuenta.">
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="icon" href="icon.svg">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;700;800&family=Atkinson+Hyperlegible:wght@400;700&display=swap">
 <link rel="stylesheet" href="base.css">
 <style>
-/* Historias en tarjetas simples: de dónde, qué pasó, cómo terminó. Contar la propia va arriba. */
+/* Historias en tarjetas simples: de dónde, qué pasó, cómo terminó. Contar la propia va arriba, sin crear cuenta. */
 .wrap{max-width:560px;margin:0 auto;padding-inline:14px;padding-block:0 40px;display:grid;grid-template-columns:minmax(0,1fr);gap:18px}
 .wrap>.hero{margin-inline:-14px;padding-bottom:40px}
 .lift{margin-top:-36px;position:relative;z-index:1}
-.caso{background:var(--sheet);border-radius:20px;padding:20px;box-shadow:0 4px 18px -10px #0a2b5e40;display:grid;gap:10px}
+.caso{background:var(--sheet);border-radius:20px;padding:20px;box-shadow:0 4px 18px -10px #0a2b5e40;display:grid;grid-template-columns:minmax(0,1fr);gap:12px}
 .caso .tipo{font:800 1.15rem/1.3 var(--display)}
 .caso .donde{color:var(--muted)}
-.caso .texto{white-space:pre-line}
+.caso .texto{white-space:pre-line;overflow-wrap:anywhere}
 .fin{display:inline-flex;align-items:center;gap:8px;font:700 1rem var(--display);padding:5px 12px;border-radius:99px;justify-self:start;background:var(--sky-soft)}
 .fin::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--sky)}
-.fin.si{background:var(--green-soft)}.fin.si::before{background:var(--green)}
-.fin.no{background:var(--red-soft)}.fin.no::before{background:var(--red)}
+.fin.ganado{background:var(--green-soft)}.fin.ganado::before{background:var(--green)}
+.fin.perdido{background:var(--red-soft)}.fin.perdido::before{background:var(--red)}
 .mas{background:none;border:0;padding:8px 0;min-height:44px;color:var(--fg);font:700 1rem var(--display);text-decoration:underline;text-decoration-color:var(--sky);text-underline-offset:4px;cursor:pointer;justify-self:start}
-.small{font-size:.92rem;color:var(--muted)}
+.small{font-size:.95rem;color:var(--muted)}
+.acciones{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.acciones .outline{font-size:1rem}
+.outline[aria-pressed="true"]{background:var(--green-soft);border-color:var(--green)}
+.field{display:grid;gap:6px}
+.field>label,.field legend{font:700 1.1rem var(--display);padding:0}
+fieldset{border:0;margin:0;padding:0;display:grid;gap:8px}
+.field input,.field textarea{font:1.15rem/1.5 var(--body);min-height:60px;padding:10px 14px;border-radius:14px;border:2px solid var(--muted);background:var(--sheet);color:var(--fg);width:100%}
+.field textarea{min-height:160px;resize:vertical}
+.field input:focus,.field textarea:focus{outline:3px solid var(--sky);outline-offset:2px}
+.opcion{display:flex;gap:14px;align-items:center;min-height:60px;padding:10px 14px;border:2px solid var(--line);border-radius:14px;cursor:pointer;font-weight:700}
+.opcion input{width:26px;height:26px;accent-color:var(--navy);flex:none;margin:0}
+.opcion:has(input:checked){border-color:var(--sky);background:var(--sky-soft)}
+.error{color:var(--red);font-weight:700}
+.ok{background:var(--green-soft);border-radius:16px;padding:16px;font-weight:700}
+.coments{display:grid;gap:10px;border-top:2px solid var(--line);padding-top:12px}
+.coment{background:var(--bg);border-radius:14px;padding:12px 14px;display:grid;gap:4px}
+.coment p{white-space:pre-line;overflow-wrap:anywhere}
+.coment .quien{font-weight:700}
+.coment button{justify-self:start;background:none;border:0;color:var(--muted);font:.9rem var(--body);text-decoration:underline;padding:6px 0;min-height:36px;cursor:pointer}
+.trampa{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
 </style>
 </head>
 <body>
@@ -36,60 +56,218 @@
   <p>Lo que les pasó con una multa y cómo lo resolvieron.</p>
 </header>
 
-<section class="sheetcard lift">
+<section class="sheetcard lift" id="invita">
   <h2>¿Le pasó algo parecido?</h2>
   <p>Su historia puede ayudar a otra persona a no pagar lo que no debe.</p>
-  <a class="primary" href="https://github.com/slondono-dev/srAgente/issues/new?template=caso.yml" target="_blank" rel="noopener">Contar mi caso</a>
-  <p class="small">Se necesita una cuenta gratuita de GitHub. Si no tiene, pida ayuda a un familiar. Revisamos cada historia antes de publicarla.</p>
+  <button class="primary" id="abrir">Contar mi caso</button>
+  <p class="small" id="notaCuenta">No necesita crear cuenta. Revisamos cada historia antes de publicarla.</p>
 </section>
+
+<form class="sheetcard" id="form" hidden novalidate>
+  <h2>Cuente su caso</h2>
+  <div class="field"><label for="ciudad">1. ¿En qué ciudad fue la multa?</label><input id="ciudad" maxlength="60" autocomplete="address-level2"></div>
+  <fieldset class="field"><legend>2. ¿Qué le pasó?</legend>
+    <label class="opcion"><input type="radio" name="tipo" value="clonada">Me llegó una multa de un carro que no es el mío</label>
+    <label class="opcion"><input type="radio" name="tipo" value="tarde">La multa me llegó muy tarde o nunca me llegó</label>
+    <label class="opcion"><input type="radio" name="tipo" value="sin_aviso">La cámara no tenía aviso</label>
+    <label class="opcion"><input type="radio" name="tipo" value="ya_pagada">Me cobraron una multa que ya pagué</label>
+    <label class="opcion"><input type="radio" name="tipo" value="vencida">Me cobraron una multa muy vieja</label>
+    <label class="opcion"><input type="radio" name="tipo" value="otro">Otra cosa</label>
+  </fieldset>
+  <div class="field"><label for="historia">3. Cuéntenos qué pasó</label>
+    <p class="small">Qué pasó, qué hizo y qué le respondieron. <b>No escriba su cédula, dirección, teléfono ni placa.</b></p>
+    <textarea id="historia" maxlength="2000"></textarea></div>
+  <fieldset class="field"><legend>4. ¿Cómo terminó?</legend>
+    <label class="opcion"><input type="radio" name="resultado" value="pendiente" checked>Todavía no sé</label>
+    <label class="opcion"><input type="radio" name="resultado" value="ganado">Me quitaron la multa</label>
+    <label class="opcion"><input type="radio" name="resultado" value="perdido">No me la quitaron</label>
+  </fieldset>
+  <div class="field"><label for="nombre">5. Su nombre (si quiere)</label><input id="nombre" maxlength="40" autocomplete="given-name" placeholder="Solo el primer nombre"></div>
+  <div class="trampa" aria-hidden="true"><label>No llenar<input id="web" tabindex="-1" autocomplete="off"></label></div>
+  <p class="error" id="errForm" aria-live="assertive"></p>
+  <button class="primary" type="submit" id="enviar">Enviar mi historia</button>
+  <button class="textbtn" type="button" id="cancelar">Cancelar</button>
+</form>
+
+<div class="ok" id="gracias" hidden tabindex="-1">Gracias. Revisaremos su historia y la publicaremos pronto.</div>
 
 <section class="stack" id="casos" aria-live="polite"><div class="sheetcard"><p>Cargando los casos…</p></div></section>
 </div>
+<script src="config.js"></script>
 <script src="ui.js"></script>
 <script>
 const $ = id => document.getElementById(id);
-const esc = s => String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]);
-// Solo se muestran los casos que el equipo marcó como "publicado" en GitHub.
-const API = "https://api.github.com/repos/slondono-dev/srAgente/issues?labels=publicado&state=all&per_page=50";
-// El formulario de GitHub guarda cada respuesta bajo un título "### Pregunta".
-const partes = body => Object.fromEntries((body || "").split(/^### /m).slice(1).map(b => {
-  const [t, ...r] = b.split("\n");
-  return [t.trim(), r.join("\n").trim()];
-}));
+const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]);
+const C = window.COMUNIDAD || {};
+const conBase = !!(C.url && C.key);
+const TIPOS = { clonada: "Me llegó una multa de un carro que no es el mío", tarde: "La multa me llegó muy tarde o nunca me llegó",
+  sin_aviso: "La cámara no tenía aviso", ya_pagada: "Me cobraron una multa que ya pagué", vencida: "Me cobraron una multa muy vieja", otro: "Otra cosa" };
+const FIN = { pendiente: "Todavía no sé", ganado: "Me quitaron la multa", perdido: "No me la quitaron" };
 const CORTO = 320;
-let leer = [];
+const mes = d => new Date(d).toLocaleDateString("es-CO", { month: "long", year: "numeric" });
+let casos = [], leer = [];
 
-fetch(API, { headers: { Accept: "application/vnd.github+json" } }).then(r => { if (!r.ok) throw 0; return r.json(); }).then(issues => {
-  const casos = issues.filter(i => !i.pull_request).map(i => {
-    const p = partes(i.body);
-    return { url: i.html_url, ciudad: p["Ciudad"] || "", tipo: p["¿Qué pasó?"] || i.title.replace(/^Mi caso:\s*/, ""),
-      texto: p["Cuéntenos su historia"] || "", fin: p["¿Cómo terminó?"] || "", comentarios: i.comments,
-      fecha: new Date(i.created_at).toLocaleDateString("es-CO", { month: "long", year: "numeric" }) };
+// Supabase por su API REST: sin librerías. La seguridad (qué se ve y qué se puede escribir) está en supabase/schema.sql.
+async function api(ruta, { body, pref } = {}) {
+  const r = await fetch(`${C.url}/rest/v1/${ruta}`, {
+    method: body ? "POST" : "GET",
+    headers: { apikey: C.key, Authorization: `Bearer ${C.key}`, "Content-Type": "application/json", ...(pref ? { Prefer: pref } : {}) },
+    body: body && JSON.stringify(body)
   });
+  if (!r.ok) throw new Error((await r.json().catch(() => ({}))).message || r.status);
+  const t = await r.text();
+  return t ? JSON.parse(t) : null;
+}
+
+// Datos personales que no deben quedar publicados.
+function privado(t) {
+  for (const m of t.matchAll(/(\$\s?)?\d[\d.\s-]{5,14}\d/g)) {
+    const dig = m[0].replace(/\D/g, ""), luego = t.slice(m.index + m[0].length, m.index + m[0].length + 8);
+    if (!m[1] && dig.length >= 7 && dig.length <= 10 && !/^\s*(pesos|mil)/i.test(luego)) return "Parece que escribió una cédula o un teléfono. Bórrelo antes de enviar.";
+  }
+  if (/\S+@\S+\.\S+/.test(t)) return "Parece que escribió un correo. Bórrelo antes de enviar.";
+  if (/\b[A-Z]{3}\s?-?\d{2}[A-Z0-9]\b/i.test(t)) return "Parece que escribió una placa. Bórrela antes de enviar.";
+  return "";
+}
+
+// ---------- Lista de casos ----------
+async function cargar() {
+  try {
+    casos = conBase ? await api("casos?select=id,creado,ciudad,tipo,historia,resultado,nombre,utiles,comentarios(count)&order=creado.desc&limit=60")
+      .then(rs => rs.map(c => ({ ...c, n: (c.comentarios[0] || {}).count || 0 })))
+      : await deGitHub();
+  } catch { $("casos").innerHTML = '<div class="sheetcard"><p>No pudimos cargar los casos. Revise su conexión e intente de nuevo.</p></div>'; return; }
+  pintar();
+}
+
+function pintar() {
   if (!casos.length) {
     $("casos").innerHTML = '<div class="sheetcard"><h2>Todavía no hay casos publicados</h2><p>Sea la primera persona en contar el suyo.</p></div>';
     leer = [[null, "Todavía no hay casos publicados."]];
     return;
   }
+  const util = votos();
   $("casos").innerHTML = casos.map((c, i) => {
-    const largo = c.texto.length > CORTO;
-    const cls = /quitaron la multa$/.test(c.fin) ? (/^No /.test(c.fin) ? "no" : "si") : "";
-    return `<article class="caso">
-      <span class="tipo">${esc(c.tipo)}</span>
-      <span class="donde">${esc(c.ciudad)}${c.ciudad ? " · " : ""}${esc(c.fecha)}</span>
-      <p class="texto" id="t${i}">${esc(largo ? c.texto.slice(0, CORTO).replace(/\s+\S*$/, "") + "…" : c.texto)}</p>
-      ${largo ? `<button class="mas" data-i="${i}">Leer todo</button>` : ""}
-      ${c.fin ? `<span class="fin ${cls}">${esc(c.fin)}</span>` : ""}
-      <a class="outline" href="${esc(c.url)}" target="_blank" rel="noopener">${c.comentarios ? `Ver ${c.comentarios} ${c.comentarios === 1 ? "comentario" : "comentarios"} y comentar` : "Comentar"}</a>
+    const largo = c.historia.length > CORTO;
+    return `<article class="caso" id="caso${i}">
+      <span class="tipo">${esc(TIPOS[c.tipo] || c.tipo)}</span>
+      <span class="donde">${esc(c.ciudad)} · ${esc(mes(c.creado))}${c.nombre ? ` · ${esc(c.nombre)}` : ""}</span>
+      <p class="texto" id="t${i}">${esc(largo ? c.historia.slice(0, CORTO).replace(/\s+\S*$/, "") + "…" : c.historia)}</p>
+      ${largo ? `<button class="mas" data-mas="${i}">Leer todo</button>` : ""}
+      <span class="fin ${esc(c.resultado)}">${esc(FIN[c.resultado] || c.resultado)}</span>
+      ${c.url ? `<a class="outline" href="${esc(c.url)}" target="_blank" rel="noopener">Comentar</a>` : `<div class="acciones">
+        <button class="outline" data-util="${i}" aria-pressed="${util.includes(c.id)}">Me sirvió${c.utiles ? ` (${c.utiles})` : ""}</button>
+        <button class="outline" data-ver="${i}" aria-expanded="false">${c.n ? `Comentarios (${c.n})` : "Comentar"}</button></div>
+      <div class="coments" id="co${i}" hidden></div>`}
     </article>`;
   }).join("");
-  document.querySelectorAll(".mas").forEach(b => b.onclick = () => { $("t" + b.dataset.i).textContent = casos[b.dataset.i].texto; b.remove(); });
-  leer = [...document.querySelectorAll(".caso")].map((el, i) => [el, `${casos[i].tipo}. En ${casos[i].ciudad}. ${casos[i].texto} ${casos[i].fin}`]);
-}).catch(() => {
-  $("casos").innerHTML = '<div class="sheetcard"><p>No pudimos cargar los casos. Revise su conexión e intente de nuevo.</p></div>';
+  leer = casos.map((c, i) => [$("caso" + i), `${TIPOS[c.tipo] || c.tipo}. En ${c.ciudad}. ${c.historia} ${FIN[c.resultado] || ""}`]);
+}
+
+$("casos").addEventListener("click", async e => {
+  const b = e.target.closest("button");
+  if (!b) return;
+  if (b.dataset.mas) { $("t" + b.dataset.mas).textContent = casos[b.dataset.mas].historia; b.remove(); }
+  if (b.dataset.util) marcarUtil(b, casos[b.dataset.util]);
+  if (b.dataset.ver) verComentarios(b, +b.dataset.ver);
+  if (b.dataset.reportar) {
+    b.disabled = true; b.textContent = "Gracias, lo revisaremos";
+    api("rpc/reportar", { body: { comentario: +b.dataset.reportar } }).catch(() => {});
+  }
 });
 
-document.querySelectorAll("[data-talk]").forEach(b => b.onclick = () => speak(leer.length ? leer : [[null, "Aquí están las historias de otras personas con multas. Si le pasó algo parecido, toque Contar mi caso."]]));
+const votos = () => { try { return JSON.parse(localStorage.getItem("utiles") || "[]"); } catch { return []; } };
+async function marcarUtil(b, c) {
+  const v = votos();
+  if (v.includes(c.id)) return;
+  b.setAttribute("aria-pressed", "true");
+  try {
+    c.utiles = await api("rpc/marcar_util", { body: { caso: c.id } }) || c.utiles + 1;
+    b.textContent = `Me sirvió (${c.utiles})`;
+    localStorage.setItem("utiles", JSON.stringify([...v, c.id]));
+  } catch { b.setAttribute("aria-pressed", "false"); }
+}
+
+// ---------- Comentarios ----------
+async function verComentarios(b, i) {
+  const box = $("co" + i), abierto = b.getAttribute("aria-expanded") === "true";
+  b.setAttribute("aria-expanded", String(!abierto));
+  box.hidden = abierto;
+  if (abierto) return;
+  box.innerHTML = "<p>Cargando…</p>";
+  let cs = [];
+  try { cs = await api(`comentarios?caso_id=eq.${casos[i].id}&select=id,creado,texto,nombre&order=creado.asc`); }
+  catch { box.innerHTML = "<p>No pudimos cargar los comentarios.</p>"; return; }
+  box.innerHTML = cs.map(c => `<div class="coment"><span class="quien">${esc(c.nombre || "Anónimo")} · <span class="small">${esc(mes(c.creado))}</span></span>
+      <p>${esc(c.texto)}</p><button data-reportar="${c.id}">Reportar</button></div>`).join("") + `
+    <form class="stack" data-caso="${i}" novalidate>
+      <div class="field"><label for="ct${i}">Escriba un comentario</label><textarea id="ct${i}" maxlength="800" style="min-height:110px"></textarea></div>
+      <div class="field"><label for="cn${i}">Su nombre (si quiere)</label><input id="cn${i}" maxlength="40" autocomplete="given-name"></div>
+      <p class="error" aria-live="assertive"></p>
+      <button class="primary" type="submit">Enviar comentario</button>
+    </form>`;
+  box.querySelector("form").onsubmit = enviarComentario;
+}
+
+async function enviarComentario(e) {
+  e.preventDefault();
+  const f = e.target, i = +f.dataset.caso, err = f.querySelector(".error");
+  const texto = $("ct" + i).value.trim(), nombre = $("cn" + i).value.trim();
+  if (texto.length < 2) { err.textContent = "Escriba su comentario primero."; return; }
+  const p = privado(texto); if (p) { err.textContent = p; return; }
+  f.querySelector("button").disabled = true;
+  try {
+    await api("comentarios", { body: { caso_id: casos[i].id, texto, nombre: nombre || null }, pref: "return=minimal" });
+    casos[i].n++;
+    const b = document.querySelector(`[data-ver="${i}"]`);
+    b.setAttribute("aria-expanded", "false"); b.textContent = `Comentarios (${casos[i].n})`;
+    verComentarios(b, i);
+  } catch (x) { err.textContent = "No se pudo enviar. " + (/Demasiados/.test(x.message) ? x.message : "Revise su conexión e intente de nuevo."); f.querySelector("button").disabled = false; }
+}
+
+// ---------- Contar un caso ----------
+$("abrir").onclick = () => {
+  if (!conBase) { open("https://github.com/slondono-dev/srAgente/issues/new?template=caso.yml", "_blank", "noopener"); return; }
+  $("form").hidden = false; $("invita").hidden = true; $("gracias").hidden = true; $("ciudad").focus();
+};
+$("form").oninput = () => { $("errForm").textContent = ""; };
+$("cancelar").onclick = () => { $("form").hidden = true; $("invita").hidden = false; };
+$("form").onsubmit = async e => {
+  e.preventDefault();
+  const err = m => { $("errForm").textContent = m; return false; };
+  const ciudad = $("ciudad").value.trim(), historia = $("historia").value.trim(), nombre = $("nombre").value.trim();
+  const tipo = (document.querySelector("[name=tipo]:checked") || {}).value, resultado = document.querySelector("[name=resultado]:checked").value;
+  if ($("web").value) return;  // robot
+  if (ciudad.length < 2) return err("Escriba la ciudad de la multa (paso 1).");
+  if (!tipo) return err("Elija qué le pasó (paso 2).");
+  if (historia.length < 20) return err("Cuéntenos un poco más de lo que pasó (paso 3).");
+  const p = privado(historia + " " + nombre); if (p) return err(p);
+  err("");
+  $("enviar").disabled = true; $("enviar").textContent = "Enviando…";
+  try {
+    await api("casos", { body: { ciudad, tipo, historia, resultado, nombre: nombre || null }, pref: "return=minimal" });
+    $("form").reset(); $("form").hidden = true; $("invita").hidden = false;
+    $("gracias").hidden = false; $("gracias").focus();
+  } catch (x) { err("No se pudo enviar. " + (/Demasiados/.test(x.message) ? x.message : "Revise su conexión e intente de nuevo.")); }
+  $("enviar").disabled = false; $("enviar").textContent = "Enviar mi historia";
+};
+
+// Mientras no esté configurada la base de datos, los casos vienen de GitHub (etiqueta "publicado").
+async function deGitHub() {
+  $("notaCuenta").textContent = "Por ahora se necesita una cuenta gratuita de GitHub. Si no tiene, pida ayuda a un familiar.";
+  const r = await fetch("https://api.github.com/repos/slondono-dev/srAgente/issues?labels=publicado&state=all&per_page=50");
+  if (!r.ok) throw 0;
+  const partes = body => Object.fromEntries((body || "").split(/^### /m).slice(1).map(b => { const [t, ...x] = b.split("\n"); return [t.trim(), x.join("\n").trim()]; }));
+  const tipoDe = t => Object.keys(TIPOS).find(k => TIPOS[k].split(" ").slice(0, 4).join(" ") === String(t).split(" ").slice(0, 4).join(" ")) || "otro";
+  const finDe = t => /^Me quitaron/.test(t) ? "ganado" : /^No me/.test(t) ? "perdido" : "pendiente";
+  return (await r.json()).filter(i => !i.pull_request).map(i => { const p = partes(i.body);
+    return { id: i.number, url: i.html_url, creado: i.created_at, ciudad: p["Ciudad"] || "", tipo: tipoDe(p["¿Qué pasó?"]), historia: p["Cuéntenos su historia"] || "", resultado: finDe(p["¿Cómo terminó?"] || ""), utiles: 0, n: i.comments }; });
+}
+
+cargar();
+document.querySelectorAll("[data-talk]").forEach(b => b.onclick = () => speak(!$("form").hidden
+  ? [[null, "Para contar su caso: escriba la ciudad, elija qué le pasó, cuéntenos la historia sin datos personales y toque Enviar mi historia."]]
+  : leer.length ? leer : [[null, "Aquí están las historias de otras personas con multas. Si le pasó algo parecido, toque Contar mi caso."]]));
 </script>
 </body>
 </html>

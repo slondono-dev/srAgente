@@ -13,6 +13,10 @@ jobs:
           distribution: temurin
           java-version: "17"
       - uses: gradle/actions/setup-gradle@v4
+      - run: scripts/config.sh
+        env:
+          SUPABASE_URL: ${{ vars.SUPABASE_URL }}
+          SUPABASE_ANON_KEY: ${{ vars.SUPABASE_ANON_KEY }}
       # gradle.properties apunta al JDK de Windows del equipo local.
       - run: sed -i '/org.gradle.java.home/d' gradle.properties
       - run: chmod +x gradlew && ./gradlew --no-daemon :app:assembleDebug

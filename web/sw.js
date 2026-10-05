@@ -5,7 +5,7 @@ const MAPS = ["simit", "medellin", "bello", "itagui", "envigado", "sabaneta", "r
   "santamarta", "valledupar"].map(id => `maps/${id}.json`);
 const SCENES = ["1-camara", "2-agente", "3-notificacion", "4-sorpresa", "5-plazos", "6-caminos", "7-vehiculo",
   "8-senalizacion", "9-audiencia", "10-consecuencias", "11-robo", "12-venta", "13-llaves"].map(n => `img/${n}-640.webp`);
-const ASSETS = ["./", "index.html", "guia.html", "carta.html", "cifras.html", "comunidad.html", "verificar.html", "base.css", "ui.js", "app.js", "manifest.webmanifest", "icon.svg", "icon-192.png", "icon-512.png",
+const ASSETS = ["./", "index.html", "config.js", "guia.html", "carta.html", "cifras.html", "comunidad.html", "verificar.html", "base.css", "ui.js", "app.js", "manifest.webmanifest", "icon.svg", "icon-192.png", "icon-512.png",
   "icon-maskable-512.png", "apple-touch-icon.png", ...MAPS, ...SCENES];
 self.addEventListener("install", e => e.waitUntil(caches.open(C).then(c => c.addAll(ASSETS)).then(() => self.skipWaiting())));
 self.addEventListener("activate", e => e.waitUntil(caches.keys()
