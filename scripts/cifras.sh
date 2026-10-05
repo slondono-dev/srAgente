@@ -23,6 +23,9 @@ jq -n --slurpfile a /tmp/anio.json --slurpfile an /tmp/anio-no.json --slurpfile 
     ciudades: ($c[0] | map({ciudad, departamento, n: (.n|num), v: (.v|num), sin_pagar_n: ($cno["\(.ciudad)|\(.departamento)"].n // 0)}) | sort_by(-.n) | .[0:15]),
     camaras: {operando: ($cam | map(select(. == "Operando")) | length),
               por_instalar: ($cam | map(select(test("instalar"))) | length),
-              vencidas: ($cam | map(select(test("Vencida|Expirada"))) | length)}
+              vencidas: ($cam | map(select(test("Vencida|Expirada"))) | length)},
+    camaras_municipio: ($s[0].results | map({m: .municipio, d: .departamento, e: [.ubicaciones[]?.estado_operacion]})
+      | group_by(.m) | map({m: .[0].m, d: .[0].d, op: ([.[].e[] | select(. == "Operando")] | length),
+        ven: ([.[].e[] | select(test("Vencida|Expirada"))] | length)}) | map(select(.op + .ven > 0)))
   }' > data/cifras.json
 jq -c '{actualizado, municipios, camaras, anios: (.anios|length), top: .ciudades[0]}' data/cifras.json

@@ -65,6 +65,8 @@ label.q{font-weight:700}
 .guide b{font-family:var(--display)}
 .guide p{margin:2px 0 0;color:var(--muted)}
 .menu{display:grid;gap:12px}
+.howbtn.alerta{background:var(--red-soft);border:2px solid var(--red)}
+.howbtn.alerta .ico{background:var(--sheet);color:var(--red)}
 .state.no{background:var(--red-soft)}.state.no::before{background:var(--red)}
 .aviso{border-radius:20px;padding:20px;display:grid;gap:12px;border:3px solid}
 .aviso.sun{background:var(--sun-soft);border-color:var(--sun)}
@@ -100,6 +102,7 @@ label.q{font-weight:700}
   </div>
   <div class="under">
     <nav class="menu" aria-label="Más">
+      <a class="howbtn alerta" href="verificar.html"><span>¿Le llegó un mensaje de una multa? Revise si es real</span><span class="ico"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></span></a>
       <a class="howbtn" href="guia.html"><span>Cómo funciona una multa</span><span class="ico"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></span></a>
       <a class="howbtn" href="comunidad.html"><span>Casos de otras personas</span><span class="ico"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></span></a>
       <a class="howbtn" href="cifras.html"><span>Las multas en Colombia</span><span class="ico"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></span></a>
@@ -132,13 +135,14 @@ label.q{font-weight:700}
     <div id="avisos" class="stack"></div>
     <div id="fines" class="stack"></div>
     <div id="pagadas"></div>
+    <div class="sheetcard" id="permisos" hidden></div>
     <div class="miss" id="miss"></div>
     <div class="tip" id="seguro" hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3 4 6v6c0 5 3.5 8 8 9 4.5-1 8-4 8-9V6z"/><path d="m8.5 12 2.5 2.5 4.5-5"/></svg><p><b>Cuidado con los engaños.</b> Tránsito no cobra por WhatsApp ni por mensajes de texto. Pague solo en la página oficial de su ciudad o en el SIMIT.</p></div>
     <div class="alert" id="alerta" hidden><label for="watch"><b>Avisarme si llega otra</b><span class="muted">El teléfono revisa una vez al día.</span></label><input type="checkbox" class="switch" id="watch"></div>
     <details class="card"><summary>¿Y si no pago?</summary>
       <ol class="guide">
-        <li><span class="n">1</span><div><b>Con descuento</b><p>Los primeros días paga hasta la mitad.</p></div></li>
-        <li><span class="n">2</span><div><b>Precio completo</b><p>Después pierde el descuento.</p></div></li>
+        <li><span class="n">1</span><div><b>Con descuento</b><p>Si paga en los primeros 11 días hábiles después del aviso y hace el curso, paga la mitad.</p></div></li>
+        <li><span class="n">2</span><div><b>Precio completo</b><p>Hasta el día 26 paga 25&nbsp;% menos. Después, el precio completo.</p></div></li>
         <li><span class="n">3</span><div><b>Cobro</b><p>Suben los intereses y le pueden embargar.</p></div></li>
       </ol>
       <a class="outline" href="guia.html">Ver la guía completa</a>

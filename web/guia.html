@@ -27,9 +27,9 @@ input[type=range]{width:100%;height:52px;accent-color:var(--sun);min-width:0}
 .paso{display:grid;grid-template-columns:60px 1fr 60px;gap:10px;align-items:center}
 .paso .outline{font-size:1.6rem;padding:0;min-height:56px}
 .daybig{font:800 2.4rem/1 var(--display);font-variant-numeric:tabular-nums}
-.ruler{display:grid;grid-template-columns:5fr 6fr 9fr 10fr 22fr;height:16px;border-radius:99px;overflow:hidden}
-.ruler span:nth-child(1){background:var(--green)}.ruler span:nth-child(2){background:var(--sky)}.ruler span:nth-child(3){background:var(--sun)}.ruler span:nth-child(4){background:var(--muted);opacity:.5}.ruler span:nth-child(5){background:var(--red)}
-.ticks{display:grid;grid-template-columns:5fr 6fr 9fr 10fr 22fr;font-size:.8rem;color:var(--muted)}
+.ruler{display:grid;grid-template-columns:11fr 15fr 4fr 22fr;height:16px;border-radius:99px;overflow:hidden}
+.ruler span:nth-child(1){background:var(--green)}.ruler span:nth-child(2){background:var(--sun)}.ruler span:nth-child(3){background:var(--muted);opacity:.5}.ruler span:nth-child(4){background:var(--red)}
+.ticks{display:grid;grid-template-columns:11fr 15fr 4fr 22fr;font-size:.8rem;color:var(--muted)}
 .now{display:grid;gap:10px}
 .opt{display:flex;gap:12px;align-items:center;padding:12px 14px;border-radius:14px;border:2px solid var(--line)}
 .opt.on{border-color:var(--green);background:var(--green-soft)}
@@ -83,7 +83,7 @@ input[type=range]{width:100%;height:52px;accent-color:var(--sun);min-width:0}
   <span class="step">O TAMBIÉN · UN AGENTE</span>
   <img class="art" src="img/2-agente-640.webp" srcset="img/2-agente-640.webp 640w, img/2-agente.webp 1200w" sizes="(max-width:520px) 92vw, 480px" width="1200" height="675" loading="lazy" alt="Un agente de tránsito entrega un papel al conductor por la ventana.">
   <h2>Si lo para un agente, el aviso es en el momento</h2>
-  <p class="muted">El agente le entrega el comparendo en la calle. Ese mismo día empieza a correr el reloj, con los mismos plazos que una fotomulta.</p>
+  <p class="muted">El agente le entrega el comparendo en la calle. Ese mismo día empieza a correr el reloj, y los plazos son más cortos: <b>5 días hábiles</b> para pagar la mitad o pedir audiencia, y <b>20</b> para pagar 25&nbsp;% menos.</p>
   <div class="fact"><p><b>Revise lo que firma.</b> Si no está de acuerdo, puede pedir audiencia.</p></div>
 </section>
 
@@ -99,19 +99,19 @@ input[type=range]{width:100%;height:52px;accent-color:var(--sun);min-width:0}
 <section class="scene" id="reloj">
   <span class="step">3 · EL RELOJ</span>
   <img class="art" src="img/5-plazos-640.webp" srcset="img/5-plazos-640.webp 640w, img/5-plazos.webp 1200w" sizes="(max-width:520px) 92vw, 480px" width="1200" height="675" loading="lazy" alt="Un calendario y un reloj de arena.">
-  <h2>Desde el aviso empieza a correr el tiempo</h2>
+  <h2>Fotomulta: desde el aviso empieza a correr el tiempo</h2>
   <p class="muted">Toque <b>+</b> o <b>−</b>, o mueva la barra, y mire qué puede hacer cada día. Son días hábiles: no cuentan sábados, domingos ni festivos. Al final de la barra empiezan los intereses.</p>
   <div><span class="daybig" id="d">Día 3</span> <span class="muted" id="du">después del aviso</span></div>
   <div class="paso"><button class="outline" id="menos" aria-label="Menos días">−</button><input type="range" id="r" min="0" max="52" value="3" aria-label="Tiempo después del aviso"><button class="outline" id="mas" aria-label="Más días">+</button></div>
-  <div class="ruler" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span></div>
-  <div class="ticks" aria-hidden="true"><span>0–5</span><span>6–11</span><span>12–20</span><span>21–30</span><span style="text-align:right">intereses</span></div>
+  <div class="ruler" aria-hidden="true"><span></span><span></span><span></span><span></span></div>
+  <div class="ticks" aria-hidden="true"><span>Día 0 a 11</span><span>12 a 26</span><span></span><span style="text-align:right">intereses</span></div>
   <div class="now">
     <div class="opt" id="o1"><span class="mk" id="m1"></span><div><b>Pagar con descuento</b><br><span class="muted" id="t1"></span></div></div>
     <div class="opt" id="o2"><span class="mk" id="m2"></span><div><b>Pedir audiencia</b><br><span class="muted" id="t2"></span></div></div>
     <div class="opt" id="o3"><span class="mk" id="m3"></span><div><b>Intereses de mora</b><br><span class="muted" id="t3"></span></div></div>
   </div>
   <div id="costo">Una multa de <b>$ 604.100</b> le costaría hoy <span class="price" id="p"></span><br><span class="muted" id="pi"></span></div>
-  <p class="note">Ejemplo con una multa común. El descuento exige hacer el curso de seguridad vial. Los intereses usan una tasa aproximada de 25 % al año; la tasa real cambia cada mes.</p>
+  <p class="note">Ejemplo con una fotomulta común. El descuento exige hacer el curso de seguridad vial. Si la multa se la puso un agente en la calle, los plazos son 5 y 20 días. Los intereses usan una tasa aproximada de 25 % al año; la tasa real cambia cada mes.</p>
 </section>
 
 <section class="scene">
@@ -186,8 +186,8 @@ function upd() {
   $("d").textContent = mora ? (meses === 1 ? "1 mes" : meses + " meses") : "Día " + d;
   $("du").textContent = mora ? "de mora" : "después del aviso";
   let disc, dt;
-  if (d <= 5) { disc = .5; dt = "Paga la mitad (50\u00a0% menos) hasta el día 5"; }
-  else if (d <= 20) { disc = .25; dt = "Paga 25\u00a0% menos hasta el día 20"; }
+  if (d <= 11) { disc = .5; dt = "Paga la mitad (50\u00a0% menos) hasta el día 11"; }
+  else if (d <= 26) { disc = .25; dt = "Paga 25\u00a0% menos hasta el día 26"; }
   else { disc = 0; dt = "Ya no hay descuento"; }
   const aud = d <= 11;
   $("o1").className = "opt " + (disc ? "on" : "off"); $("m1").textContent = disc ? "✓" : "✕"; $("t1").textContent = dt;

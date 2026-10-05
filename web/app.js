@@ -9,6 +9,12 @@ const corto = m => m.nombre.replace(/^(Secretaría|Instituto) de (Movilidad|Trá
 let mapas = [];
 
 try { $("proxy").value = localStorage.getItem("servidor") || ""; } catch {}
+// La placa de la última búsqueda queda escrita: la próxima vez basta con tocar Buscar.
+let guardada = "";
+try { guardada = localStorage.getItem("placa") || ""; } catch {}
+if (guardada) { $("q").value = guardada; $("ej").textContent = "Es la placa que buscó la última vez. Toque Buscar para revisar de nuevo."; }
+// Cámaras por municipio (mapa de la ANSV), resumidas cada semana en data/cifras.json.
+const camaras = fetch("data/cifras.json").then(r => r.json()).then(d => d.camaras_municipio || []).catch(() => []);
 $("proxy").onchange = () => { try { localStorage.setItem("servidor", $("proxy").value.trim()); } catch {} };
 
 const listos = Promise.all(IDS.map(id => fetch(`maps/${id}.json`).then(r => r.json()).then(m => ({ id, ...m })).catch(() => null)))
@@ -28,7 +34,7 @@ function hint() {
 }
 $("q").oninput = hint;
 $("q").onkeydown = e => { if (e.key === "Enter") $("go").click(); };
-const EJ = $("ej").textContent;
+const EJ = "Ejemplo: ABC123. Son las letras y números de la placa del carro o la moto.";
 // El botón nunca se ve apagado: si falta algo, se explica qué escribir.
 function avisar() {
   const v = $("q").value.trim();
@@ -129,7 +135,11 @@ $("go").onclick = async () => {
 const mapaDe = ciudad => mapas.find(m => m.ciudad && norma(m.ciudad) === norma(ciudad));
 const carta = (tipo, c, f, extra) => "carta.html?" + new URLSearchParams({ tipo, placa: c, ...(f ? { ciudad: f.ciudad, fecha: f.fecha ? iso(f.fecha) : "", valor: f.valor || "" } : {}), ...extra });
 
-function resultado(c, res) {
+const clave = f => `${f.fecha ? iso(f.fecha) : ""}|${norma(f.ciudad)}|${f.valor}`;
+
+async function resultado(c, res) {
+  let vistas = null;
+  try { vistas = JSON.parse(localStorage.getItem("vistas-" + c)); } catch {}
   const nac = res.find(r => r.m === NACIONAL);
   const ok = res.filter(r => r.regs && r.m !== NACIONAL), fallos = res.filter(r => r.error);
   // Del registro nacional: historial completo, pagadas y sin pagar.
@@ -142,6 +152,13 @@ function resultado(c, res) {
     st: campo(reg, /estado/i), pagada: false, hoy: true })));
   const debe = [...hoy, ...hist.filter(f => !f.pagada)], pagadas = hist.filter(f => f.pagada);
   const total = debe.reduce((s, f) => s + f.valor, 0);
+  // Nuevas: las que no estaban la última vez que se buscó esta misma placa en este celular.
+  if (vistas) debe.forEach(f => f.nueva = !vistas.includes(clave(f)));
+  const nuevas = debe.filter(f => f.nueva).length;
+  if (nac && nac.regs || ok.length) try {
+    localStorage.setItem("vistas-" + c, JSON.stringify(debe.map(clave)));
+    if (kind(c) === "placa") localStorage.setItem("placa", c);
+  } catch {}
 
   // Señales a favor de la persona.
   const avisos = [];
@@ -164,7 +181,8 @@ function resultado(c, res) {
   $("who").textContent = c;
   if (debe.length) {
     $("amount").textContent = total ? fmt(total) : debe.length;
-    $("title").textContent = debe.length === 1 ? "1 multa sin pagar" : `${debe.length} multas sin pagar`;
+    $("title").textContent = (debe.length === 1 ? "1 multa sin pagar" : `${debe.length} multas sin pagar`)
+      + (vistas ? (nuevas ? `. ${nuevas === 1 ? "1 es nueva" : nuevas + " son nuevas"} desde la última vez.` : ". Ninguna nueva desde la última vez.") : "");
   } else if (nac && nac.regs || ok.length) {
     $("amount").textContent = fmt(0);
     $("title").textContent = "No aparecen multas sin pagar" + (pagadas.length ? `. Tiene ${pagadas.length} ya ${pagadas.length === 1 ? "pagada" : "pagadas"}.` : ".");
@@ -175,11 +193,20 @@ function resultado(c, res) {
 
   const pagar = f => (f.m || mapaDe(f.ciudad) || {}).front || linkSimit(c);
   $("fines").innerHTML = debe.map(f => `<article class="fine">
-    <span class="state ${prescrita(f) ? "" : "no"}">${prescrita(f) ? "Podría estar vencida" : "Sin pagar"}</span>
+    <span class="state ${prescrita(f) ? "" : "no"}">${f.nueva ? "Nueva · " : ""}${prescrita(f) ? "Podría estar vencida" : "Sin pagar"}</span>
     <div class="mini"><span class="what">${f.fecha ? esc(dia(f.fecha)) : esc(f.w || "Comparendo")}</span><span class="amt">${f.valor ? fmt(f.valor) : ""}</span>
     <span class="where">${esc(f.ciudad)}${f.hoy ? " · consultado hoy" : ""}</span></div>
     <a class="primary" href="${esc(pagar(f))}" target="_blank" rel="noopener">Pagar en la página oficial</a>
     <a class="outline" href="${esc(carta("pruebas", c, f))}">No fui yo: pedir las fotos</a></article>`).join("");
+  // Permisos de las cámaras en las ciudades de las multas sin pagar.
+  const cams = await camaras;
+  const deCiudad = [...new Set(debe.map(f => norma(f.ciudad)))].map(n => [debe.find(f => norma(f.ciudad) === n).ciudad, cams.find(k => norma(k.m) === n)])
+    .filter(([, k]) => k && k.ven);
+  $("permisos").innerHTML = deCiudad.length ? `<h2>¿La cámara tenía permiso?</h2>
+    ${deCiudad.map(([ciu, k]) => `<p>En <b>${esc(ciu)}</b>, el mapa de la Agencia Nacional de Seguridad Vial muestra <b>${k.op}</b> cámaras con permiso vigente y <b>${k.ven}</b> puntos con el permiso vencido.</p>`).join("")}
+    <p>Si su multa es de cámara, pida que demuestren que tenía permiso ese día.</p>
+    <a class="outline" href="${esc(carta("pruebas", c, debe.find(f => norma(f.ciudad) === norma(deCiudad[0][0]))))}">Pedir las pruebas</a>` : "";
+  $("permisos").hidden = !deCiudad.length;
   $("pagadas").innerHTML = pagadas.length ? `<details class="card"><summary>Ya pagadas (${pagadas.length})</summary>
     ${pagadas.map(f => `<div class="row2"><span>${esc(dia(f.fecha))}<br><span class="muted">${esc(f.ciudad)}</span></span><b>${fmt(f.valor)}</b></div>`).join("")}</details>` : "";
 
