@@ -1,5 +1,5 @@
 {
-  "actualizado": "2026-10-04",
+  "actualizado": "2026-10-05",
   "anios": [
     {
       "anio": "2019",
@@ -163,5 +163,391 @@
     "operando": 368,
     "por_instalar": 437,
     "vencidas": 534
-  }
+  },
+  "camaras_municipio": [
+    {
+      "m": "AGUACHICA",
+      "d": "CESAR",
+      "op": 0,
+      "ven": 5
+    },
+    {
+      "m": "AGUSTIN CODAZZI",
+      "d": "CESAR",
+      "op": 2,
+      "ven": 0
+    },
+    {
+      "m": "ARJONA",
+      "d": "BOLIVAR",
+      "op": 0,
+      "ven": 1
+    },
+    {
+      "m": "BARANOA",
+      "d": "ATLANTICO",
+      "op": 1,
+      "ven": 1
+    },
+    {
+      "m": "BARRANCABERMEJA",
+      "d": "SANTANDER",
+      "op": 5,
+      "ven": 37
+    },
+    {
+      "m": "BARRANQUILLA",
+      "d": "ATLANTICO",
+      "op": 29,
+      "ven": 38
+    },
+    {
+      "m": "BELLO",
+      "d": "ANTIOQUIA",
+      "op": 7,
+      "ven": 10
+    },
+    {
+      "m": "Bogota D.C",
+      "d": "Bogota D.C",
+      "op": 91,
+      "ven": 129
+    },
+    {
+      "m": "CAJICA",
+      "d": "CUNDINAMARCA",
+      "op": 0,
+      "ven": 2
+    },
+    {
+      "m": "CALARCA",
+      "d": "QUINDIO",
+      "op": 1,
+      "ven": 0
+    },
+    {
+      "m": "CALDAS",
+      "d": "ANTIOQUIA",
+      "op": 1,
+      "ven": 0
+    },
+    {
+      "m": "CALI",
+      "d": "VALLE DEL CAUCA",
+      "op": 67,
+      "ven": 42
+    },
+    {
+      "m": "CAMPO DE LA CRUZ",
+      "d": "ATLANTICO",
+      "op": 3,
+      "ven": 3
+    },
+    {
+      "m": "CARTAGO",
+      "d": "VALLE DEL CAUCA",
+      "op": 0,
+      "ven": 4
+    },
+    {
+      "m": "CHIA",
+      "d": "CUNDINAMARCA",
+      "op": 2,
+      "ven": 0
+    },
+    {
+      "m": "CHOCONTA",
+      "d": "CUNDINAMARCA",
+      "op": 0,
+      "ven": 2
+    },
+    {
+      "m": "CIENAGA",
+      "d": "MAGDALENA",
+      "op": 3,
+      "ven": 6
+    },
+    {
+      "m": "COROZAL",
+      "d": "SUCRE",
+      "op": 0,
+      "ven": 3
+    },
+    {
+      "m": "COTA",
+      "d": "CUNDINAMARCA",
+      "op": 0,
+      "ven": 4
+    },
+    {
+      "m": "CUCUTA",
+      "d": "N. DE SANTANDER",
+      "op": 15,
+      "ven": 21
+    },
+    {
+      "m": "DAGUA",
+      "d": "VALLE DEL CAUCA",
+      "op": 1,
+      "ven": 0
+    },
+    {
+      "m": "ENVIGADO",
+      "d": "ANTIOQUIA",
+      "op": 4,
+      "ven": 0
+    },
+    {
+      "m": "FUNDACION",
+      "d": "MAGDALENA",
+      "op": 0,
+      "ven": 2
+    },
+    {
+      "m": "GALAPA",
+      "d": "ATLANTICO",
+      "op": 0,
+      "ven": 3
+    },
+    {
+      "m": "ITAGUI",
+      "d": "ANTIOQUIA",
+      "op": 13,
+      "ven": 5
+    },
+    {
+      "m": "JUAN DE ACOSTA",
+      "d": "ATLANTICO",
+      "op": 2,
+      "ven": 2
+    },
+    {
+      "m": "LA DORADA",
+      "d": "CALDAS",
+      "op": 0,
+      "ven": 2
+    },
+    {
+      "m": "LA MESA",
+      "d": "CUNDINAMARCA",
+      "op": 0,
+      "ven": 1
+    },
+    {
+      "m": "LOS PATIOS",
+      "d": "N. DE SANTANDER",
+      "op": 6,
+      "ven": 6
+    },
+    {
+      "m": "MALAMBO",
+      "d": "ATLANTICO",
+      "op": 0,
+      "ven": 3
+    },
+    {
+      "m": "MANIZALES",
+      "d": "CALDAS",
+      "op": 23,
+      "ven": 0
+    },
+    {
+      "m": "MEDELLIN",
+      "d": "ANTIOQUIA",
+      "op": 41,
+      "ven": 82
+    },
+    {
+      "m": "MONTERIA",
+      "d": "CORDOBA",
+      "op": 0,
+      "ven": 11
+    },
+    {
+      "m": "PAILITAS",
+      "d": "CESAR",
+      "op": 0,
+      "ven": 1
+    },
+    {
+      "m": "PALERMO",
+      "d": "HUILA",
+      "op": 0,
+      "ven": 3
+    },
+    {
+      "m": "PALMAR DE VARELA",
+      "d": "ATLANTICO",
+      "op": 1,
+      "ven": 1
+    },
+    {
+      "m": "PALMIRA",
+      "d": "VALLE DEL CAUCA",
+      "op": 0,
+      "ven": 5
+    },
+    {
+      "m": "PASTO",
+      "d": "NARINO",
+      "op": 2,
+      "ven": 0
+    },
+    {
+      "m": "PLANETA RICA",
+      "d": "CORDOBA",
+      "op": 0,
+      "ven": 1
+    },
+    {
+      "m": "PONEDERA",
+      "d": "ATLANTICO",
+      "op": 2,
+      "ven": 2
+    },
+    {
+      "m": "POPAYAN",
+      "d": "CAUCA",
+      "op": 3,
+      "ven": 8
+    },
+    {
+      "m": "PUEBLOVIEJO",
+      "d": "MAGDALENA",
+      "op": 0,
+      "ven": 3
+    },
+    {
+      "m": "PUERTO COLOMBIA",
+      "d": "ATLANTICO",
+      "op": 1,
+      "ven": 5
+    },
+    {
+      "m": "RICAURTE",
+      "d": "CUNDINAMARCA",
+      "op": 0,
+      "ven": 2
+    },
+    {
+      "m": "RIONEGRO",
+      "d": "ANTIOQUIA",
+      "op": 7,
+      "ven": 0
+    },
+    {
+      "m": "SABANAGRANDE",
+      "d": "ATLANTICO",
+      "op": 0,
+      "ven": 1
+    },
+    {
+      "m": "SABANETA",
+      "d": "ANTIOQUIA",
+      "op": 5,
+      "ven": 6
+    },
+    {
+      "m": "SAN ALBERTO",
+      "d": "CESAR",
+      "op": 0,
+      "ven": 2
+    },
+    {
+      "m": "SAN PEDRO",
+      "d": "VALLE DEL CAUCA",
+      "op": 0,
+      "ven": 6
+    },
+    {
+      "m": "SANTA MARTA",
+      "d": "MAGDALENA",
+      "op": 9,
+      "ven": 17
+    },
+    {
+      "m": "SANTANDER DE QUILICHAO",
+      "d": "CAUCA",
+      "op": 0,
+      "ven": 3
+    },
+    {
+      "m": "SIBATE",
+      "d": "CUNDINAMARCA",
+      "op": 0,
+      "ven": 3
+    },
+    {
+      "m": "SITIONUEVO",
+      "d": "MAGDALENA",
+      "op": 0,
+      "ven": 1
+    },
+    {
+      "m": "SOLEDAD",
+      "d": "ATLANTICO",
+      "op": 3,
+      "ven": 4
+    },
+    {
+      "m": "SUAN",
+      "d": "ATLANTICO",
+      "op": 1,
+      "ven": 1
+    },
+    {
+      "m": "TUBARA",
+      "d": "ATLANTICO",
+      "op": 0,
+      "ven": 1
+    },
+    {
+      "m": "TURBACO",
+      "d": "BOLIVAR",
+      "op": 0,
+      "ven": 2
+    },
+    {
+      "m": "VALLEDUPAR",
+      "d": "CESAR",
+      "op": 9,
+      "ven": 0
+    },
+    {
+      "m": "VILLA DEL ROSARIO",
+      "d": "N. DE SANTANDER",
+      "op": 0,
+      "ven": 2
+    },
+    {
+      "m": "VILLAVICENCIO",
+      "d": "META",
+      "op": 0,
+      "ven": 15
+    },
+    {
+      "m": "YOTOCO",
+      "d": "VALLE DEL CAUCA",
+      "op": 3,
+      "ven": 3
+    },
+    {
+      "m": "YUMBO",
+      "d": "VALLE DEL CAUCA",
+      "op": 3,
+      "ven": 6
+    },
+    {
+      "m": "ZIPAQUIRA",
+      "d": "CUNDINAMARCA",
+      "op": 0,
+      "ven": 5
+    },
+    {
+      "m": "ZONA BANANERA",
+      "d": "MAGDALENA",
+      "op": 2,
+      "ven": 0
+    }
+  ]
 }
